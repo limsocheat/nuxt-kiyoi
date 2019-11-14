@@ -1,55 +1,191 @@
 <template>
-  <div>
-    <nuxt />
-  </div>
+	<v-app>
+		<v-app-bar color="blue darken-3" app fixed clipped dense>
+			<v-app-bar-nav-icon></v-app-bar-nav-icon>
+			<v-toolbar-title>Page title</v-toolbar-title>
+		</v-app-bar>
+
+		<v-navigation-drawer app clipped-left class="color" dense>
+			<v-list-item class="text-center font-weight-bold color--item">
+				<v-list-item-content>
+					<v-list-item-title class="color--text">
+						YIKOI
+					</v-list-item-title>
+				</v-list-item-content>
+			</v-list-item>
+
+			<v-divider></v-divider>
+
+			<v-list dense rounded>
+                <div v-for="(item, i) in menus" :key="i" router exact>
+                    <v-list-item v-if="!item.children" :key="i" :to="item.to">
+                        <v-list-item-content>
+                            <v-list-item-title>
+                            	<v-icon>{{ item.icon }}</v-icon>
+                            	{{ item.name }}
+                            </v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                    <v-list-group v-else :key="i.name" :value="false" no-action>
+                        <template v-slot:activator>
+                            <v-list-item-content>
+                                <v-list-item-title>
+                                	<v-icon>{{ item.icon }}</v-icon>
+                                	{{ item.name }}
+                                </v-list-item-title>
+                            </v-list-item-content>
+                        </template>
+                        <v-list-item v-for="(subMenu, i) in item.children" :to="subMenu.to" :key="i" exact >
+                            <v-list-item-content>
+                            	<v-list-item-title>
+                                	<v-icon>{{ subMenu.icon }}</v-icon>
+                                	{{ subMenu.name }}
+                                </v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-list-group>
+                </div>
+
+            </v-list>
+		</v-navigation-drawer>
+
+		<v-content>
+			<nuxt />
+		</v-content>
+	</v-app>
 </template>
 
-<style>
-html {
-  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, 'Helvetica Neue', Arial, sans-serif;
-  font-size: 16px;
-  word-spacing: 1px;
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  box-sizing: border-box;
-}
+<script>
+export default {
+	data() {
+		return {
+			menus: [
+				{
+					name: 'Dashboard',
+					icon: 'mdi-view-dashboard',
+					to: '/'
+				},
+				{
+					name: 'Website Control',
+					icon: 'mdi-desktop-mac',
+					children: [
+						{ name: 'General Settings', icon: 'mdi-settings' },
+						{ name: 'Policy/Term', icon: 'mdi-note' },
+						{ name: 'Email Template', icon: 'mdi-email-open' },
+						{ name: 'SMS Api', icon: 'mdi-message-text' },
+					]
+				},
+				{
+					name: 'Charge/Commision',
+					icon: 'mdi-cash',
+					to: '/'
+				},
+				{
+					name: 'Website Interface',
+					icon: 'mdi-internet-explorer',
+					children: [ 
+						{
+							name: 'menu',
+							icon: 'mdi-menu'
+						},
+						{
+							name: 'Slide Image',
+							icon: 'mdi-folder-multiple-image'
+						},
+						{
+							name: 'Logo',
+							icon: 'mdi-file-image'
+						},
+						{
+							name: 'Service',
+							icon: 'mdi-chart-line-stacked'
+						},
+						{
+							name: 'Team',
+							icon: 'mdi-sitemap'
+						},
+						{
+							name: 'Contact',
+							icon: 'mdi-account-book'
+						},
+						{
+							name: 'About',
+							icon: 'mdi-information'
+						},
+						{
+							name: 'Social',
+							icon: 'mdi-facebook-box'
+						},
+						{
+							name: 'Footer',
+							icon: 'mdi-content-save-all-outline'
+						},
+						{
+							name: 'Testimonial',
+							icon: 'mdi-comment-reply-text'
+						},
+						{
+							name: 'User Tree Image',
+							icon: 'mdi-account-circle'
+						},
+						{
+							name: 'Background Image',
+							icon: 'mdi-image'
+						},
+					]
+				},
+				{
+					name: 'Withdraw System',
+					icon: 'mdi-account-cash',
+					children: [
+						{ name: 'Withdraw Methods',icon: 'mdi-paypal' },
+						{ name: 'Withdraw Requests', icon: 'mdi-loading' },
+						{ name: 'View Log', icon: 'mdi-eye-outline' },
 
-*,
-*:before,
-*:after {
-  box-sizing: border-box;
-  margin: 0;
-}
+					]
+				},
+				{
+					name: 'Payment Gateways',
+					icon: 'mdi-credit-card-outline',
+					to: '/'
+				},
+				{
+					name: 'Payment Log',
+					icon: 'mdi-google-cardboard',
+					to: '/'
+				},
+				{
+					name: 'Users Management',
+					icon: 'mdi-account-group',
+					to: '/'
+				},
+				{
+					name: 'Matching History',
+					icon: 'mdi-content-copy',
+					to: '/'
+				},
+				{
+					name: 'Support',
+					icon: 'mdi-face-agent',
+					to: '/'
+				},
+				{
+					name: 'Generate Matching',
+					icon: 'mdi-reload',
+					to: '/'
+				},
+			]
+		};
+	}
+};
+</script>
 
-.button--green {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #3b8070;
-  color: #3b8070;
-  text-decoration: none;
-  padding: 10px 30px;
-}
 
-.button--green:hover {
-  color: #fff;
-  background-color: #3b8070;
-}
-
-.button--grey {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #35495e;
-  color: #35495e;
-  text-decoration: none;
-  padding: 10px 30px;
-  margin-left: 15px;
-}
-
-.button--grey:hover {
-  color: #fff;
-  background-color: #35495e;
-}
+<style lang="scss">
+	.color {
+		background: #34495e;
+		&--item {
+			background: #257db9;
+		}
+	}
 </style>
