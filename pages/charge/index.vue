@@ -8,29 +8,29 @@
 			<v-divider></v-divider>
 			<div class="px-7 pb-5">
 				<v-row>
-					<v-col md="6">
+					<v-col md="6" xs="12" cols="12">
 						<label class="font-weight-bold">Transfer Charge User To User:</label>
 						<input type="text" class="form-control">
 						<v-icon class="form-icon" style="font-size: 30px;">mdi-percent</v-icon>
 					</v-col>
-					<v-col md="6">
+					<v-col md="6" xs="12" cols="12">
 						<label class="font-weight-bold">Withdraw Charge:</label>
 						<input type="text" class="form-control">
 						<v-icon class="form-icon" style="font-size: 30px;">mdi-percent</v-icon>
 					</v-col>
 				</v-row>
 				<v-row>
-					<v-col md="4">
+					<v-col md="4" xs="12" cols="12">
 						<label class="font-weight-bold">UPGRADE Charge:</label>
 						<input type="text" class="form-control">
 						<v-icon class="form--icon" style="font-size: 30px;">mdi-currency-usd</v-icon>
 					</v-col>
-					<v-col md="4">
+					<v-col md="4" xs="12" cols="12">
 						<label class="font-weight-bold">UPGRADE Commision To TREE:</label>
 						<input type="text" class="form-control">
 						<v-icon class="form--icon" style="font-size: 30px;">mdi-currency-usd</v-icon>
 					</v-col>
-					<v-col md="4">
+					<v-col md="4" xs="12" cols="12">
 						<label class="font-weight-bold">UPGRADE Commision To Sponsor:</label>
 						<input type="text" class="form-control">
 						<v-icon class="form--icon" style="font-size: 30px;">mdi-currency-usd</v-icon>
@@ -68,6 +68,7 @@ export default {
 	}
 
 	.form-control {
+		position: relative;
 		padding-top:5px;
 		padding-left:15px;
 		padding-right:15px;
@@ -94,5 +95,11 @@ export default {
 		background-color: #3598dc;
 		border-radius: 2px;
 		color: #fff;
+	}
+
+	@media(max-height: 500px) {
+	  header {
+	    padding: 0;
+	  }
 	}
 </style>

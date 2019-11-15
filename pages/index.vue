@@ -16,7 +16,7 @@
 			<div class="px-4">
 				<v-row>
 					<template v-for="(card, key) in users">
-						<v-col md="3">
+						<v-col md="3" sm="6" cols="12">
 							<v-card :color="card.color">
 								<v-card-text >
 							        <v-icon class="card--icon" style="font-size: 40px; color: #ffffff">
@@ -46,7 +46,7 @@
 			<div class="px-4">
 				<v-row>
 					<template v-for="(card, key) in funds">
-						<v-col md="3">
+						<v-col md="3" sm="6" cols="12">
 							<v-card :color="card.color">
 								<v-card-text >
 							        <v-icon class="card--icon" style="font-size: 40px; color: #ffffff">
@@ -65,7 +65,7 @@
 		</v-card>
 
 		<!-- Admin Card -->
-		<v-card class="card my-5">
+		<v-card class="card mb-5">
 			<div class="card--title">
 				<v-card-text class="font-weight-bold card--header">
 					<v-icon color="grey lighten-5" class="mb-1">mdi-account-cash</v-icon>
@@ -76,7 +76,7 @@
 			<div class="px-4">
 				<v-row>
 					<template v-for="(card, key) in admins">
-						<v-col md="3">
+						<v-col md="3" sm="6" cols="12">
 							<v-card :color="card.color">
 								<v-card-text >
 							        <v-icon class="card--icon" style="font-size: 40px; color: #ffffff">
