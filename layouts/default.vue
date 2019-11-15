@@ -82,7 +82,7 @@ export default {
 				{
 					name: 'Charge/Commision',
 					icon: 'mdi-cash',
-					to: '/'
+					to: '/charge'
 				},
 				{
 					name: 'Website Interface',
