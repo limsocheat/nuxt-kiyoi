@@ -106,7 +106,7 @@ export default {
 						},
 						{
 							name: 'Contact',
-							icon: 'mdi-account-book'
+							icon: 'mdi-account-badge-horizontal-outline'
 						},
 						{
 							name: 'About',
@@ -122,7 +122,7 @@ export default {
 						},
 						{
 							name: 'Testimonial',
-							icon: 'mdi-comment-reply-text'
+							icon: 'mdi-message-reply-text'
 						},
 						{
 							name: 'User Tree Image',
