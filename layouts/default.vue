@@ -69,7 +69,11 @@ export default {
 					name: 'Website Control',
 					icon: 'mdi-desktop-mac',
 					children: [
-						{ name: 'General Settings', icon: 'mdi-settings' },
+						{ 
+							name: 'General Settings', 
+							icon: 'mdi-settings', 
+							to: "/webcontrol/generalsettings"
+						},
 						{ name: 'Policy/Term', icon: 'mdi-note' },
 						{ name: 'Email Template', icon: 'mdi-email-open' },
 						{ name: 'SMS Api', icon: 'mdi-message-text' },
