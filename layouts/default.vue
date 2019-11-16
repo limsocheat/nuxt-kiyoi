@@ -86,7 +86,8 @@ export default {
 						},
 						{ 
 							name: 'SMS Api', 
-							icon: 'mdi-message-text' 
+							icon: 'mdi-message-text',
+							to: '/webcontrol/sms-api', 
 						},
 					]
 				},
