@@ -102,7 +102,8 @@ export default {
 					children: [ 
 						{
 							name: 'menu',
-							icon: 'mdi-menu'
+							icon: 'mdi-menu',
+							to: '/webinterface/menu',
 						},
 						{
 							name: 'Slide Image',
