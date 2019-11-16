@@ -112,7 +112,8 @@ export default {
 						},
 						{
 							name: 'Logo',
-							icon: 'mdi-file-image'
+							icon: 'mdi-file-image',
+							to: '/webinterface/logo',
 						},
 						{
 							name: 'Service',
