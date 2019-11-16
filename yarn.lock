@@ -7297,6 +7297,11 @@ vue-no-ssr@^1.1.1:
   resolved "https://registry.yarnpkg.com/vue-no-ssr/-/vue-no-ssr-1.1.1.tgz#875f3be6fb0ae41568a837f3ac1a80eaa137b998"
   integrity sha512-ZMjqRpWabMPqPc7gIrG0Nw6vRf1+itwf0Itft7LbMXs2g3Zs/NFmevjZGN1x7K3Q95GmIjWbQZTVerxiBxI+0g==
 
+vue-picture-input@^2.1.6:
+  version "2.1.6"
+  resolved "https://registry.yarnpkg.com/vue-picture-input/-/vue-picture-input-2.1.6.tgz#6a47af68d19c9122cdd20de980d3b113b0a614be"
+  integrity sha512-aM5Pyjz3Kup35/6OCjpgA0BEpLTW9YuN7Ds44XLibXZcxnYYLQezmXpb6IXg/orVTMwMLWNpsHCT3wPhLfjdeA==
+
 vue-router@~3.0.7:
   version "3.0.7"
   resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-3.0.7.tgz#b36ca107b4acb8ff5bc4ff824584059c23fcb87b"

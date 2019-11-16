@@ -107,7 +107,8 @@ export default {
 						},
 						{
 							name: 'Slide Image',
-							icon: 'mdi-folder-multiple-image'
+							icon: 'mdi-folder-multiple-image',
+							to: '/webinterface/slide',
 						},
 						{
 							name: 'Logo',
