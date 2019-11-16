@@ -74,7 +74,7 @@ export default {
 							icon: 'mdi-settings', 
 							to: "/webcontrol/generalsettings"
 						},
-						{ name: 'Policy/Term', icon: 'mdi-note' },
+						{ name: 'Policy/Term', icon: 'mdi-note', to: '/webcontrol/terms' },
 						{ name: 'Email Template', icon: 'mdi-email-open' },
 						{ name: 'SMS Api', icon: 'mdi-message-text' },
 					]
