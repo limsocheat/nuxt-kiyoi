@@ -96,4 +96,10 @@ export default {
 		border-radius: 2px;
 		color: #fff;
 	}
+
+	@media(max-height: 500px) {
+	  header {
+	    padding: 0;
+	  }
+	}
 </style>
