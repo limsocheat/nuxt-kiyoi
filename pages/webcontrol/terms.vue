@@ -12,7 +12,6 @@
 					<vue-editor v-model="content"></vue-editor>
 				</client-only>
 			</div>
-
 			<div class="px-5 py-5">
 				<h4>Terms of Service:</h4>
 				<client-only>
@@ -26,23 +25,23 @@
 		</v-card>
 	</v-app>
 </template>
-
 <script>
-	export default {
-		data() {
-			return {
-				content: "<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci, iusto, culpa explicabo laborum id asperiores impedit porro laboriosam laudantium. Atque consequatur accusantium, fugit provident distinctio aliquam repellendus consectetur deleniti fugiat.</p>",
+export default {
+	data() {
+		return {
+			content: "<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci, iusto, culpa explicabo laborum id asperiores impedit porro laboriosam laudantium. Atque consequatur accusantium, fugit provident distinctio aliquam repellendus consectetur deleniti fugiat.</p>",
 
-				content2: "<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odit, adipisci minus ullam ipsam tempore. Illum sapiente fugiat earum. Voluptate veniam, quidem repellat magni consequuntur numquam. Quia ipsa magni odio atque.</p>"
-			}
+			content2: "<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odit, adipisci minus ullam ipsam tempore. Illum sapiente fugiat earum. Voluptate veniam, quidem repellat magni consequuntur numquam. Quia ipsa magni odio atque.</p>"
 		}
 	}
-</script>
+}
 
+</script>
 <style lang="scss">
-	.term--header {
-		font-weight: bold;
-		background-color: #5e738b;
-		color: #ffffff;
-	}
+.term--header {
+	font-weight: bold;
+	background-color: #5e738b;
+	color: #ffffff;
+}
+
 </style>
