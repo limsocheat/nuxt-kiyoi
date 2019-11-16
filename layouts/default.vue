@@ -117,11 +117,12 @@ export default {
 						},
 						{
 							name: 'Service',
-							icon: 'mdi-chart-line-stacked'
+							icon: 'mdi-chart-line-stacked',
 						},
 						{
 							name: 'Team',
-							icon: 'mdi-sitemap'
+							icon: 'mdi-sitemap',
+							to: '/webinterface/team',
 						},
 						{
 							name: 'Contact',
