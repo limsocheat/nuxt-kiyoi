@@ -123,7 +123,8 @@ export default {
 						},
 						{
 							name: 'Contact',
-							icon: 'mdi-account-badge-horizontal-outline'
+							icon: 'mdi-account-badge-horizontal-outline',
+							to: '/webinterface/contact',
 						},
 						{
 							name: 'About',
