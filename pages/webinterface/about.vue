@@ -11,21 +11,23 @@
 			<v-row class="px-10">
 				<v-col md="6" class="text-left">
 					<label for="" class="font-weight-bold">About Image</label>
-					<picture-input 
-				      ref="pictureInput"
-				      width="200" 
-				      height="50" 
-				      accept="image/jpeg,image/png" 
-				      size="1"
-				      :removable="true"
-				      removeButtonClass="removeBtn"
-				      button-class="btn"
-				      :custom-strings="{
-				        upload: '<h1>Bummer!</h1>',
-				        drag: 'Choose your image'
-				      }"
-				      @change="onChange">
-				    </picture-input>
+					<client-only>
+						<picture-input 
+					      ref="pictureInput"
+					      width="200" 
+					      height="50" 
+					      accept="image/jpeg,image/png" 
+					      size="1"
+					      :removable="true"
+					      removeButtonClass="removeBtn"
+					      button-class="btn"
+					      :custom-strings="{
+					        upload: '<h1>Bummer!</h1>',
+					        drag: 'Choose your image'
+					      }"
+					      >
+					    </picture-input>
+					</client-only>
 				</v-col>
 				<v-col md="6">
 					<label for="" class="font-weight-bold">About Video Link</label>

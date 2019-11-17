@@ -136,7 +136,8 @@ export default {
 						},
 						{
 							name: 'Social',
-							icon: 'mdi-facebook-box'
+							icon: 'mdi-facebook-box',
+							to: '/webinterface/social',
 						},
 						{
 							name: 'Footer',

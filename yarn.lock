@@ -7259,6 +7259,14 @@ vendors@^1.0.0:
   resolved "https://registry.yarnpkg.com/vendors/-/vendors-1.0.3.tgz#a6467781abd366217c050f8202e7e50cc9eef8c0"
   integrity sha512-fOi47nsJP5Wqefa43kyWSg80qF+Q3XA6MUkgi7Hp1HQaKDQW4cQrK2D0P7mmbFtsV1N89am55Yru/nyEwRubcw==
 
+vfa-picker@^5.9.1:
+  version "5.9.1"
+  resolved "https://registry.yarnpkg.com/vfa-picker/-/vfa-picker-5.9.1.tgz#86ec49057ec76579c3e307ecc66a0696f184b564"
+  integrity sha512-HytUGQWlEEWTbPm+s7AVXql6WI0+YNu9JsIFYsxdwjw/n5+IWRjKybGpEieknbAUkZoFZWKtke7zykIO2yjixA==
+  dependencies:
+    core-js "^2.6.5"
+    vue "^2.6.10"
+
 vm-browserify@^1.0.1:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/vm-browserify/-/vm-browserify-1.1.2.tgz#78641c488b8e6ca91a75f511e7a3b32a86e5dda0"
