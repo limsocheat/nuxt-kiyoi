@@ -71,6 +71,7 @@
 					</div>
 				</v-col>
 			</v-row>
+
 			<div class="text-center update">
 				<v-btn color="primary" class="updateBtn">
 					<v-icon>mdi-check</v-icon>
@@ -83,10 +84,6 @@
 
 <script>
 	export default {
-		data() {
-
-		},
-
 		methods: {
 			
 		}
@@ -95,7 +92,7 @@
 
 
 <style lang="scss">
-	
+
 	.update {
 		margin-left: 8em;
 		margin-right: 8em;
