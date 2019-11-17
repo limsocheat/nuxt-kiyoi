@@ -151,7 +151,8 @@ export default {
 						},
 						{
 							name: 'User Tree Image',
-							icon: 'mdi-account-circle'
+							icon: 'mdi-account-circle',
+							to: '/webinterface/tree-image',
 						},
 						{
 							name: 'Background Image',
