@@ -18,14 +18,16 @@
 					<template v-for="(card, key) in users">
 						<v-col md="3" sm="6" cols="12">
 							<v-card :color="card.color">
-								<v-card-text >
+								<v-card-text class="d-flex align-start justify-space-between">
 							        <v-icon class="card--icon" style="font-size: 40px; color: #ffffff">
 							        	{{ card.icon }}
 							        </v-icon>
-							      	<div class="card--amount">
-									    {{ card.amount }}
-							   	 	</div>
-								    <div class="card--text">{{ card.text }}</div>
+							        <div class="d-flex flex-column align-end mt-7">
+								      	<div class="card--amount">
+										    {{ card.amount }}
+								   	 	</div>
+									    <div class="card--text">{{ card.text }}</div>
+							        </div>
 							    </v-card-text>
 							</v-card>
 						</v-col>
@@ -48,14 +50,16 @@
 					<template v-for="(card, key) in funds">
 						<v-col md="3" sm="6" cols="12">
 							<v-card :color="card.color">
-								<v-card-text >
+								<v-card-text class="d-flex align-start justify-space-between">
 							        <v-icon class="card--icon" style="font-size: 40px; color: #ffffff">
 							        	{{ card.icon }}
 							        </v-icon>
-							      	<div class="card--amount">
-									    {{ card.amount }}
-							   	 	</div>
-								    <div class="card--text">{{ card.text }}</div>
+							        <div class="d-flex flex-column align-end mt-7">
+								      	<div class="card--amount">
+										    {{ card.amount }} $
+								   	 	</div>
+									    <div class="card--text">{{ card.text }}</div>
+							        </div>
 							    </v-card-text>
 							</v-card>
 						</v-col>
@@ -78,14 +82,16 @@
 					<template v-for="(card, key) in admins">
 						<v-col md="3" sm="6" cols="12">
 							<v-card :color="card.color">
-								<v-card-text >
+								<v-card-text class="d-flex align-start justify-space-between">
 							        <v-icon class="card--icon" style="font-size: 40px; color: #ffffff">
 							        	{{ card.icon }}
 							        </v-icon>
-							      	<div class="card--amount">
-									    {{ card.amount }}
-							   	 	</div>
-								    <div class="card--text">{{ card.text }}</div>
+							        <div class="d-flex flex-column align-end mt-7">
+								      	<div class="card--amount">
+										    {{ card.amount }} $
+								   	 	</div>
+									    <div class="card--text">{{ card.text }}</div>
+							        </div>
 							    </v-card-text>
 							</v-card>
 						</v-col>
@@ -112,18 +118,18 @@ export default {
 					text: 'Deactive Users', 
 					color: 'red lighten-1',
 					icon: 'mdi-account-remove', 
-					amount: 678,
+					amount: 0,
 				},
 				{ 
 					text: 'Total Paid Users', 
 					icon: 'mdi-account-plus', 
-					amount: 678,
+					amount: 8,
 					color: 'teal darken-1',
 				},
 				{ 
 					text: 'Total Free Users', 
 					icon: 'mdi-account-circle', 
-					amount: 678,
+					amount: 671,
 					color: 'lime darken-3',
 				},
 			],
@@ -222,25 +228,24 @@ export default {
 
 		&--icon {
 			position: relative;
-			bottom: 12px;
-			right: 5px;
+			bottom: 13px;
 		}
 
 		&--amount {
 			color: #fff;
-			position: relative;
-			bottom: 15px;
-			left: 140px;
 			font-size: 35px;
 			font-weight: 300; 
 		}
 
 		&--text {
-			position: relative;
-			bottom: 7px;
 			color: #fff;
-			font-size: 18px;
-			font-weight: 300; 
+			font-size: 16px;
+			font-weight: 350; 
+			margin-top: 10px;
+		}
+
+		&--item {
+			width: 100%;
 		}
 	}
 
