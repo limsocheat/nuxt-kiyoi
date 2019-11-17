@@ -3,28 +3,29 @@
 		<v-card>
 			<div>
 				<h3 class="py-3 px-5 d-flex align-center menu-list">
-					<v-icon style="color: #fff">mdi-account-supervisor</v-icon>
-					OUR TEAM
+					<v-icon style="color: #fff">mdi-road-variant</v-icon>
+					TESTIMONIAL
 				</h3>
 				<v-divider></v-divider>
 			</div>
 			<v-card-title>
+				<v-spacer></v-spacer>
 				<v-dialog v-model="dialog" max-width="600px">
 					<template v-slot:activator="{ on }">
 						<v-btn color="primary" dark v-on="on" small>
 							<v-icon>mdi-plus-circle</v-icon>
-							Add New Member
+							Add New
 						</v-btn>
 					</template>
 
 					<!-- Form Modal -->
 					<v-card>
 						<v-card-title class="headline font-weight-light">
-							ADD NEW MEMBER
+							ADD NEW TESTIMONIAL
 						</v-card-title>
 						<v-divider></v-divider>
 						<v-container>
-							<v-col cols="12" d-flex>
+							<v-col cols="12">
 								<label for="">Image</label>
 								<client-only>
 									<picture-input ref="pictureInput" 
@@ -32,25 +33,32 @@
 										height="100" 
 										margin="16" 
 										accept="image/jpeg,image/png" size="1" 
-										button-class="v-btn" 
+										button-class="btn"
+										removeButtonClass="removeBtn"
+										:removable="true" 
 										:custom-strings="{
 									        upload: '<h1>Bummer!</h1>',
 									        drag: 'Drag a 😺 image here'
 							      		}" 
-							      		@change="onChange">
+							      	>
 									</picture-input>
 								</client-only>
 							</v-col>
 							<v-col cols="12">
-								<label for="name">Full Name</label>
+								<label for="title">Name</label>
+								<input type="text" class="form-control">
+							</v-col>
+							</v-col>
+							<v-col cols="12">
+								<label for="name">Company</label>
 								<input type="text" class="form-control">
 							</v-col>
 							<v-col cols="12">
-								<label for="title">Designation</label>
+								<label for="name">Star</label>
 								<input type="text" class="form-control">
 							</v-col>
 							<v-col cols="12">
-								<label for="title">Twitter Profile Url</label>
+								<label for="name">Comment</label>
 								<input type="text" class="form-control">
 							</v-col>
 						</v-container>
@@ -112,19 +120,16 @@ export default {
 			created: true,
 			dialog: false,
 			headers: [{
-					text: 'Team Member Image',
+					text: 'Serial',
+					sortable: false,
+				},  {
+					text: 'Name',
 					sortable: false,
 				}, {
-					text: '	Full Name',
+					text: 'Company',
 					sortable: false,
 				}, {
-					text: 'Designation',
-					sortable: false,
-				}, {
-					text: 'FaceBook Profile Link',
-					sortable: false,
-				}, {
-					text: 'Twiter Profile Link',
+					text: 'Star',
 					sortable: false,
 				},{
 					text: 'Actions',
@@ -149,6 +154,17 @@ export default {
 
 </script>
 <style lang="scss">
+
+.btn {
+	background: #3664d1;
+	padding: 5px 10px 5px 10px;
+}
+
+.removeBtn {
+	background: #c12a57;
+	padding: 5px 10px 5px 10px;
+}
+
 .menu-list {
 	background-color: #34495e;
 	color: #fff;

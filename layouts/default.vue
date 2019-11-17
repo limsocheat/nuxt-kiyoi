@@ -146,7 +146,8 @@ export default {
 						},
 						{
 							name: 'Testimonial',
-							icon: 'mdi-message-reply-text'
+							icon: 'mdi-message-reply-text',
+							to: '/webinterface/testimonial',	
 						},
 						{
 							name: 'User Tree Image',
