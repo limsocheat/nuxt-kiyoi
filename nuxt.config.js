@@ -45,7 +45,6 @@ export default {
   plugins: [
     { src: "~/plugins/quill-editor.js", ssr: false },
     { src: "~/plugins/image-upload.js", ssr: false },
-    { src: "~/plugins/fontawesome-picker.js", ssr: false },
   ],
   /*
    ** Nuxt.js dev-modules

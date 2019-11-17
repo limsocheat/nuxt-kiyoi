@@ -141,7 +141,8 @@ export default {
 						},
 						{
 							name: 'Footer',
-							icon: 'mdi-content-save-all-outline'
+							icon: 'mdi-content-save-all-outline',
+							to: '/webinterface/footer',
 						},
 						{
 							name: 'Testimonial',
