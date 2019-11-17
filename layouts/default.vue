@@ -164,10 +164,21 @@ export default {
 					name: 'Withdraw System',
 					icon: 'mdi-account-cash',
 					children: [
-						{ name: 'Withdraw Methods',icon: 'mdi-paypal' },
-						{ name: 'Withdraw Requests', icon: 'mdi-loading' },
-						{ name: 'View Log', icon: 'mdi-eye-outline' },
-
+						{ 
+							name: 'Withdraw Methods',
+							icon: 'mdi-paypal', 
+							to: '/withdraw/method/'
+						},
+						{ 
+							name: 'Withdraw Requests', 
+							icon: 'mdi-loading',
+							to: '/withdraw/requests/' 
+						},
+						{ 
+							name: 'View Log', 
+							icon: 'mdi-eye-outline',
+							to: '/withdraw/log/' 
+						},
 					]
 				},
 				{
