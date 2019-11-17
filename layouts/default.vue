@@ -26,7 +26,7 @@
                             </v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
-                    <v-list-group v-else :key="i.name" :value="false" no-action>
+                    <v-list-group v-else :key="i.name" :value="false">
                         <template v-slot:activator>
                             <v-list-item-content>
                                 <v-list-item-title>
@@ -35,7 +35,7 @@
                                 </v-list-item-title>
                             </v-list-item-content>
                         </template>
-                        <v-list-item v-for="(subMenu, i) in item.children" :to="subMenu.to" :key="i" exact >
+                        <v-list-item v-for="(subMenu, i) in item.children" :to="subMenu.to" :key="i" exact class="subMenu">
                             <v-list-item-content>
                             	<v-list-item-title>
                                 	<v-icon>{{ subMenu.icon }}</v-icon>
@@ -131,7 +131,8 @@ export default {
 						},
 						{
 							name: 'About',
-							icon: 'mdi-information'
+							icon: 'mdi-information',
+							to: '/webinterface/about',
 						},
 						{
 							name: 'Social',
@@ -208,5 +209,9 @@ export default {
 		&--item {
 			background: #257db9;
 		}
+	}
+
+	.subMenu {
+		padding-left: 3em;
 	}
 </style>
