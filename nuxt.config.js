@@ -72,7 +72,7 @@ export default {
 		target: process.env.APP_API_URL,
 		pathRewrite: {
 			'^/api/' : '/'
-		}
+		},
 	},
 	'/oauth': {
 		target: process.env.APP_OAUTH_URL,
