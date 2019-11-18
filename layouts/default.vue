@@ -200,7 +200,7 @@ export default {
 				{
 					name: 'Matching History',
 					icon: 'mdi-content-copy',
-					to: '/'
+					to: '/match-history/'
 				},
 				{
 					name: 'Support',
