@@ -9,40 +9,38 @@
 				<v-divider></v-divider>
 			</div>
 			<v-row class="px-5">
-				<v-col md="4">
-					<form class="form">
-						<div class="form-group">
-							<label for="title" class="form-label">Website Title:</label>
-							<input type="text" class="form-control" 
-								value="MLM Pro - Multilevel Business Platform">
-						</div>
-					</form>
+				<v-col md="4" sm="6" cols="12">
+					<div class="form-group">
+						<label for="title" class="form-label">Website Title:</label>
+						<input type="text" class="form-settings" 
+							value="MLM Pro - Multilevel Business Platform">
+					</div>
 				</v-col>
-				<v-col md="4">
+				<v-col md="4" sm="6" cols="12">
 					<div class="form-group">
 						<label class="form-label">Currency(Like: USD):</label>
-						<input type="text" class="form-control" value="USD">
+						<input type="text" class="form-settings" value="USD">
 					</div>
 				</v-col>
-				<v-col md="4">
+				<v-col md="4" sm="6" cols="12">
 					<div class="form-group">
 						<label class="form-label">Currency Symbol (Like: $ ):</label>
-						<input type="text" class="form-control" value="$">
+						<input type="text" class="form-settings" value="$">
 					</div>
 				</v-col>
-				<v-col md="4">
+				<v-col md="4" sm="6" cols="12">
 					<div class="form-group">
 						<label class="form-label">Web Color Code (Without '#'):</label>
-						<input type="text" class="form-control" value="2c3e50">
+						<input type="text" class="form-settings" value="2c3e50">
 					</div>
 				</v-col>
-				<v-col md="4">
+				<v-col md="4" sm="6" cols="12">
 					<div class="form-group">
 						<label class="form-label">Web Secondary Color Code (Without '#'):</label>
-						<input type="text" class="form-control" value="2ecc71">
+						<input type="text" class="form-settings" value="2ecc71">
 					</div>
 				</v-col>
-				<v-col md="4">
+				<v-col md="4" sm="6" cols="12">
 					<div class="form-group">
 						<v-menu
 				          v-model="menu1"
@@ -148,17 +146,17 @@
 			font-size: 15px;
 			font-weight: bold;
 		}
+	}
 
-		&-control {
-			padding-top: 5px;
-			padding-bottom: 5px;
-			padding-left: 10px;
-			padding-right: 10px;
-			border-radius: 5px;
-			border: 1px solid rgba(0,0,0,0.125);
-			outline: none;
-			width: 100%;
-		}
+	.form-settings {
+		padding-top: 5px;
+		padding-bottom: 5px;
+		padding-left: 10px;
+		padding-right: 10px;
+		border-radius: 5px;
+		border: 1px solid rgba(0,0,0,0.125);
+		outline: none;
+		width: 100%;
 	}
 
 	.onoffswitch {

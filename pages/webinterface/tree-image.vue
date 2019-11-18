@@ -7,7 +7,7 @@
 			</div>
 			<v-divider></v-divider>
 			<v-row>
-				<v-col md="6">
+				<v-col md="6" cols="12">
 					<label for="" class="label--user">Paid User Image</label>
 					<div class="pt-3">
 						<picture-input 
@@ -28,7 +28,7 @@
 					    </picture-input>
 					</div>
 				</v-col>
-				<v-col md="6">
+				<v-col md="6" cols="12">
 					<label for="" class="label--user">Free User Image</label>
 					<div class="pt-1">
 						<picture-input 
@@ -49,7 +49,7 @@
 					    </picture-input>
 					</div>
 				</v-col>
-				<v-col md="6">
+				<v-col md="6" cols="12">
 					<label for="" class="label--user">No User Image</label>
 					<div class="pt-1">
 						<picture-input 

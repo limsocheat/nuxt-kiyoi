@@ -10,30 +10,51 @@
 				<v-row>
 					<v-col md="6" xs="12" cols="12">
 						<label class="font-weight-bold">Transfer Charge User To User:</label>
-						<input type="text" class="form-control">
-						<v-icon class="form-icon" style="font-size: 30px;">mdi-percent</v-icon>
+						<v-text-field
+							outlined
+							solod
+							dense
+							append-icon="mdi-percent"
+						></v-text-field>
+						<!-- <v-icon class="form-icon" style="font-size: 30px;">mdi-percent</v-icon> -->
 					</v-col>
 					<v-col md="6" xs="12" cols="12">
 						<label class="font-weight-bold">Withdraw Charge:</label>
-						<input type="text" class="form-control">
-						<v-icon class="form-icon" style="font-size: 30px;">mdi-percent</v-icon>
+						<v-text-field
+							outlined
+							solod
+							dense
+							append-icon="mdi-percent"
+						></v-text-field>
 					</v-col>
 				</v-row>
 				<v-row>
 					<v-col md="4" xs="12" cols="12">
 						<label class="font-weight-bold">UPGRADE Charge:</label>
-						<input type="text" class="form-control">
-						<v-icon class="form--icon" style="font-size: 30px;">mdi-currency-usd</v-icon>
+						<v-text-field
+							outlined
+							solod
+							dense
+							append-icon="mdi-currency-usd"
+						></v-text-field>
 					</v-col>
 					<v-col md="4" xs="12" cols="12">
 						<label class="font-weight-bold">UPGRADE Commision To TREE:</label>
-						<input type="text" class="form-control">
-						<v-icon class="form--icon" style="font-size: 30px;">mdi-currency-usd</v-icon>
+						<v-text-field
+							outlined
+							solod
+							dense
+							append-icon="mdi-currency-usd"
+						></v-text-field>
 					</v-col>
 					<v-col md="4" xs="12" cols="12">
 						<label class="font-weight-bold">UPGRADE Commision To Sponsor:</label>
-						<input type="text" class="form-control">
-						<v-icon class="form--icon" style="font-size: 30px;">mdi-currency-usd</v-icon>
+						<v-text-field
+							outlined
+							solod
+							dense
+							append-icon="mdi-currency-usd"
+						></v-text-field>
 					</v-col>
 				</v-row>
 			</div>
@@ -65,30 +86,6 @@ export default {
 <style lang="scss">
 	.charge--header {
 		background-color: #42A5F5;
-	}
-
-	.form-control {
-		position: relative;
-		padding-top:5px;
-		padding-left:15px;
-		padding-right:15px;
-		padding-bottom: 5px;
-		width: 100%;
-		border: 1px solid rgba(0,0,0,0.125);
-		border-radius: 5px;
-		outline: none;
-	}
-
-	.form-icon {
-		position: relative;
-		bottom: 32px;
-		left:  445px;
-	}
-
-	.form--icon {
-		position: relative;
-		bottom: 32px;
-		left: 275px;
 	}
 
 	.charge--btn {
