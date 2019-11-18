@@ -21,7 +21,7 @@
                     <v-list-item v-if="!item.children" :key="i" :to="item.to">
                         <v-list-item-content>
                             <v-list-item-title>
-                            	<v-icon>{{ item.icon }}</v-icon>
+                            	<v-icon left>{{ item.icon }}</v-icon>
                             	{{ item.name }}
                             </v-list-item-title>
                         </v-list-item-content>
@@ -30,7 +30,7 @@
                         <template v-slot:activator>
                             <v-list-item-content>
                                 <v-list-item-title>
-                                	<v-icon>{{ item.icon }}</v-icon>
+                                	<v-icon left>{{ item.icon }}</v-icon>
                                 	{{ item.name }}
                                 </v-list-item-title>
                             </v-list-item-content>
@@ -38,7 +38,7 @@
                         <v-list-item v-for="(subMenu, i) in item.children" :to="subMenu.to" :key="i" exact class="subMenu">
                             <v-list-item-content>
                             	<v-list-item-title>
-                                	<v-icon>{{ subMenu.icon }}</v-icon>
+                                	<v-icon left>{{ subMenu.icon }}</v-icon>
                                 	{{ subMenu.name }}
                                 </v-list-item-title>
                             </v-list-item-content>
@@ -183,11 +183,6 @@ export default {
 					]
 				},
 				{
-					name: 'Payment Gateways',
-					icon: 'mdi-credit-card-outline',
-					to: '/'
-				},
-				{
 					name: 'Payment Log',
 					icon: 'mdi-google-cardboard',
 					to: '/payment-log/'
@@ -206,11 +201,6 @@ export default {
 					name: 'Support',
 					icon: 'mdi-face-agent',
 					to: '/supports/'
-				},
-				{
-					name: 'Generate Matching',
-					icon: 'mdi-reload',
-					to: '/'
 				},
 			]
 		};

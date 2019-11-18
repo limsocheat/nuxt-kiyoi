@@ -3,7 +3,7 @@
 		<v-card>
 			<div>
 				<h3 class="py-3 px-5 d-flex align-center menu-list">
-					<v-icon style="color: #fff">mdi-account-supervisor</v-icon>
+					<v-icon style="color: #fff" left>mdi-account-supervisor</v-icon>
 					OUR TEAM
 				</h3>
 				<v-divider></v-divider>
@@ -11,8 +11,8 @@
 			<v-card-title>
 				<v-dialog v-model="dialog" max-width="600px">
 					<template v-slot:activator="{ on }">
-						<v-btn color="primary" dark v-on="on" small>
-							<v-icon>mdi-plus-circle</v-icon>
+						<v-btn color="primary" dark v-on="on">
+							<v-icon left>mdi-plus-circle</v-icon>
 							Add New Member
 						</v-btn>
 					</template>

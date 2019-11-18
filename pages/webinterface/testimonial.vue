@@ -3,7 +3,7 @@
 		<v-card>
 			<div>
 				<h3 class="py-3 px-5 d-flex align-center menu-list">
-					<v-icon style="color: #fff">mdi-road-variant</v-icon>
+					<v-icon style="color: #fff" left>mdi-road-variant</v-icon>
 					TESTIMONIAL
 				</h3>
 				<v-divider></v-divider>
@@ -12,8 +12,8 @@
 				<v-spacer></v-spacer>
 				<v-dialog v-model="dialog" max-width="600px">
 					<template v-slot:activator="{ on }">
-						<v-btn color="primary" dark v-on="on" small>
-							<v-icon>mdi-plus-circle</v-icon>
+						<v-btn color="primary" dark v-on="on">
+							<v-icon left>mdi-plus-circle</v-icon>
 							Add New
 						</v-btn>
 					</template>

@@ -1,11 +1,11 @@
 <template>
 	<v-app class="mx-5 my-5">
 		<div class="py-5 d-flex justify-space-between align-center">
-			<h3 class="header">ADD PAYMENT METHOD</h3>
+			<h3 class="grey--text text--darken-3">ADD PAYMENT METHOD</h3>
 			<v-dialog v-model="dialog" max-width="600px">
 				<template v-slot:activator="{ on }">
 					<v-btn color="primary" dark v-on="on">
-						<v-icon>mdi-plus-circle</v-icon>
+						<v-icon left>mdi-plus-circle</v-icon>
 						Add New
 					</v-btn>
 				</template>
@@ -180,11 +180,6 @@ export default {
 
 </script>
 <style lang="scss">
-.header {
-	font-size: 18px;
-	color: #6b5f70;
-}
-
 .menu-list {
 	background-color: #34495e;
 	color: #fff;

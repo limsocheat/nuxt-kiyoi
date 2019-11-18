@@ -2,11 +2,10 @@
 	<v-app class="mx-5 my-5">
 		<v-card>
 			<div>
-				<h3 class="py-3 px-5 d-flex align-center menu-list">
-					<v-icon style="color: #fff">mdi-view-list</v-icon>
+				<h3 class="py-3 px-5 d-flex align-center teal lighten-1 grey--text text--lighten-3">
+					<v-icon class="grey--text text--lighten-3" left>mdi-view-list</v-icon>
 					MENU LIST
 				</h3>
-				<v-divider></v-divider>
 			</div>
 			<v-card-title>
 				<v-text-field label="Search" v-model="search" solo dense class="mt-3">
@@ -14,8 +13,8 @@
 				<v-spacer></v-spacer>
 				<v-dialog v-model="dialog" max-width="600px" persistent>
 					<template v-slot:activator="{ on }">
-						<v-btn color="primary" dark v-on="on" small>
-							<v-icon>mdi-plus-circle</v-icon>
+						<v-btn color="primary" dark v-on="on">
+							<v-icon left>mdi-plus-circle</v-icon>
 							Add New Menu
 						</v-btn>
 					</template>
@@ -222,10 +221,4 @@ export default {
 }
 
 </script>
-<style lang="scss">
-.menu-list {
-	background-color: #34495e;
-	color: #fff;
-}
 
-</style>

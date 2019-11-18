@@ -1,10 +1,9 @@
 <template>
 	<v-app class="mx-5 my-5">
-		
 		<v-card>
 			<div>
 				<h3 class="py-3 px-5 d-flex align-center menu-list">
-					<v-icon style="color: #fff">mdi-settings</v-icon>
+					<v-icon left class="grey--text text--lighten-4">mdi-settings</v-icon>
 					SLIDE SETTINGS
 				</h3>
 				<v-divider></v-divider>
@@ -12,8 +11,8 @@
 			<v-card-title>
 				<v-dialog v-model="dialog" max-width="600px">
 					<template v-slot:activator="{ on }">
-						<v-btn color="primary" dark v-on="on" small>
-							<v-icon>mdi-plus-circle</v-icon>
+						<v-btn color="primary" dark v-on="on">
+							<v-icon left>mdi-plus-circle</v-icon>
 							Add New Slide
 						</v-btn>
 					</template>

@@ -19,8 +19,8 @@
 					<input type="text" value="http://angkordev.com" class="form-control">
 				</v-col>
 			</v-row>
-			<v-btn class="mx-5 mb-5" color="teal lighten-1">
-				<v-icon>mdi-check</v-icon>
+			<v-btn class="mx-5 mb-5 white--text" color="blue darken-1">
+				<v-icon left>mdi-check</v-icon>
 				update
 			</v-btn>
 		</v-card>

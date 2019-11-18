@@ -1,8 +1,8 @@
 <template>
 	<v-app>
 		<v-card class="my-5 mx-5">
-			<v-card-title class="charge--header">
-				<v-icon>mdi-settings</v-icon>
+			<v-card-title class="blue accent-1">
+				<v-icon left>mdi-settings</v-icon>
 				Commission Settings
 			</v-card-title>
 			<v-divider></v-divider>
@@ -84,19 +84,9 @@ export default {
 </script>
 
 <style lang="scss">
-	.charge--header {
-		background-color: #42A5F5;
-	}
-
 	.charge--btn {
 		background-color: #3598dc;
 		border-radius: 2px;
 		color: #fff;
-	}
-
-	@media(max-height: 500px) {
-	  header {
-	    padding: 0;
-	  }
 	}
 </style>
