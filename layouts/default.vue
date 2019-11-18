@@ -190,7 +190,7 @@ export default {
 				{
 					name: 'Payment Log',
 					icon: 'mdi-google-cardboard',
-					to: '/'
+					to: '/payment-log/'
 				},
 				{
 					name: 'Users Management',
