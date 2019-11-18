@@ -195,7 +195,7 @@ export default {
 				{
 					name: 'Users Management',
 					icon: 'mdi-account-group',
-					to: '/'
+					to: '/users'
 				},
 				{
 					name: 'Matching History',
