@@ -1,11 +1,11 @@
 <template>
 	<v-app>
 		<v-app-bar color="blue darken-3" app fixed clipped dense>
-			<v-app-bar-nav-icon></v-app-bar-nav-icon>
+			<v-app-bar-nav-icon @click.stop="toggle = !toggle"></v-app-bar-nav-icon>
 			<v-toolbar-title>Page title</v-toolbar-title>
 		</v-app-bar>
 
-		<v-navigation-drawer app clipped-left class="color" dense>
+		<v-navigation-drawer app clipped-left class="color" dense v-model="toggle">
 			<v-list-item class="text-center font-weight-bold color--item">
 				<v-list-item-content>
 					<v-list-item-title class="color--text">
@@ -59,6 +59,7 @@
 export default {
 	data() {
 		return {
+			toggle: true,
 			menus: [
 				{
 					name: 'Dashboard',
