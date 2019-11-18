@@ -205,7 +205,7 @@ export default {
 				{
 					name: 'Support',
 					icon: 'mdi-face-agent',
-					to: '/'
+					to: '/supports/'
 				},
 				{
 					name: 'Generate Matching',
