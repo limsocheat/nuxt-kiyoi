@@ -208,12 +208,12 @@ export default {
 						},
 						{
 							name: 'Product List',
-							to: '/products',
+							to: '/product/product-list',
 							icon: 'mdi-view-list'
 						},
 						{
 							name: 'Add Product',
-							to: '/products',
+							to: '/product/add-product',
 							icon: 'mdi-plus-circle'
 						},
 						{
