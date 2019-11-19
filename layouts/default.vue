@@ -265,7 +265,7 @@ export default {
 					children: [
 						{
 							name: 'Sale List',
-							to: '/product',
+							to: '/sale/sale-list',
 							icon: 'mdi-view-list',
 						},
 						{
@@ -275,12 +275,12 @@ export default {
 						},
 						{
 							name: 'Add Sale',
-							to: '/product',
+							to: '/sale/add_sale',
 							icon: 'mdi-plus-circle',
 						},
 						{
 							name: 'Import Sale By CSV',
-							to: '/product',
+							to: '/sale/import_sale',
 							icon: 'mdi-file-import',
 						},
 						{
