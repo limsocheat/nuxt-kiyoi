@@ -203,7 +203,7 @@ export default {
 					children: [
 						{
 							name: 'Category',
-							to: '/products',
+							to: '/product/category',
 							icon: 'mdi-tag-multiple'
 						},
 						{
