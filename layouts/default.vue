@@ -223,17 +223,17 @@ export default {
 						},
 						{
 							name: 'Adjustment List',
-							to: '/products',
+							to: '/product/qty_adjustment',
 							icon: 'mdi-format-list-bulleted-square'
 						},
 						{
 							name: 'Add Adjustment',
-							to: '/products',
+							to: '/product/add_adjustment',
 							icon: 'mdi-playlist-edit'
 						},
 						{
 							name: 'Stock Count',
-							to: '/products',
+							to: '/product/stock-count',
 							icon: 'mdi-shield-check'
 						},
 					]
