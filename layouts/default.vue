@@ -198,6 +198,329 @@ export default {
 					to: '/match-history/'
 				},
 				{
+					name: 'Product',
+					icon: 'mdi-cube',
+					children: [
+						{
+							name: 'Category',
+							to: '/products',
+							icon: 'mdi-tag-multiple'
+						},
+						{
+							name: 'Product List',
+							to: '/products',
+							icon: 'mdi-view-list'
+						},
+						{
+							name: 'Add Product',
+							to: '/products',
+							icon: 'mdi-plus-circle'
+						},
+						{
+							name: 'Print Barcode',
+							to: '/products',
+							icon: 'mdi-barcode'
+						},
+						{
+							name: 'Adjustment List',
+							to: '/products',
+							icon: 'mdi-format-list-bulleted-square'
+						},
+						{
+							name: 'Add Adjustment',
+							to: '/products',
+							icon: 'mdi-playlist-edit'
+						},
+						{
+							name: 'Stock Count',
+							to: '/products',
+							icon: 'mdi-shield-check'
+						},
+					]
+				},
+				{
+					name: 'Purchase',
+					icon: 'mdi-arrow-down-circle',
+					children: [
+						{
+							name: 'Purchase List',
+							to: '/products',
+							icon: 'mdi-view-list',
+						},
+						{
+							name: 'Add Purchase',
+							to: '/products',
+							icon: 'mdi-plus-circle'
+						},
+						{
+							name: 'Import Purchase By CSV',
+							to: '/products',
+							icon: 'mdi-file-import'
+						},
+					]
+				},
+				{
+					name: 'Sale',
+					icon: 'mdi-cart',
+					children: [
+						{
+							name: 'Sale List',
+							to: '/product',
+							icon: 'mdi-view-list',
+						},
+						{
+							name: 'POS',
+							to: '/product',
+							icon: 'mdi-cart-outline',
+						},
+						{
+							name: 'Add Sale',
+							to: '/product',
+							icon: 'mdi-plus-circle',
+						},
+						{
+							name: 'Import Sale By CSV',
+							to: '/product',
+							icon: 'mdi-file-import',
+						},
+						{
+							name: 'Gift Card List',
+							to: '/product',
+							icon: 'mdi-id-card',
+						},
+						{
+							name: 'Coupon List',
+							to: '/product',
+							icon: 'mdi-ticket-percent',
+						},
+						{
+							name: 'Delivery List',
+							to: '/product',
+							icon: 'mdi-truck-delivery',
+						},
+					]
+				},
+				{
+					name: 'Expense',
+					icon: 'mdi-calculator',
+					children: [
+						{
+							name: 'Expense Category',
+							icon: 'mdi-tag-multiple'
+						},
+						{
+							name: 'Expense List',
+							icon: 'mdi-view-list'
+						},
+						{
+							name: 'Add Expense',
+							icon: 'mdi-plus-circle'
+						},
+					],
+				},
+				{
+					name: 'Quotation',
+					icon: 'mdi-book-open-page-variant',
+					children: [
+						{
+							name: 'Quotation List',
+							icon: 'mdi-view-list',
+						},
+						{
+							name: 'Add Quotation',
+							icon: 'mdi-plus-circle',
+						},
+					]
+				},
+				{
+					name: 'Transfer',
+					icon: 'mdi-transfer-right',
+					children: [
+						{
+							name: 'Transfer List',
+							icon: 'mdi-view-list',
+						},
+						{
+							name: 'Add Transfer',
+							icon: 'mdi-plus-circle',
+						},
+						{
+							name: 'Import Transfer By CSV',
+							icon: 'mdi-file-import',
+						},
+					]
+				},
+				{
+					name: 'Return',
+					icon: 'mdi-package-down',
+					children: [
+						{
+							name: 'Sale',
+							icon: 'mdi-view-list',
+						},
+						{
+							name: 'Purchase',
+							icon: 'mdi-plus-circle',
+						},
+					]
+				},
+				{
+					name: 'HRM',
+					icon: 'mdi-account-group',
+					children: [
+						{
+							name: 'Department',
+							icon: 'mdi-bank-plus',
+						},
+						{
+							name: 'Employee',
+							icon: 'mdi-account-tie',
+						},
+						{
+							name: 'Attendance',
+							icon: 'mdi-map-clock',
+						},
+						{
+							name: 'PayRoll',
+							icon: 'mdi-credit-card-outline',
+						},
+						{
+							name: 'Holiday',
+							icon: 'mdi-beach',
+						},
+					]
+				},
+				{
+					name: 'Accounting',
+					icon: 'mdi-bank',
+					children: [
+						{
+							name: 'Account List',
+							icon: 'mdi-view-list',
+						},
+						{
+							name: 'Add Account',
+							icon: 'mdi-plus-circle',
+						},
+						{
+							name: 'Balance Sheet',
+							icon: 'mdi-google-spreadsheet',
+						},
+						{
+							name: 'Account Statement',
+							icon: 'mdi-newspaper-variant',
+						},
+					]
+				},
+				{
+					name: 'People',
+					icon: 'mdi-account-circle',
+					children: [
+						{
+							name: 'User List',
+							icon: 'mdi-account',
+						},
+						{
+							name: 'Add User',
+							icon: 'mdi-plus-circle',
+						},
+						{
+							name: 'Customer List',
+							icon: 'mdi-account-tie',
+						},
+						{
+							name: 'Add Customer',
+							icon: 'mdi-plus-circle',
+						},
+						{
+							name: 'Biller List',
+							icon: 'mdi-credit-card-outline',
+						},
+						{
+							name: 'Supplier List',
+							icon: 'mdi-shield-star',
+						},
+						{
+							name: 'Add Supplier',
+							icon: 'mdi-plus-circle',
+						},
+					]
+				},
+				{
+					name: 'Report',
+					icon: 'mdi-newspaper-variant',
+					children: [
+						{
+							name: 'Summary Report',
+							icon: 'mdi-book-open',
+						},
+						{
+							name: 'Best Seller',
+							icon: 'mdi-account-tie',
+						},
+						{
+							name: 'Product Report',
+							icon: 'mdi-newspaper-variant',
+						},
+						{
+							name: 'Daily Sale',
+							icon: 'mdi-alpha-s-circle-outline',
+						},
+						{
+							name: 'Monthly Sale',
+							icon: 'mdi-alpha-s-circle',
+						},
+						{
+							name: 'Daily Purchase',
+							icon: 'mdi-alpha-p-circle-outline',
+						},
+						{
+							name: 'Monthly Purchase',
+							icon: 'mdi-alpha-p-circle',
+						},
+						{
+							name: 'Sale Report',
+							icon: 'mdi-card-text',
+						},
+						{
+							name: 'Payment Report',
+							icon: 'mdi-card-text-outline',
+						},
+						{
+							name: 'Purchase Report',
+							icon: 'mdi-credit-card-multiple',
+						},
+						{
+							name: 'Warehouse Report',
+							icon: 'mdi-bank-outline',
+						},
+						{
+							name: 'Warehouse Stock Chart',
+							icon: 'mdi-chart-bar',
+						},
+						{
+							name: 'Product Quantity Alert',
+							icon: 'mdi-bell-alert',
+						},
+						{
+							name: 'User Report',
+							icon: 'mdi-account-badge-horizontal-outline',
+						},
+						{
+							name: 'Customer Report',
+							icon: 'mdi-account-card-details',
+						},
+						{
+							name: 'Supplier Report',
+							icon: 'mdi-shield-star',
+						},
+						{
+							name: 'Due Report',
+							icon: 'mdi-map-clock-outline',
+						},
+					]
+				},
+				{
 					name: 'Support',
 					icon: 'mdi-face-agent',
 					to: '/supports/'
@@ -218,6 +541,6 @@ export default {
 	}
 
 	.subMenu {
-		padding-left: 3em;
+		padding-left: 2em;
 	}
 </style>
