@@ -218,7 +218,7 @@ export default {
 						},
 						{
 							name: 'Print Barcode',
-							to: '/print-barcode',
+							to: '/product/print-barcode',
 							icon: 'mdi-barcode'
 						},
 						{
