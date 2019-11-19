@@ -244,17 +244,17 @@ export default {
 					children: [
 						{
 							name: 'Purchase List',
-							to: '/products',
+							to: '/purchase/purchase-list',
 							icon: 'mdi-view-list',
 						},
 						{
 							name: 'Add Purchase',
-							to: '/products',
+							to: '/purchase/add_purchase',
 							icon: 'mdi-plus-circle'
 						},
 						{
 							name: 'Import Purchase By CSV',
-							to: '/products',
+							to: '/purchase/import_purchase',
 							icon: 'mdi-file-import'
 						},
 					]
