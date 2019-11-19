@@ -269,11 +269,6 @@ export default {
 							icon: 'mdi-view-list',
 						},
 						{
-							name: 'POS',
-							to: '/product',
-							icon: 'mdi-cart-outline',
-						},
-						{
 							name: 'Add Sale',
 							to: '/sale/add_sale',
 							icon: 'mdi-plus-circle',
