@@ -280,17 +280,17 @@ export default {
 						},
 						{
 							name: 'Gift Card List',
-							to: '/product',
+							to: '/sale/gift_card',
 							icon: 'mdi-id-card',
 						},
 						{
 							name: 'Coupon List',
-							to: '/product',
+							to: '/sale/coupons',
 							icon: 'mdi-ticket-percent',
 						},
 						{
 							name: 'Delivery List',
-							to: '/product',
+							to: '/sale/delivery',
 							icon: 'mdi-truck-delivery',
 						},
 					]
