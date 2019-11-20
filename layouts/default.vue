@@ -334,14 +334,17 @@ export default {
 						{
 							name: 'Transfer List',
 							icon: 'mdi-view-list',
+							to: '/transfer/transfers'
 						},
 						{
 							name: 'Add Transfer',
 							icon: 'mdi-plus-circle',
+							to: '/transfer/add_transfer',
 						},
 						{
 							name: 'Import Transfer By CSV',
 							icon: 'mdi-file-import',
+							to: '/transfer/import_transfer',
 						},
 					]
 				},
