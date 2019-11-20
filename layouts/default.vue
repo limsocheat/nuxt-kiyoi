@@ -413,10 +413,12 @@ export default {
 						{
 							name: 'User List',
 							icon: 'mdi-account',
+							to: '/people/users'
 						},
 						{
 							name: 'Add User',
 							icon: 'mdi-plus-circle',
+							to: '/people/add_user'
 						},
 						{
 							name: 'Customer List',
