@@ -355,10 +355,12 @@ export default {
 						{
 							name: 'Sale',
 							icon: 'mdi-view-list',
+							to: '/return/return-sale',
 						},
 						{
 							name: 'Purchase',
 							icon: 'mdi-plus-circle',
+							to: '/return/return-purchase',
 						},
 					]
 				},
