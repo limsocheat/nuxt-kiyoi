@@ -318,10 +318,12 @@ export default {
 						{
 							name: 'Quotation List',
 							icon: 'mdi-view-list',
+							to: '/quotation/quotations'
 						},
 						{
 							name: 'Add Quotation',
 							icon: 'mdi-plus-circle',
+							to: '/quotation/add_quotation'
 						},
 					]
 				},
