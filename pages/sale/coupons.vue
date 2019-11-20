@@ -192,29 +192,6 @@ export default {
 	},
 
 	methods: {
-		uploadCsv(image) {
-			const URL = 'http://127.0.0.1:3000/product/category'
-
-			let data = new FormData();
-		    data.append('name', 'my-csv');
-		    data.append('file', event.target.files[0]); 
-
-		    let config = {
-		      header : {
-		        'Content-Type' : 'csv'
-		      }
-		    }
-
-		    this.$axios.$put(
-		      URL, 
-		      data,
-		      config
-		    ).then(
-		      response => {
-		        console.log('Csv upload response > ', response)
-		      }
-		    )
-		}
 	},
 
 	computed: {
