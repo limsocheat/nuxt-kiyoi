@@ -423,10 +423,12 @@ export default {
 						{
 							name: 'Customer List',
 							icon: 'mdi-account-tie',
+							to: '/people/customer',
 						},
 						{
 							name: 'Add Customer',
 							icon: 'mdi-plus-circle',
+							to: '/people/add_customer',
 						},
 						{
 							name: 'Biller List',
