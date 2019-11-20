@@ -49,7 +49,7 @@
             </v-list>
 		</v-navigation-drawer>
 
-		<v-content>
+		<v-content class="grey lighten-2">
 			<nuxt />
 		</v-content>
 	</v-app>
@@ -459,6 +459,7 @@ export default {
 						{
 							name: 'Summary Report',
 							icon: 'mdi-book-open',
+							to: '/report/summary_report',
 						},
 						{
 							name: 'Best Seller',
