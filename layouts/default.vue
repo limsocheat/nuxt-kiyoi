@@ -433,14 +433,22 @@ export default {
 						{
 							name: 'Biller List',
 							icon: 'mdi-credit-card-outline',
+							to: '/people/biller',
+						},
+						{
+							name: 'Add Biller',
+							icon: 'mdi-plus-circle',
+							to: '/people/add_biller',
 						},
 						{
 							name: 'Supplier List',
 							icon: 'mdi-shield-star',
+							to: '/people/supplier',
 						},
 						{
 							name: 'Add Supplier',
 							icon: 'mdi-plus-circle',
+							to: '/people/add_supplier',
 						},
 					]
 				},
