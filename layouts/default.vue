@@ -397,18 +397,17 @@ export default {
 						{
 							name: 'Account List',
 							icon: 'mdi-view-list',
-						},
-						{
-							name: 'Add Account',
-							icon: 'mdi-plus-circle',
+							to: '/accounting/account',
 						},
 						{
 							name: 'Balance Sheet',
 							icon: 'mdi-google-spreadsheet',
+							to: '/accounting/balancesheet',
 						},
 						{
 							name: 'Account Statement',
 							icon: 'mdi-newspaper-variant',
+							to: '/accounting/statement',
 						},
 					]
 				},
