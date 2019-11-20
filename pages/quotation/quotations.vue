@@ -3,7 +3,7 @@
 		<div class="d-flex">
 			<div class="pb-5 pr-3">
 				<nuxt-link 
-					to="/product/add_quotation" 
+					to="/quotation/add_quotation" 
 					class="nuxt--link grey--text text--lighten-4"
 				>
 					<v-btn class="teal darken-1" dark>
