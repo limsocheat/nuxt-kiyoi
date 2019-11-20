@@ -9,7 +9,7 @@
 							Add Account
 						</v-btn>
 					</template>
-
+			
 					<!-- Form Modal -->
 					<v-card>
 						<v-card-title class="headline font-weight-light">
@@ -32,7 +32,6 @@
 								solo
 								dense
 								label="Name"
-								:items="selects"
 							></v-text-field>
 						</v-col>
 						<v-col cols="12">
@@ -49,6 +48,72 @@
 								<label class="font-weight-bold" for="balance">Note</label>
 								<textarea cols="30" rows="10" class="account_note"></textarea>
 							</div>
+						</v-col>
+						<v-card-actions>
+							<v-spacer></v-spacer>
+							<v-btn color="blue darken-1" text>Close</v-btn>
+							<v-btn color="primary">Save</v-btn>
+						</v-card-actions>
+					</v-card>
+				</v-dialog>
+			</div>
+
+			<div class="pb-5 pr-3">
+				<v-dialog v-model="dialog2" max-width="600px">
+					<template v-slot:activator="{ on }">
+						<v-btn class="blue darken-1" dark v-on="on">
+							<v-icon left>mdi-plus-circle</v-icon>
+							Add Account Statement
+						</v-btn>
+					</template>
+			
+					<!-- Form Modal -->
+					<v-card>
+						<v-card-title class="headline font-weight-light">
+							ADD Account
+						</v-card-title>
+						<v-divider></v-divider>
+						<v-col cols="12">
+							<label class="font-weight-bold">Account</label>
+							<v-select
+								solo
+								dense
+								outlined
+							></v-select>
+						</v-col>
+						<v-col cols="12">
+							<label class="font-weight-bold">Type</label>
+							<v-text-field
+								outlined
+								solo
+								dense
+								label="Name"
+							></v-text-field>
+						</v-col>
+						<v-col cols="12">
+							<label class="font-weight-bold" for="balance">Choose Your Date</label>
+							<v-menu
+					          v-model="menu1"
+					          :close-on-content-click="false"
+					          max-width="290"
+					        >
+					          <template v-slot:activator="{ on }">
+					            <v-text-field
+					              :value="computedDateFormattedMomentjs"
+					              clearable
+					              readonly
+					              solo
+					              outlined
+					              dense
+					              v-on="on"
+					              @click:clear="date = null"
+					            ></v-text-field>
+					          </template>
+					          <v-date-picker
+					            v-model="date"
+					            @change="menu1 = false"
+					          ></v-date-picker>
+					        </v-menu>
 						</v-col>
 						<v-card-actions>
 							<v-spacer></v-spacer>
@@ -104,8 +169,11 @@
 
 
 <script>
+
+import moment from 'moment';	
+
 export default {
-	name: 'Menu',
+	
 	created() {
 		// this.fetchData()
 	},
@@ -142,10 +210,8 @@ export default {
 					sortable: false,
 				},
 			],
-			selects: 
-			[
-				'Fruits', 'Electronics', 'Computer', 'Toy', 'Food', 'Accessories'			
-			],
+			menu1: false,
+			date: new Date().toISOString().substr(0, 10),
 		}
 	},
 
@@ -173,7 +239,13 @@ export default {
 		      }
 		    )
 		}
-	}
+	},
+
+	computed: {
+	    computedDateFormattedMomentjs () {
+	        return this.date ? moment(this.date).format('DD-MM-YYYY') : ''
+	    },
+    },
 }
 
 </script>

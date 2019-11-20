@@ -404,11 +404,6 @@ export default {
 							icon: 'mdi-google-spreadsheet',
 							to: '/accounting/balancesheet',
 						},
-						{
-							name: 'Account Statement',
-							icon: 'mdi-newspaper-variant',
-							to: '/accounting/statement',
-						},
 					]
 				},
 				{
