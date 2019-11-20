@@ -468,6 +468,7 @@ export default {
 						{
 							name: 'Product Report',
 							icon: 'mdi-newspaper-variant',
+							to: '/report/product_report',
 						},
 						{
 							name: 'Daily Sale',
