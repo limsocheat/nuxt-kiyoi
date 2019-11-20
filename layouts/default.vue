@@ -301,15 +301,13 @@ export default {
 					children: [
 						{
 							name: 'Expense Category',
-							icon: 'mdi-tag-multiple'
-						},
-						{
-							name: 'Expense List',
-							icon: 'mdi-view-list'
+							icon: 'mdi-tag-multiple',
+							to: '/expense/expense_categories'
 						},
 						{
 							name: 'Add Expense',
-							icon: 'mdi-plus-circle'
+							icon: 'mdi-view-list',
+							to: '/expense/add_expense'
 						},
 					],
 				},
