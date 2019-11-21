@@ -528,6 +528,7 @@ export default {
 						{
 							name: 'Supplier Report',
 							icon: 'mdi-shield-star',
+							to: '/report/supplier_report'
 						},
 						{
 							name: 'Due Report',
