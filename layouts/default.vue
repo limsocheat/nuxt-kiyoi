@@ -494,6 +494,7 @@ export default {
 						{
 							name: 'Payment Report',
 							icon: 'mdi-card-text-outline',
+							to: '/report/payment_report',
 						},
 						{
 							name: 'Purchase Report',
