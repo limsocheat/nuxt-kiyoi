@@ -386,10 +386,12 @@ export default {
 						{
 							name: 'PayRoll',
 							icon: 'mdi-credit-card-outline',
+							to: '/hrm/payroll',
 						},
 						{
 							name: 'Holiday',
 							icon: 'mdi-beach',
+							to: '/hrm/holiday',
 						},
 					]
 				},
