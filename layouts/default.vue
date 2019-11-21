@@ -523,6 +523,7 @@ export default {
 						{
 							name: 'Customer Report',
 							icon: 'mdi-account-card-details',
+							to: '/report/customer_report',
 						},
 						{
 							name: 'Supplier Report',
