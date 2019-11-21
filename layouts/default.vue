@@ -376,6 +376,7 @@ export default {
 						{
 							name: 'Employee',
 							icon: 'mdi-account-tie',
+							to: '/hrm/employee'
 						},
 						{
 							name: 'Attendance',
