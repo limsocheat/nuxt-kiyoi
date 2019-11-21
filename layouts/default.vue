@@ -504,6 +504,7 @@ export default {
 						{
 							name: 'Warehouse Report',
 							icon: 'mdi-bank-outline',
+							to: '/report/warehouse_report',
 						},
 						{
 							name: 'Warehouse Stock Chart',
