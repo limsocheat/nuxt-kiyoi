@@ -533,6 +533,7 @@ export default {
 						{
 							name: 'Due Report',
 							icon: 'mdi-map-clock-outline',
+							to: '/report/due_report'
 						},
 					]
 				},
