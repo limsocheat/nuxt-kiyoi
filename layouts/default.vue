@@ -499,6 +499,7 @@ export default {
 						{
 							name: 'Purchase Report',
 							icon: 'mdi-credit-card-multiple',
+							to: '/report/purchase_report',
 						},
 						{
 							name: 'Warehouse Report',
