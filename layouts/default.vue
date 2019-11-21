@@ -381,6 +381,7 @@ export default {
 						{
 							name: 'Attendance',
 							icon: 'mdi-map-clock',
+							to: '/hrm/attendance',
 						},
 						{
 							name: 'PayRoll',
