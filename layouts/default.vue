@@ -489,6 +489,7 @@ export default {
 						{
 							name: 'Sale Report',
 							icon: 'mdi-card-text',
+							to: '/report/sale_report',
 						},
 						{
 							name: 'Payment Report',
