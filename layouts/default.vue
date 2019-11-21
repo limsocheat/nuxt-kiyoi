@@ -49,7 +49,7 @@
             </v-list>
 		</v-navigation-drawer>
 
-		<v-content class="grey lighten-2">
+		<v-content>
 			<nuxt />
 		</v-content>
 	</v-app>
@@ -371,6 +371,7 @@ export default {
 						{
 							name: 'Department',
 							icon: 'mdi-bank-plus',
+							to: '/hrm/department',
 						},
 						{
 							name: 'Employee',

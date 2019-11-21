@@ -1,16 +1,37 @@
 <template>
 	<v-app class="mx-5 my-5">
-		<div class="d-flex">
+		<div>
 			<div class="py-5">
-				<nuxt-link 
-					to="/people/add_user" 
-					class="nuxt--link grey--text text--lighten-4"
-				>
-					<v-btn class="teal darken-1" dark>
-						<v-icon left>mdi-plus-circle</v-icon>
-							Add User
-					</v-btn>
-				</nuxt-link>
+				<v-dialog v-model="dialog" max-width="700px">
+					<template v-slot:activator="{ on }">
+						<v-btn class="blue darken-1" dark v-on="on">
+							<v-icon left>mdi-plus-circle</v-icon>
+							Add Department
+						</v-btn>
+					</template>
+
+					<!-- Form Modal -->
+					<v-card>
+						<v-card-title class="headline font-weight-light">
+							Add Department
+						</v-card-title>
+						<v-divider></v-divider>
+						<v-col cols="12">
+							<label for="name" class="font-weight-bold">Name</label>
+							<v-text-field
+								solo
+								outlined
+								dense
+								label="Type department name"
+							></v-text-field>
+						</v-col>
+						<v-card-actions>
+							<v-spacer></v-spacer>
+							<v-btn color="blue darken-1" text>Close</v-btn>
+							<v-btn color="primary">Save</v-btn>
+						</v-card-actions>
+					</v-card>
+				</v-dialog>
 			</div>
 		</div>
 		<div class="d-flex justify-space-between">
@@ -74,55 +95,17 @@ export default {
 			created: true,
 			dialog: false,
 			headers: [{
-					text: 'User Name',
+					text: 'Department',
 					sortable: false,
 				}, {
-					text: 'Email',
+					text: 'Action',
 					sortable: false,
-				}, {
-					text: 'Company Name',
-					sortable: false,
-				}, {
-					text: 'Phone Number',
-					sortable: false,
-				}, {
-					text: 'Role',
-					sortable: false,
-				}, {
-					text: 'Status',
-					sortable: false,
-				},{
-					text: 'Actions',
-					sortable: false,
-				},
+				}, 
 			],
 		}
 	},
 
 	methods: {
-		uploadCsv(image) {
-			const URL = 'http://127.0.0.1:3000/product/category'
-
-			let data = new FormData();
-		    data.append('name', 'my-csv');
-		    data.append('file', event.target.files[0]); 
-
-		    let config = {
-		      header : {
-		        'Content-Type' : 'csv'
-		      }
-		    }
-
-		    this.$axios.$put(
-		      URL, 
-		      data,
-		      config
-		    ).then(
-		      response => {
-		        console.log('Csv upload response > ', response)
-		      }
-		    )
-		}
 	}
 }
 
@@ -134,16 +117,6 @@ export default {
 	text-decoration: none;
 }
 
-.form-control {
-	width: 100%;
-	padding-bottom: 5px; 
-	padding-top: 5px; 
-	padding-right: 10px; 
-	padding-left: 10px; 
-	outline: none;
-	border-radius: 5px;
-	border: 1px solid #616161;
-}
 
 
 </style>
