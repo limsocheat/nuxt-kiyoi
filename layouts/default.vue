@@ -518,6 +518,7 @@ export default {
 						{
 							name: 'User Report',
 							icon: 'mdi-account-badge-horizontal-outline',
+							to: '/report/user_report',
 						},
 						{
 							name: 'Customer Report',
