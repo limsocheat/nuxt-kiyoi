@@ -1,7 +1,7 @@
 <template>
 	<v-app class="mx-5 my-5">
 		<div class="d-flex">
-			<div class="pb-5 pr-3">
+			<div class="px-5 py-5">
 				<nuxt-link 
 					to="/people/add_supplier" 
 					class="nuxt--link grey--text text--lighten-4"
@@ -12,7 +12,7 @@
 					</v-btn>
 				</nuxt-link>
 			</div>
-			<div class="pb-5">
+			<div class="py-5">
 				<v-dialog v-model="dialog" max-width="700px">
 					<template v-slot:activator="{ on }">
 						<v-btn class="purple darken-1" dark v-on="on">
@@ -52,7 +52,7 @@
 				</v-dialog>
 			</div>
 		</div>
-		<div class="d-flex justify-space-between">
+		<div class="d-flex justify-space-between px-5">
 			<div>
 				<v-text-field
 					label="Search"

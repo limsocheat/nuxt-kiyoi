@@ -1,7 +1,7 @@
 <template>
 	<v-app class="mx-5 my-5">
 		<div class="d-flex">
-			<div class="pb-5 pr-3">
+			<div class="py-5 px-5">
 				<nuxt-link 
 					to="/people/add_user" 
 					class="nuxt--link grey--text text--lighten-4"
@@ -13,7 +13,7 @@
 				</nuxt-link>
 			</div>
 		</div>
-		<div class="d-flex justify-space-between">
+		<div class="d-flex justify-space-between px-5">
 			<div>
 				<v-text-field
 					label="Search"
