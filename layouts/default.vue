@@ -513,6 +513,7 @@ export default {
 						{
 							name: 'Product Quantity Alert',
 							icon: 'mdi-bell-alert',
+							to: '/report/product_quantity_alert',
 						},
 						{
 							name: 'User Report',
