@@ -30,7 +30,7 @@
 							<v-divider></v-divider>
 							<v-card-actions>
 								<v-spacer />
-								<v-btn color="primary" @click="login()">
+								<v-btn color="primary" @click="login()" :loading="loading">
 									<v-icon left>mdi-login</v-icon>Login
 								</v-btn>
 								<v-spacer></v-spacer>
@@ -44,11 +44,14 @@
 </template>
 
 <script>
+	import { async } from "q";
 	export default {
+		layout: "auth",
 		data() {
 			return {
+				loading: false,
 				auth: {
-					username: "administrator",
+					username: "administrator@mail.com",
 					password: "secret"
 				}
 			};
@@ -56,20 +59,26 @@
 
 		methods: {
 			async login() {
+				this.loading = true;
 				try {
-					await this.$auth.loginWith("password_grant", {
-						data: {
-							grant_type: "password",
-							client_id: process.env.PASSPORT_PASSWORD_GRANT_ID,
-							client_secret:
-								process.env.PASSPORT_PASSWORD_GRANT_SECRET,
-							scope: "*",
-							username: this.auth.username,
-							password: this.auth.password
-						}
-					});
+					await this.$auth
+						.loginWith("password_grant", {
+							data: {
+								grant_type: "password",
+								client_id: process.env.PASSPORT_PASSWORD_GRANT_ID,
+								client_secret:
+									process.env.PASSPORT_PASSWORD_GRANT_SECRET,
+								scope: "*",
+								username: this.auth.username,
+								password: this.auth.password
+							}
+						})
+						.then(async () => {
+							this.loading = false;
+						});
 				} catch (e) {
-					console.log(e);
+					this.loading = false;
+					this.$toast.error(e.message);
 				}
 			}
 		}

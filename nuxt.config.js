@@ -46,6 +46,7 @@ export default {
     { src: "~/plugins/quill-editor.js", ssr: false },
     { src: "~/plugins/image-upload.js", ssr: false },
     { src: "~/plugins/DateRangePicker.js", ssr: false },
+    { src: "~/plugins/vuetify-snackbar"}
   ],
   /*
    ** Nuxt.js dev-modules
@@ -57,8 +58,10 @@ export default {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
+    "@nuxtjs/dotenv",
     '@nuxtjs/pwa',
     '@nuxtjs/vuetify',
+    '@nuxtjs/auth'
   ],
   /*
    ** Axios module configuration
@@ -83,9 +86,9 @@ export default {
 	},
   },
 
-  // router: {
-	// 	middleware: ['auth']
-	// },
+  router: {
+		middleware: ['auth']
+	},
 
 	auth: {
 		redirect: {
@@ -98,20 +101,20 @@ export default {
 			namespace: 'auth', // Vuex store namespace for keeping state.
 		},
 		strategies: {
-			password_grant: {
-        	_scheme: "local",
-				endpoints: {
-					login: { 
-						url: '/oauth/token', 
-						method: 'post', 
-						propertyName: 'access_token' 
-					},
-					logout: { url: '/api/auth/logout', method: 'post' },
-					user: { 
-						url: '/api/auth/user',
-					}
-				},
-			}
+      password_grant: {
+          _scheme: "local",
+          endpoints: {
+            login: {
+              url: "/oauth/token",
+              method: "post",
+              propertyName: "access_token"
+            },
+            logout: false,
+            user: {
+              url: "/api/auth/me"
+            }
+          }
+        },
 		}
 	},
 
