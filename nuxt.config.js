@@ -46,7 +46,8 @@ export default {
     { src: "~/plugins/quill-editor.js", ssr: false },
     { src: "~/plugins/image-upload.js", ssr: false },
     { src: "~/plugins/DateRangePicker.js", ssr: false },
-    { src: "~/plugins/vuetify-snackbar"}
+    { src: "~/plugins/vuetify-snackbar"},
+    { src: "~/plugins/laravel-permission"},
   ],
   /*
    ** Nuxt.js dev-modules

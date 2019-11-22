@@ -74,6 +74,15 @@
 							}
 						})
 						.then(async () => {
+							const { data: permissions } = await this.$axios.get(
+								"/api/auth/permissions"
+							);
+							const { data: roles } = await this.$axios.get(
+								"/api/auth/roles"
+							);
+
+							this.$laravel.setPermissions(permissions);
+							this.$laravel.setRoles(roles);
 							this.loading = false;
 						});
 				} catch (e) {

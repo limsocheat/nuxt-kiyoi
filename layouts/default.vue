@@ -5,6 +5,7 @@
 			<v-toolbar-title>KIYOI</v-toolbar-title>
 			<v-spacer></v-spacer>
 			<v-toolbar-items>
+				<v-btn text dark>{{ user.user ? user.user.name : null }}</v-btn>
 				<v-btn text dark @click="logout()">
 					<v-icon>mdi-logout</v-icon>
 				</v-btn>
@@ -563,6 +564,12 @@
 		methods: {
 			logout() {
 				this.$auth.logout();
+			}
+		},
+
+		computed: {
+			user() {
+				return this.$store.state.auth ? this.$store.state.auth.user : {};
 			}
 		}
 	};
