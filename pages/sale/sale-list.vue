@@ -1,14 +1,14 @@
 <template>
 	<v-app class="mx-5 my-5">
 		<div class="d-flex">
-			<div class="pb-5 pr-3">
+			<div class="pb-5 d-flex">
 				<nuxt-link class="nuxt--link" to="/sale/add_sale">
 					<v-btn class="teal darken-1" dark>
 						<v-icon left>mdi-plus-circle</v-icon>
 						Add Sale
 					</v-btn>
 				</nuxt-link>
-				<nuxt-link class="nuxt--link" to="/sale/import_sale">
+				<nuxt-link class="nuxt--link px-3" to="/sale/import_sale"">
 					<v-btn class="purple darken-1" dark>
 						<v-icon left>mdi-file</v-icon>
 						Import Sale
