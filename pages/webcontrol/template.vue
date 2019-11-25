@@ -44,7 +44,7 @@
 					<vue-editor v-model="content"></vue-editor>
 				</client-only>
 			</div>
-			<v-btn class="mx-5 mb-5" color="primary">
+			<v-btn class="mx-5 mb-5" color="primary" v-permission="'view website'">
 				<v-icon>mdi-check</v-icon>
 				UPDate
 			</v-btn>

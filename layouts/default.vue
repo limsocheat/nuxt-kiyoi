@@ -46,7 +46,7 @@
 							:key="i"
 							exact
 							class="subMenu"
-							:v-permission="'subMenu.permission'"
+							:v-permission="subMenu.permission"
 						>
 							<v-list-item-content>
 								<v-list-item-title>

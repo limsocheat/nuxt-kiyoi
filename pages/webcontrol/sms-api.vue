@@ -37,7 +37,7 @@
 				<label for="" class="font-weight-bold">SMS API</label>
 				<input type="text" class="form-control" :value="smsApi">
 			</div>
-			<v-btn class="mb-5 mx-5" color="primary">
+			<v-btn class="mb-5 mx-5" color="primary" v-permission="'view website'">
 				<v-icon>mdi-check</v-icon>
 				UPDate
 			</v-btn>

@@ -110,7 +110,7 @@
 					</div>
 				</v-col>
 			</v-row>
-			<v-btn color="primary" class="mt-3 mb-5 mx-5">
+			<v-btn color="primary" class="mt-3 mb-5 mx-5" v-permission="'view website'">
 				<v-icon>mdi-check</v-icon>
 				Update
 			</v-btn>
