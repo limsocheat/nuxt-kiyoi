@@ -1,9 +1,9 @@
 <template>
 	<v-app class="mx-5 my-5">
 		<div class="d-flex">
-			<div class="pb-5 pr-3">
+			<div class="pb-5 pr-3"  v-permission="'add sales'">
 				<v-dialog v-model="dialog1" max-width="600px">
-					<template v-slot:activator="{ on }">
+					<template v-slot:activator="{ on }"  >
 						<v-btn class="teal darken-1" dark v-on="on">
 							<v-icon left>mdi-plus-circle</v-icon>
 							Add Category

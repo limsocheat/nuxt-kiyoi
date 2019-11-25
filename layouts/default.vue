@@ -46,6 +46,7 @@
 							:key="i"
 							exact
 							class="subMenu"
+							:v-permission="'subMenu.permission'"
 						>
 							<v-list-item-content>
 								<v-list-item-title>
@@ -224,27 +225,31 @@
 							{
 								name: "Add Product",
 								to: "/product/add-product",
-								icon: "mdi-plus-circle"
+								icon: "mdi-plus-circle",
+								permission: "add sales",
 							},
 							{
 								name: "Print Barcode",
 								to: "/product/print-barcode",
-								icon: "mdi-barcode"
+								icon: "mdi-barcode",
+								permission: "add sales",
 							},
 							{
 								name: "Adjustment List",
 								to: "/product/qty_adjustment",
-								icon: "mdi-format-list-bulleted-square"
+								icon: "mdi-format-list-bulleted-square",
+								permission: "'add sales'",
 							},
 							{
 								name: "Add Adjustment",
 								to: "/product/add_adjustment",
-								icon: "mdi-playlist-edit"
+								icon: "mdi-playlist-edit",
+								permission: "'add sales'",
 							},
 							{
 								name: "Stock Count",
 								to: "/product/stock-count",
-								icon: "mdi-shield-check"
+								icon: "mdi-shield-check",
 							}
 						]
 					},

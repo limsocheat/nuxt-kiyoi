@@ -67,30 +67,26 @@
 				<v-btn class="blue lighten-1">Print</v-btn>
 			</div>
 		</div>
-		<v-card>
-			<v-data-table :headers="headers" :items="items" :items-per-page="itemsPerPage" :options.sync="options" :server-items-length="total">
-				<template v-slot:item.action="{ item }">
-					<v-tooltip bottom>
-						<template v-slot:activator="{ on }">
-							<!-- Edit Item -->
-							<v-icon left fab color="primary" v-on="on">
-								mdi-pencil
-							</v-icon>
-						</template>
-						<span>Edit Supplier</span>
-					</v-tooltip>
-					<v-tooltip bottom>
-						<template v-slot:activator="{ on }">
-							<!-- Delete Item -->
-							<v-icon left fab color="primary" v-on="on">
-								mdi-delete
-							</v-icon>
-						</template>
-						<span>Delete Supplier</span>
-					</v-tooltip>
-				</template>
-			</v-data-table>
-		</v-card>
+		<v-data-table :headers="headers" :items="items" >
+			<template v-slot:item.action="{ item }">
+				<v-tooltip top v-permission="'edit sales'">
+					<template v-slot:activator="{ on }">
+						<v-btn icon @click="editItem(item)" color="primary" outlined v-on="on">
+							<v-icon small>mdi-pencil</v-icon>
+						</v-btn>
+					</template>
+					<span>Edit</span>
+				</v-tooltip>
+				<v-tooltip top v-permission="'delete sales'">
+					<template v-slot:activator="{ on }">
+						<v-btn icon @click="deleteItem(item)" color="red" outlined v-on="on">
+							<v-icon small>mdi-delete</v-icon>
+						</v-btn>
+					</template>
+					<span>Delete</span>
+				</v-tooltip>
+			</template>
+		</v-data-table>
 	</v-app>
 </template>
 
@@ -150,6 +146,7 @@ export default {
 				},{
 					text: "Actions",
 					sortable: false,
+					value: "action",
 				},
 			],
 		}
