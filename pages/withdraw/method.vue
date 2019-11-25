@@ -2,7 +2,7 @@
 	<v-app class="mx-5 my-5">
 		<div class="py-5 d-flex justify-space-between align-center">
 			<h3 class="grey--text text--darken-3">ADD PAYMENT METHOD</h3>
-			<v-dialog v-model="dialog" max-width="600px">
+			<v-dialog v-model="dialog" max-width="600px" v-permission="'add users'">
 				<template v-slot:activator="{ on }">
 					<v-btn color="primary" dark v-on="on">
 						<v-icon left>mdi-plus-circle</v-icon>
