@@ -106,7 +106,7 @@ export default {
           _scheme: "local",
           endpoints: {
             login: {
-              url: "/oauth/token",
+              url: "oauth/token",
               method: "post",
               propertyName: "access_token"
             },

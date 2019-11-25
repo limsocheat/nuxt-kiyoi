@@ -5,16 +5,17 @@
 				ADD PRODUCT
 			</v-card-title>
 			<v-divider></v-divider>
+			<p class="px-5 pt-3">The field labels marked with * are required input fields.</p>
 			<v-row class="px-5">
 				<v-col sm="6" cols="12">
-					<label class="font-weight-bold" for="name">Product Name</label>
+					<label class="font-weight-bold" for="name">Product Name*</label>
 					<v-text-field 
 						outlined solo dense
 						label="Product Name"
 					></v-text-field>
 				</v-col>
 				<v-col sm="6" cols="12">
-					<label class="font-weight-bold" for="">Product Code</label>
+					<label class="font-weight-bold" for="">Product Code*</label>
 					<div class="d-flex">
 						<v-text-field 
 							outlined solo dense
@@ -24,11 +25,11 @@
 					</div>
 				</v-col>
 				<v-col sm="6" cols="12">
-					<label class="font-weight-bold" for="">Product Type</label>
+					<label class="font-weight-bold" for="">Product Type*</label>
 					<v-select outlined solo dense :items="product_type" label="Please Select"></v-select>
 				</v-col>
 				<v-col sm="6" cols="12">
-					<label class="font-weight-bold" for="">Barcode Symbology</label>
+					<label class="font-weight-bold" for="">Barcode Symbology*</label>
 					<v-select outlined solo dense :items="barcodes" label="Please Select"></v-select>
 				</v-col>
 				<v-col sm="6" cols="12">
@@ -36,11 +37,11 @@
 					<v-select outlined solo dense :items="brands" label="Please Select"></v-select>
 				</v-col>
 				<v-col sm="6" cols="12">
-					<label class="font-weight-bold" for="">Category</label>
+					<label class="font-weight-bold" for="">Category*</label>
 					<v-select outlined solo dense :items="categories" label="Please Select"></v-select>
 				</v-col>
 				<v-col sm="6" cols="12">
-					<label class="font-weight-bold" for="">Product Unit</label>
+					<label class="font-weight-bold" for="">Product Unit*</label>
 					<v-select outlined solo dense :items="product_unit" label="Please Select"></v-select>
 				</v-col>
 				<v-col sm="6" cols="12">
@@ -56,14 +57,14 @@
 			</v-row>
 			<v-row class="px-5">
 				<v-col sm="6" cols="12">
-					<label class="font-weight-bold">Purchases Cost</label>
+					<label class="font-weight-bold">Purchases Cost*</label>
 					<v-text-field 
 						outlined solo dense
 						label="Purchases Cost"
 					></v-text-field>
 				</v-col>
 				<v-col sm="6" cols="12">
-					<label class="font-weight-bold">Purchases Price</label>
+					<label class="font-weight-bold">Purchases Price*</label>
 					<v-text-field 
 						outlined solo dense
 						label="Purchases Price"
@@ -78,17 +79,18 @@
 						<label class="font-weight-bold">Add Promotional Price</label>
 						<v-checkbox
 							outlined solo dense
+							v-model="checkbox"
 						></v-checkbox>
 					</div>
 				</v-col>
-				<v-col sm="6" cols="12">
+				<v-col sm="6" cols="12" v-if="checkbox">
 					<label class="font-weight-bold">Promotional Price</label>
 					<v-text-field
 						outlined solo dense
 						label="Promotion Price"
 					></v-text-field>
 				</v-col>
-				<v-col cols="12" lg="6">
+				<v-col cols="12" lg="6" v-if="checkbox">
 					<label class="font-weight-bold" for="">Promotion Starts</label>
 			        <v-menu
 			          v-model="menu1"
@@ -113,7 +115,7 @@
 			          ></v-date-picker>
 			        </v-menu>
 			    </v-col>
-				<v-col cols="12" lg="6">
+				<v-col cols="12" lg="6" v-if="checkbox">
 					<label class="font-weight-bold" for="">Promotion Ends</label>
 			        <v-menu
 			          v-model="menu2"
@@ -195,6 +197,7 @@
 	export default {
 		data() {
 			return {
+				checkbox: false,
 				product_type: 
 				[
 					'Standard', 'Combo', 'Digital',			

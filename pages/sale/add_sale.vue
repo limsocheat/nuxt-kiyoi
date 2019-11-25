@@ -88,6 +88,9 @@
 							solo
 							outlined
 							dense
+							:items="sale_status"
+							item-value="status"
+							menu-props="auto"
 						></v-select>
 					</v-col>
 					<v-col md="4" sm="6" cols="12">
@@ -157,6 +160,11 @@
 						text: 'Action',
 						sortable: false,
 					},
+				],
+
+				sale_status: [
+					'Completed',
+					'Pending',
 				],
 			}
 		},

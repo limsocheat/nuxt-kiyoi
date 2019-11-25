@@ -6,7 +6,7 @@
 					to="/product/add-product" 
 					class="nuxt--link grey--text text--lighten-4"
 				>
-					<v-btn class="teal darken-1" dark>
+					<v-btn class="teal darken-1" dark v-permission="'add sales'">
 						<v-icon left>mdi-plus-circle</v-icon>
 							Add Product
 					</v-btn>
@@ -97,8 +97,10 @@
 
 <script>
 export default {
+	name: 'Product',
+
 	created() {
-		// this.fetchData()
+		this.fetchData()
 	},
 
 	data() {
@@ -113,22 +115,40 @@ export default {
 			created: true,
 			dialog: false,
 			headers: [{
-					text: 'Team Member Image',
+					text: "ID",
+					sortable: false,
+					value: "id",
+				},{
+					text: "Image",
 					sortable: false,
 				}, {
-					text: '	Full Name',
+					text: "Name",
+					sortable: false,
+					value: "name",
+				}, {
+					text: "Code",
+					sortable: false,
+					value: "code",
+				}, {
+					text: "Brand",
 					sortable: false,
 				}, {
-					text: 'Designation',
+					text: "Category",
 					sortable: false,
-				}, {
-					text: 'FaceBook Profile Link',
-					sortable: false,
-				}, {
-					text: 'Twiter Profile Link',
+					value: "category",
+				},{
+					text: "Quantity",
 					sortable: false,
 				},{
-					text: 'Actions',
+					text: "Unit",
+					sortable: false,
+					value: "unit",
+				},{
+					text: "Price",
+					sortable: false,
+					value: "price",
+				},{
+					text: "Actions",
 					sortable: false,
 				},
 			],
@@ -136,6 +156,18 @@ export default {
 	},
 
 	methods: {
+		fetchData() {
+			let vm = this;
+			this.$axios.$get(`/api/product`)
+			.then(res => {
+				vm.items = res;
+				console.log(res)
+			})
+			.catch(err => {
+				console.log(err);
+			})
+		},
+
 		uploadCsv(image) {
 			const URL = 'http://127.0.0.1:3000/product/category'
 
