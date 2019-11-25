@@ -73,7 +73,7 @@
 			</v-row>
 
 			<div class="text-center update">
-				<v-btn color="primary" class="updateBtn">
+				<v-btn color="primary" class="updateBtn" v-permission="'view website'">
 					<v-icon>mdi-check</v-icon>
 					UPDATE
 				</v-btn>

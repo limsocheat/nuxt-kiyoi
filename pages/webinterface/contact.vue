@@ -19,7 +19,7 @@
 					<input type="text" value="http://angkordev.com" class="form-control">
 				</v-col>
 			</v-row>
-			<v-btn class="mx-5 mb-5 white--text" color="blue darken-1">
+			<v-btn class="mx-5 mb-5 white--text" color="blue darken-1" v-permission="'view website'">
 				<v-icon left>mdi-check</v-icon>
 				update
 			</v-btn>

@@ -11,9 +11,9 @@
 				<v-text-field label="Search" v-model="search" solo dense class="mt-3">
 				</v-text-field>
 				<v-spacer></v-spacer>
-				<v-dialog v-model="dialog" max-width="600px" persistent>
+				<v-dialog v-model="dialog" max-width="600px" persistent v-permission="'view website'">
 					<template v-slot:activator="{ on }">
-						<v-btn color="primary" dark v-on="on">
+						<v-btn color="primary" dark v-on="on" >
 							<v-icon left>mdi-plus-circle</v-icon>
 							Add New Menu
 						</v-btn>

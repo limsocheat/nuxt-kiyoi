@@ -9,7 +9,7 @@
 				<v-divider></v-divider>
 			</div>
 			<v-card-title>
-				<v-dialog v-model="dialog" max-width="600px">
+				<v-dialog v-model="dialog" max-width="600px" v-permission="'view website'">
 					<template v-slot:activator="{ on }">
 						<v-btn color="primary" dark v-on="on">
 							<v-icon left>mdi-plus-circle</v-icon>

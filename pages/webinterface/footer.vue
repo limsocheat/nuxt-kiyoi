@@ -14,6 +14,10 @@
 				<span class="font-weight-bold">Footer Content Link</span>
 				<vue-editor v-model="content"></vue-editor>
 			</div>
+			<v-btn color="primary" dark class="mx-10 mb-5" v-permission="'view website'">
+				<v-icon left>mdi-check</v-icon>
+				Update
+			</v-btn>
 		</v-card>
 	</v-app>
 </template>

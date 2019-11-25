@@ -10,7 +10,7 @@
 			</div>
 			<v-card-title>
 				<v-spacer></v-spacer>
-				<v-dialog v-model="dialog" max-width="600px">
+				<v-dialog v-model="dialog" max-width="600px" v-permission="'view website'">
 					<template v-slot:activator="{ on }">
 						<v-btn color="primary" dark v-on="on">
 							<v-icon left>mdi-plus-circle</v-icon>

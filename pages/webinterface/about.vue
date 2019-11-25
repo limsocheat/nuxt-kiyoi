@@ -41,7 +41,7 @@
 				</client-only>
 			</div>
 			<div class="px-10 pb-5">
-				<v-btn color="primary">
+				<v-btn color="primary" v-permission="'view website'">
 					<v-icon>mdi-check</v-icon>
 					UPDATE
 				</v-btn>
