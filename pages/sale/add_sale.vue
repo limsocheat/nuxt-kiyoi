@@ -115,7 +115,10 @@
 					</v-col>
 				</v-row>
 			</div>
-			<v-btn class="blue mx-5 lighten-2 mb-5 grey--text text--lighten-4">
+			<v-btn 
+				class="blue mx-5 lighten-2 mb-5 grey--text text--lighten-4"
+				v-permission="'add sales'"
+			>
 				<v-icon>mdi-check</v-icon>
 				Submit
 			</v-btn>
