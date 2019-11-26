@@ -1,7 +1,7 @@
 <template>
 	<v-app class="mx-5 my-5">
 		<div class="d-flex">
-			<div class="pb-5 pr-3">
+			<div class="pb-5 pr-3" v-permission="'return sales'">
 				<nuxt-link class="nuxt--link" to="/return/return-sale/create">
 					<v-btn class="teal darken-1" dark>
 						<v-icon left>mdi-plus-circle</v-icon>

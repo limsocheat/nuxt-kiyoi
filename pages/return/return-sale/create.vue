@@ -85,7 +85,11 @@
 					</v-col>
 				</v-row>
 			</div>
-			<v-btn class="blue mx-5 lighten-2 mb-5 grey--text text--lighten-4">
+			<v-btn 
+				class="blue mx-5 darken-2 mb-5"
+				v-permission="'return sales'"
+				dark
+			>
 				<v-icon>mdi-check</v-icon>
 				Submit
 			</v-btn>
