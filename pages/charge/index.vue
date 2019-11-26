@@ -65,7 +65,7 @@
 					<vue-editor v-model="content"></vue-editor>
 				</client-only>
 			</div>
-			<button class="px-4 py-1 mx-5 mb-5 charge--btn">
+			<button class="px-4 py-1 mx-5 mb-5 charge--btn" v-permission="'charge commission'">
 				<v-icon color="grey lighten-3">mdi-check</v-icon>
 				Update
 			</button>
