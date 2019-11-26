@@ -103,7 +103,12 @@
 					</v-col>
 				</v-row>
 			</div>
-			<v-btn class="purple darken-1 mx-5 mb-5" dark>Submit</v-btn>
+			<v-btn 
+				v-permission="'add employee'"
+				class="purple darken-1 mx-5 mb-5" dark
+			>	
+				Submit
+			</v-btn>
 		</v-card>
 	</v-app>
 </template>

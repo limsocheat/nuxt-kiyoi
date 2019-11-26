@@ -2,7 +2,7 @@
 	<v-app class="mx-5 my-5">
 		<div>
 			<div class="py-5">
-				<v-dialog v-model="dialog" max-width="700px">
+				<v-dialog v-model="dialog" max-width="700px" v-permission="'add employee'">
 					<template v-slot:activator="{ on }">
 						<v-btn class="blue darken-1" dark v-on="on">
 							<v-icon left>mdi-plus-circle</v-icon>
