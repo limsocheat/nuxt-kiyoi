@@ -1,6 +1,6 @@
 <template>
 	<v-app class="mx-5 my-5">
-		<div class="d-flex">
+		<div class="d-flex" v-permission="'add transfer'">
 			<div class="pb-5 pr-3">
 				<nuxt-link 
 					to="/transfer/add_transfer" 
