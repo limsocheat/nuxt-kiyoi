@@ -1,8 +1,10 @@
 <template>
 	<v-app class="mx-5 my-5">
 		<div class="d-flex">
-			<div class="px-5 py-5">
-				<v-dialog v-model="dialog1" max-width="600px">
+			<div class="pr-5 py-5">
+				<v-dialog 
+					v-model="dialog1" max-width="600px" v-permission="'add account'"
+				>
 					<template v-slot:activator="{ on }">
 						<v-btn class="teal darken-1" dark v-on="on">
 							<v-icon left>mdi-plus-circle</v-icon>
@@ -58,8 +60,8 @@
 				</v-dialog>
 			</div>
 
-			<div class="px-5 py-5">
-				<v-dialog v-model="dialog2" max-width="600px">
+			<div class="py-5">
+				<v-dialog v-model="dialog2" max-width="600px" v-permission="'add account'">
 					<template v-slot:activator="{ on }">
 						<v-btn class="blue darken-1" dark v-on="on">
 							<v-icon left>mdi-plus-circle</v-icon>
@@ -124,7 +126,7 @@
 				</v-dialog>
 			</div>
 		</div>
-		<div class="d-flex justify-space-between px-5">
+		<div class="d-flex justify-space-between pr-5">
 			<div>
 				<v-text-field
 					label="Search"
