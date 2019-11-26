@@ -56,7 +56,11 @@
 					<label class="font-weight-bold">Active</label>
 				</v-col>
 			</v-row>
-			<v-btn class="teal lighten-3 mx-5 mb-5">
+			<v-btn 
+				v-permission="'add users'"
+				class="blue darken-2 mx-5 mb-5"
+				dark
+			>
 				<v-icon left>mdi-check</v-icon>
 				Submit
 			</v-btn>

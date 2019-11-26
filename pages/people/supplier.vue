@@ -6,14 +6,21 @@
 					to="/people/add_supplier" 
 					class="nuxt--link grey--text text--lighten-4"
 				>
-					<v-btn class="teal darken-1" dark>
+					<v-btn 
+						class="teal darken-1" 
+						dark
+						v-permission="'add users'"
+					>
 						<v-icon left>mdi-plus-circle</v-icon>
 							Add Supplier
 					</v-btn>
 				</nuxt-link>
 			</div>
 			<div class="py-5">
-				<v-dialog v-model="dialog" max-width="700px">
+				<v-dialog 
+					v-model="dialog" max-width="700px"
+					v-permission="'add users'"
+				>
 					<template v-slot:activator="{ on }">
 						<v-btn class="purple darken-1" dark v-on="on">
 							<v-icon left>mdi-file</v-icon>

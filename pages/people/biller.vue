@@ -1,19 +1,19 @@
 <template>
 	<v-app class="mx-5 my-5">
 		<div class="d-flex">
-			<div class="py-5 pr-5">
+			<div class="py-5 pr-5" v-permission="'add users'">
 				<nuxt-link 
 					to="/people/add_biller" 
 					class="nuxt--link grey--text text--lighten-4"
 				>
-					<v-btn class="teal darken-1" dark>
+					<v-btn class="teal darken-1" dark >
 						<v-icon left>mdi-plus-circle</v-icon>
 							Add Biller
 					</v-btn>
 				</nuxt-link>
 			</div>
 			<div class="py-5">
-				<v-dialog v-model="dialog" max-width="700px">
+				<v-dialog v-model="dialog" max-width="700px" v-permission="'add users'">
 					<template v-slot:activator="{ on }">
 						<v-btn class="purple darken-1" dark v-on="on">
 							<v-icon left>mdi-file</v-icon>

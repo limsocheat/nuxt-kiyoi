@@ -6,13 +6,13 @@
 					to="/people/add_customer" 
 					class="nuxt--link grey--text text--lighten-4"
 				>
-					<v-btn class="teal darken-1" dark>
+					<v-btn class="teal darken-1" dark  v-permission="'add users'">
 						<v-icon left>mdi-plus-circle</v-icon>
 							Add Customer
 					</v-btn>
 				</nuxt-link>
 			</div>
-			<div class="py-5">
+			<div class="py-5" v-permission="'add users'">
 				<v-dialog v-model="dialog" max-width="700px">
 					<template v-slot:activator="{ on }">
 						<v-btn class="purple darken-1" dark v-on="on">

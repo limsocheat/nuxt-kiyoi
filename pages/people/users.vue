@@ -5,6 +5,7 @@
 				<nuxt-link 
 					to="/people/add_user" 
 					class="nuxt--link grey--text text--lighten-4"
+					v-permission="'add users'"
 				>
 					<v-btn class="teal darken-1" dark>
 						<v-icon left>mdi-plus-circle</v-icon>

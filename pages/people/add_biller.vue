@@ -58,7 +58,7 @@
 				</v-col>
 			</v-row>
 			<div class="pb-5 px-5">
-				<v-btn color="primary">
+				<v-btn color="primary" v-permission="'add users'">
 					<v-icon left>mdi-check</v-icon>
 					Submit
 				</v-btn>
