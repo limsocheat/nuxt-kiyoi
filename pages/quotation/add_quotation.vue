@@ -110,11 +110,11 @@
 					<label for="">Note</label>
 					<textarea cols="30" rows="10" class="textarea"></textarea>
 				</div>
+				<v-btn class="blue darken-2 mb-5" dark v-permission="'add quotation'">
+					<v-icon>mdi-check</v-icon>
+					Submit
+				</v-btn>
 			</div>
-			<v-btn class="blue mx-5 lighten-2 mb-5 grey--text text--lighten-4">
-				<v-icon>mdi-check</v-icon>
-				Submit
-			</v-btn>
 		</v-card>
 	</v-app>
 </template>

@@ -6,7 +6,7 @@
 					to="/quotation/add_quotation" 
 					class="nuxt--link grey--text text--lighten-4"
 				>
-					<v-btn class="teal darken-1" dark>
+					<v-btn class="teal darken-1" dark v-permission="'add quotation'">
 						<v-icon left>mdi-plus-circle</v-icon>
 							Add Quotation
 					</v-btn>
