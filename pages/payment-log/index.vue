@@ -5,7 +5,10 @@
 				<h3 class="white--text">WITHDRAW HISTORY</h3>
 			</div>
 			<v-divider></v-divider>
-			<div class="d-flex align-center justify-space-between pb-2">
+			<div 
+				class="d-flex align-center justify-space-between pb-2" 
+				v-permission="'add withdraw method'"
+			>
 				<input type="text" placeholder="Search" class="search">
 				<div class="px-5 pt-5">
 					<v-btn class="grey--text text--lighten-5 indigo accent-2">Print</v-btn>
@@ -13,7 +16,7 @@
 					<v-btn class="grey--text text--lighten-5 cyan lighten-1">CSV</v-btn>
 				</div>
 			</div>
-			<v-data-table :headers="headers"></v-data-table>
+			<v-data-table v-permission="'add withdraw method'" :headers="headers"></v-data-table>
 		</v-card>
 	</v-app>
 </template>
