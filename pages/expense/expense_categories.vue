@@ -2,7 +2,7 @@
 	<v-app class="mx-5 my-5">
 		<div class="d-flex">
 			<div class="pb-5 pr-3">
-				<v-dialog v-model="dialog1" max-width="600px">
+				<v-dialog v-model="dialog1" max-width="600px" v-permission="'add sales'">
 					<template v-slot:activator="{ on }">
 						<v-btn class="teal darken-1" dark v-on="on">
 							<v-icon left>mdi-plus-circle</v-icon>
@@ -46,7 +46,7 @@
 				</v-dialog>
 			</div>
 			<div class="pb-5">
-				<v-dialog v-model="dialog2" max-width="700px">
+				<v-dialog v-model="dialog2" max-width="700px" v-permission="'add sales'">
 					<template v-slot:activator="{ on }">
 						<v-btn class="purple darken-1" dark v-on="on">
 							<v-icon left>mdi-file</v-icon>
