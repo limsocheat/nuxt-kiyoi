@@ -5,7 +5,7 @@
 				to="/product/add_adjustment" 
 				class="nuxt--link grey--text text--lighten-4"
 			>
-				<v-btn class="teal darken-1" dark>
+				<v-btn class="teal darken-1" dark v-permission="'add sales'">
 					<v-icon left>mdi-plus-circle</v-icon>
 						Add Adjustment
 				</v-btn>

@@ -39,7 +39,7 @@
 				</v-dialog>
 			</div>
 			<div class="pb-5">
-				<v-dialog v-model="dialog2" max-width="700px">
+				<v-dialog v-model="dialog2" max-width="700px" v-permission="'add sales'">
 					<template v-slot:activator="{ on }">
 						<v-btn class="purple darken-1" dark v-on="on">
 							<v-icon left>mdi-file</v-icon>
