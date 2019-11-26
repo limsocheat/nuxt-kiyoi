@@ -1,7 +1,7 @@
 <template>
 	<v-app>
 		<div class="mx-5 my-5">
-			<v-dialog v-model="dialog" max-width="600px">
+			<v-dialog v-model="dialog" max-width="600px" v-permission="'add sales'">
 				<template v-slot:activator="{ on }">
 					<v-btn dark v-on="on" class="purple darken-3">
 						<v-icon left>mdi-plus-circle</v-icon>

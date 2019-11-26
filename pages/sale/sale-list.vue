@@ -3,13 +3,13 @@
 		<div class="d-flex">
 			<div class="pb-5 d-flex">
 				<nuxt-link class="nuxt--link" to="/sale/add_sale">
-					<v-btn class="teal darken-1" dark>
+					<v-btn class="teal darken-1" dark v-permission="'add sales'">
 						<v-icon left>mdi-plus-circle</v-icon>
 						Add Sale
 					</v-btn>
 				</nuxt-link>
 				<nuxt-link class="nuxt--link px-3" to="/sale/import_sale"">
-					<v-btn class="purple darken-1" dark>
+					<v-btn class="purple darken-1" dark v-permission="'add sales'">
 						<v-icon left>mdi-file</v-icon>
 						Import Sale
 					</v-btn>
