@@ -2,7 +2,10 @@
 	<v-app class="mx-5 my-5">
 		<div class="d-flex">
 			<div class="pb-5 pr-3">
-				<v-dialog v-model="dialog1" max-width="600px" v-permission="'add sales'">
+				<v-dialog 
+					v-model="dialog1" max-width="600px" 
+					v-permission="'add expense'"
+				>
 					<template v-slot:activator="{ on }">
 						<v-btn class="teal darken-1" dark v-on="on">
 							<v-icon left>mdi-plus-circle</v-icon>
@@ -46,7 +49,7 @@
 				</v-dialog>
 			</div>
 			<div class="pb-5">
-				<v-dialog v-model="dialog2" max-width="700px" v-permission="'add sales'">
+				<v-dialog v-model="dialog2" max-width="700px" v-permission="'add expense'">
 					<template v-slot:activator="{ on }">
 						<v-btn class="purple darken-1" dark v-on="on">
 							<v-icon left>mdi-file</v-icon>
@@ -101,26 +104,28 @@
 			</div>
 		</div>
 		<v-card>
-			<v-data-table :headers="headers" :items="items" :items-per-page="itemsPerPage" :options.sync="options" :server-items-length="total">
-				<template v-slot:item.action="{ item }">
-					<v-tooltip bottom>
+			<v-data-table 
+				:headers="headers" :items="items" 
+				:items-per-page="itemsPerPage" 
+				:options.sync="options" 
+				:server-items-length="total"
+			>
+				<template v-slot:item.action="{item}">
+					<v-tooltip top v-permission="'edit users'">
 						<template v-slot:activator="{ on }">
-							<!-- Edit Item -->
-							<v-icon left fab color="primary" v-on="on">
-								mdi-pencil
-							</v-icon>
+							<v-btn icon @click="editItem(item)" color="primary" outlined v-on="on">
+								<v-icon small>mdi-pencil</v-icon>
+							</v-btn>
 						</template>
-						<span>Edit Supplier</span>
+						<span>Edit</span>
 					</v-tooltip>
-					<v-tooltip bottom>
+					<v-tooltip top v-permission="'delete users'">
 						<template v-slot:activator="{ on }">
-
-							<!-- Delete Item -->
-							<v-icon left fab color="primary" v-on="on">
-								mdi-delete
-							</v-icon>
+							<v-btn icon @click="deleteItem(item)" color="red" outlined v-on="on">
+								<v-icon small>mdi-delete</v-icon>
+							</v-btn>
 						</template>
-						<span>Delete Supplier</span>
+						<span>Delete</span>
 					</v-tooltip>
 				</template>
 			</v-data-table>
