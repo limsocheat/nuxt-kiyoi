@@ -5,7 +5,7 @@
 				<h3>WITHDRAW REQUESTS</h3>
 			</div>
 			<v-divider></v-divider>
-			<v-data-table :headers="headers"></v-data-table>
+			<v-data-table v-permission="'add withdraw method'" :headers="headers"></v-data-table>
 		</v-card>
 	</v-app>
 </template>

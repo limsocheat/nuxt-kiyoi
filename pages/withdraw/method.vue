@@ -2,7 +2,7 @@
 	<v-app class="mx-5 my-5">
 		<div class="py-5 d-flex justify-space-between align-center">
 			<h3 class="grey--text text--darken-3">ADD PAYMENT METHOD</h3>
-			<v-dialog v-model="dialog" max-width="600px" v-permission="'add users'">
+			<v-dialog v-model="dialog" max-width="600px" v-permission="'add withdraw method'">
 				<template v-slot:activator="{ on }">
 					<v-btn color="primary" dark v-on="on">
 						<v-icon left>mdi-plus-circle</v-icon>
@@ -88,7 +88,12 @@
 				<v-spacer></v-spacer>
 			</v-card-title>
 			<v-divider></v-divider>
-			<v-data-table :headers="headers" :items="items" :items-per-page="itemsPerPage" :options.sync="options" :server-items-length="total">
+			<v-data-table 
+				v-permission="'add withdraw method'" 
+				:headers="headers" 
+				:items="items" 
+				:items-per-page="itemsPerPage" 
+				:options.sync="options" :server-items-length="total">
 				<template v-slot:item.action="{ item }">
 					<v-tooltip bottom>
 						<template v-slot:activator="{ on }">
