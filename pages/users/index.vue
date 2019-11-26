@@ -31,7 +31,10 @@
 				</v-toolbar>
 			</v-card-title>
 			<v-divider></v-divider>
-			<v-data-table :headers="headers" :items="items">
+			<v-data-table  
+				:headers="headers" :items="items"
+				v-permission="'view users'"
+			>
 				<template v-slot:item.action="{item}">
 					<v-tooltip top v-permission="'edit users'">
 						<template v-slot:activator="{ on }">
