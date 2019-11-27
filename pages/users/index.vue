@@ -150,20 +150,56 @@
 				});
 			},
 
+			editItem (item) {
+		        this.editedIndex = this.items.indexOf(item);
+		        this.form = Object.assign({}, item);
+		        this.dialog = true
+	      	},
+
 			addUser() {
-				this.$axios.$post(`/api/user`, this.form)
-				.then(res => {
-					this.form = res;
-					this.getItems();
-				})
-				.catch(err => {
-					console.log(err.response);
-				})
+				if(this.editedIndex > -1) {
+					this.$axios.$patch(`/api/user/` + this.form.id, {
+						'name': this.form.name,
+						'email': this.form.email,
+						'password': this.form.password,
+					})
+					.then(res => {
+						this.getItems();
+						this.closeDialog();
+						this.$toast.info('Succeessfully Updated');
+					})
+				}
+				else {
+					this.$axios.$post(`/api/user`, this.form)
+					.then(res => {
+						this.form = res;
+						this.getItems();
+						this.$toast.info('Succeessfully Created');
+						this.closeDialog();
+					})
+					.catch(err => {
+						console.log(err.response);
+					})
+				}
 			},
 
 			closeDialog() {
-				this.dialog = false
+				this.dialog = false;
+				this.editedIndex = -1;
+				this.form = {};
 			},
+
+			deleteItem(item) {
+				if(confirm('Are u sure to delete it?')) {
+					this.$axios.$delete(`/api/user/` + item.id)
+					.then(res => {
+						this.getItems();
+					})
+					.catch(err => {
+						console.log(err.response);
+					})
+				}
+			}
 		},
 
 		created() {
