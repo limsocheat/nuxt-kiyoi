@@ -45,8 +45,120 @@
 						</v-row>
 						<v-card-actions>
 							<v-spacer></v-spacer>
-							<v-btn color="blue darken-1" text>Close</v-btn>
+							<v-btn color="blue darken-1" text @click="dialog=false">Close</v-btn>
 							<v-btn color="primary">Save</v-btn>
+						</v-card-actions>
+					</v-card>
+				</v-dialog>
+			</div>
+
+			<!-- Dialog2 -->
+			<div class="pb-5 dialog2">
+				<v-dialog v-model="dialog2" max-width="700px" v-permission="'add sales'">
+					<template v-slot:activator="{ on }">
+						<v-btn class="purple darken-1" dark v-on="on">
+							<v-icon left>mdi-file</v-icon>
+							Import Product
+						</v-btn>
+					</template>
+
+					<!-- Form Modal -->
+					<v-card>
+						<v-card-title class="headline font-weight-light">
+							Edit Product 
+						</v-card-title>
+						<v-divider></v-divider>
+						<v-col cols="12">
+							<p class="mt-5">The correct column order is (name*, parent_category) and you must follow this.</p>
+						</v-col>
+						<v-row class="px-4">
+							<v-col cols="12" sm="6">
+								<label class="font-weight-bold">Name</label>
+								<v-text-field
+									solo
+									outlined
+									dense
+									label="Product Name"
+									v-model="form.name"
+								></v-text-field>
+							</v-col>
+							<v-col cols="12" sm="6">
+								<label class="font-weight-bold">Code</label>
+								<v-text-field
+									solo
+									outlined
+									dense
+									label="Product Code"
+									v-model="form.code"
+								></v-text-field>
+							</v-col>
+							<v-col cols="12" sm="6">
+								<label class="font-weight-bold">Type</label>
+								<v-select
+									solo
+									outlined
+									dense
+									:items="type"
+									label="Product Type"
+									v-model="type"
+								></v-select>
+							</v-col>
+							<v-col cols="12" sm="6">
+								<label class="font-weight-bold">Barcode</label>
+								<v-select
+									solo
+									outlined
+									dense
+									:items="barcode"
+									v-model="barcode"
+								></v-select>
+							</v-col>
+							<v-col cols="12" sm="6">
+								<label class="font-weight-bold">Category</label>
+								<v-select
+									solo
+									outlined
+									dense
+									:items="categories"
+									label="Product Category"
+									v-model="form.category"
+								></v-select>
+							</v-col>
+							<v-col cols="12" sm="6">
+								<label class="font-weight-bold">Product Cost</label>
+								<v-text-field
+									solo
+									outlined
+									dense
+									label="Product Cost"
+									v-model="form.cost"
+								></v-text-field>
+							</v-col>	
+							<v-col cols="12" sm="6">
+								<label class="font-weight-bold">Product Price</label>
+								<v-text-field
+									solo
+									outlined
+									dense
+									label="Product Price"
+									v-model="form.price"
+								></v-text-field>
+							</v-col>
+							<v-col cols="12" sm="6">
+								<label class="font-weight-bold">Product Unit</label>
+								<v-text-field
+									solo
+									outlined
+									dense
+									label="Product Unit"
+									v-model="form.unit"
+								></v-text-field>
+							</v-col>
+						</v-row>
+						<v-card-actions>
+							<v-spacer></v-spacer>
+							<v-btn color="blue darken-1" text @click="close">Close</v-btn>
+							<v-btn color="primary" @click="updateItem">Save</v-btn>
 						</v-card-actions>
 					</v-card>
 				</v-dialog>
@@ -101,6 +213,15 @@ export default {
 
 	data() {
 		return {
+			type: [
+				'Standard', 'Combo', 'Digital',
+			],
+			barcode: [
+				'Code 128', 'Code 39', 'UPC-A', 'UPC-E', 'EAN-8', 'EAN-13'
+			],
+			categories: [
+				'Fruit', 'Electrics', 'Computer', 'Food', 'Accessories'
+			],
 			items: [],
 			search: '',
 			form: {},
@@ -110,6 +231,7 @@ export default {
 			editedIndex: -1,
 			created: true,
 			dialog: false,
+			dialog2: false,
 			headers: [{
 					text: "ID",
 					sortable: false,
@@ -165,6 +287,37 @@ export default {
 			})
 		},
 
+		editItem (item) {
+	        this.editedIndex = this.items.indexOf(item);
+	        this.form = Object.assign({}, item);
+	        this.dialog2 = true
+      	},
+
+      	updateItem() {
+  			this.$axios.$patch(`api/product/` + this.form.id, {
+  				name: this.form.name,
+  				code: this.form.code,
+  				barcode: this.form.barcode,
+  				category: this.form.category,
+  				cost: this.form.cost,
+  				price: this.form.price,
+  				type: this.form.type,
+  				unit: this.form.unit,
+  			})
+  			.then(res => {
+  				this.fetchData();
+  				this.close();
+  			})
+  			.catch(err => {
+  				console.log(err.response);
+  			})
+      	},
+
+      	close() {
+      		this.dialog2 = false;
+      		this.form = {};
+      	},
+
 		uploadCsv(image) {
 			const URL = 'http://127.0.0.1:3000/product/category'
 
@@ -214,5 +367,9 @@ export default {
 	border: 1px solid #616161;
 }
 
+
+.dialog2 {
+	display: none;
+}
 
 </style>

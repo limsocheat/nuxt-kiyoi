@@ -128,10 +128,6 @@
 								to: "/webinterface/logo"
 							},
 							{
-								name: "Service",
-								icon: "mdi-chart-line-stacked"
-							},
-							{
 								name: "Team",
 								icon: "mdi-sitemap",
 								to: "/webinterface/team"
@@ -166,10 +162,6 @@
 								icon: "mdi-account-circle",
 								to: "/webinterface/tree-image"
 							},
-							{
-								name: "Background Image",
-								icon: "mdi-image"
-							}
 						]
 					},
 					{
