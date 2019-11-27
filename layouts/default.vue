@@ -31,7 +31,7 @@
 							</v-list-item-title>
 						</v-list-item-content>
 					</v-list-item>
-					<v-list-group v-else :key="i.name" :value="false">
+					<v-list-group v-role="'administrator'" v-else :key="i.name" :value="false">
 						<template v-slot:activator>
 							<v-list-item-content>
 								<v-list-item-title>
@@ -46,7 +46,6 @@
 							:key="i"
 							exact
 							class="subMenu"
-							:v-permission="subMenu.permission"
 						>
 							<v-list-item-content>
 								<v-list-item-title>
@@ -75,7 +74,8 @@
 					{
 						name: "Dashboard",
 						icon: "mdi-view-dashboard",
-						to: "/"
+						to: "/",
+						role: "administrator",
 					},
 					{
 						name: "Website Control",
@@ -204,11 +204,6 @@
 						to: "/users"
 					},
 					{
-						name: "Matching History",
-						icon: "mdi-content-copy",
-						to: "/match-history/"
-					},
-					{
 						name: "Product",
 						icon: "mdi-cube",
 						children: [
@@ -226,25 +221,21 @@
 								name: "Add Product",
 								to: "/product/add-product",
 								icon: "mdi-plus-circle",
-								permission: "add sales",
 							},
 							{
 								name: "Print Barcode",
 								to: "/product/print-barcode",
 								icon: "mdi-barcode",
-								permission: "add sales",
 							},
 							{
 								name: "Adjustment List",
 								to: "/product/qty_adjustment",
 								icon: "mdi-format-list-bulleted-square",
-								permission: "'add sales'",
 							},
 							{
 								name: "Add Adjustment",
 								to: "/product/add_adjustment",
 								icon: "mdi-playlist-edit",
-								permission: "'add sales'",
 							},
 							{
 								name: "Stock Count",
@@ -273,6 +264,11 @@
 								icon: "mdi-file-import"
 							}
 						]
+					},
+					{
+						name: "POS",
+						icon: "mdi-wallet-giftcard",
+						to: "/pos/"
 					},
 					{
 						name: "Sale",
