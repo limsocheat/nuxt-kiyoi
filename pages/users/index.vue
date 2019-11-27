@@ -27,7 +27,52 @@
 						<h3 class="px-2 py-2 grey--text text--lighten-3">USER LIST</h3>
 					</div>
 					<v-spacer></v-spacer>
-					<v-btn v-permission="'add users'">New</v-btn>
+					<v-dialog v-model="dialog" max-width="600px">
+						<template v-slot:activator="{ on }">
+							<v-btn v-permission="'add users'" v-on="on" >New</v-btn>
+						</template>	
+						<v-card>
+							<v-card-title>Add User</v-card-title>
+							<v-divider></v-divider>
+							<v-card-text>
+								<div>
+									<label class="font-weight-bold" for="name">Name</label>
+									<v-text-field	
+										solo
+										outlined
+										dense
+										label="Enter Name"
+										v-model="form.name"
+									></v-text-field>
+								</div>
+								<div>
+									<label class="font-weight-bold" for="email">Email</label>
+									<v-text-field	
+										solo
+										outlined
+										dense
+										label="Enter Email"
+										v-model="form.email"
+									></v-text-field>
+								</div>
+								<div>
+									<label class="font-weight-bold" for="password">Password</label>
+									<v-text-field	
+										solo
+										outlined
+										dense
+										type="password"
+										label="Enter Password"
+										v-model="form.password"
+									></v-text-field>
+								</div>
+							</v-card-text>
+							<v-card-actions class="px-5">
+								<v-btn color="primary" @click.prevent="addUser">Save</v-btn>
+								<v-btn color="primary" @click="closeDialog" text>Close</v-btn>
+							</v-card-actions>
+						</v-card>
+					</v-dialog>
 				</v-toolbar>
 			</v-card-title>
 			<v-divider></v-divider>
@@ -62,7 +107,9 @@
 	export default {
 		data() {
 			return {
+				dialog: false,
 				items: [],
+				form: {},
 				headers: [
 					{
 						text: "ID",
@@ -101,7 +148,22 @@
 				this.$axios.$get("/api/user").then(response => {
 					this.items = response;
 				});
-			}
+			},
+
+			addUser() {
+				this.$axios.$post(`/api/user`, this.form)
+				.then(res => {
+					this.form = res;
+					this.getItems();
+				})
+				.catch(err => {
+					console.log(err.response);
+				})
+			},
+
+			closeDialog() {
+				this.dialog = false
+			},
 		},
 
 		created() {
