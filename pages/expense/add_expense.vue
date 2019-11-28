@@ -2,7 +2,7 @@
 	<v-app class="mx-5 my-5">
 		<div class="d-flex">
 			<div class="pb-5 pr-3">
-				<v-dialog v-model="dialog1" max-width="800px" v-permission="'add expense'">
+				<v-dialog v-model="dialog" max-width="800px" persistent v-permission="'add expense'">
 					<template v-slot:activator="{ on }">
 						<v-btn class="teal darken-1" dark v-on="on">
 							<v-icon left>mdi-plus-circle</v-icon>
@@ -24,6 +24,8 @@
 									outlined
 									dense
 									label="Select Expense Category"
+									v-model="form.category"
+									:items="categories"
 								></v-select>
 							</v-col>
 							<v-col sm="6" cols="12">
@@ -33,6 +35,8 @@
 									solo
 									dense
 									label="Please Select warehouse"
+									v-model="form.warehouse"
+									:items="warehouse"
 								></v-select>
 							</v-col>
 							<v-col sm="6" cols="12">
@@ -42,6 +46,7 @@
 									outlined
 									dense
 									label="Amount"
+									v-model="form.amount"
 								></v-text-field>
 							</v-col>
 							<v-col sm="6" cols="12">
@@ -62,8 +67,8 @@
 						</v-row>
 						<v-card-actions>
 							<v-spacer></v-spacer>
-							<v-btn color="blue darken-1" text>Close</v-btn>
-							<v-btn color="primary">Save</v-btn>
+							<v-btn color="blue darken-1" text @click="close">Close</v-btn>
+							<v-btn color="primary" @click.prevent="addUser">Save</v-btn>
 						</v-card-actions>
 					</v-card>
 				</v-dialog>
@@ -85,26 +90,23 @@
 			</div>
 		</div>
 		<v-card>
-			<v-data-table :headers="headers" :items="items" :items-per-page="itemsPerPage" :options.sync="options" :server-items-length="total">
-				<template v-slot:item.action="{ item }">
-					<v-tooltip bottom>
+			<v-data-table :headers="headers" :items="items">
+				<template v-slot:item.action="{item}">
+					<v-tooltip top v-permission="'edit users'">
 						<template v-slot:activator="{ on }">
-							<!-- Edit Item -->
-							<v-icon left fab color="primary" v-on="on">
-								mdi-pencil
-							</v-icon>
+							<v-btn icon @click="editItem(item)" color="primary" outlined v-on="on">
+								<v-icon small>mdi-pencil</v-icon>
+							</v-btn>
 						</template>
-						<span>Edit Supplier</span>
+						<span>Edit</span>
 					</v-tooltip>
-					<v-tooltip bottom>
+					<v-tooltip top v-permission="'delete users'">
 						<template v-slot:activator="{ on }">
-
-							<!-- Delete Item -->
-							<v-icon left fab color="primary" v-on="on">
-								mdi-delete
-							</v-icon>
+							<v-btn icon @click="deleteItem(item)" color="red" outlined v-on="on">
+								<v-icon small>mdi-delete</v-icon>
+							</v-btn>
 						</template>
-						<span>Delete Supplier</span>
+						<span>Delete</span>
 					</v-tooltip>
 				</template>
 			</v-data-table>
@@ -115,9 +117,9 @@
 
 <script>
 export default {
-	name: 'Menu',
+	name: 'Expense',
 	created() {
-		// this.fetchData()
+		this.fetchItem()
 	},
 
 	data() {
@@ -130,9 +132,9 @@ export default {
 			itemsPerPage: 5,
 			editedIndex: -1,
 			created: true,
-			dialog1: false,
-			dialog2: false,
-			headers: [{
+			dialog: false,
+			headers: [
+				{
 					text: 'Date',
 					sortable: false,
 				}, {
@@ -141,24 +143,81 @@ export default {
 				},{
 					text: 'Warehouse',
 					sortable: false,
+					value: 'warehouse',
 				},{
 					text: 'Category',
 					sortable: false,
+					value: 'category',
 				},{
 					text: 'Amount',
 					sortable: false,
+					value: 'amount',
 				},{
 					text: 'Note',
 					sortable: false,
 				},{
 					text: 'Actions',
 					sortable: false,
+					value: 'action'
 				},
+			],
+			categories: [
+				'Snack', 'Electric Bill', 'Washing'
+			],
+			warehouse: [
+				'warehouse1', 'warehouse2'
 			],
 		}
 	},
 
 	methods: {
+		fetchItem() {
+			this.$axios.$get(`api/expense`)
+			.then(res => {
+				this.items = res;
+				console.log(res);
+			})
+			.catch(err => {
+				console.log(err.response);
+			})
+		},
+
+		editItem(item) {
+	        this.editedIndex = this.items.indexOf(item)
+	        this.form = Object.assign({}, item)
+	        this.dialog = true
+		},
+
+		close() {
+			this.dialog = false;
+			this.form = {};
+		},
+
+		addUser() {
+			if(this.editedIndex > -1) {
+				this.$axios.$patch(`/api/expense/` + this.form.id, { 
+					category: this.form.category,
+					warehouse: this.form.warehouse,
+					amount: this.form.amount,
+				})
+				.then(res => {
+					this.fetchItem();
+					this.close();
+				});
+			} else {
+				this.$axios.$post(`/api/expense`, this.form)
+				.then(res => {
+					this.form = res;
+					this.fetchItem();
+					this.close();
+				})
+				.catch(err => {
+					console.log(err.response)
+				})
+			}
+		}
+
+
 	}
 }
 
