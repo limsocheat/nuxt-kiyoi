@@ -15,7 +15,10 @@
 		<v-navigation-drawer app clipped-left class="color" dense v-model="toggle">
 			<v-list-item class="text-center font-weight-bold color--item">
 				<v-list-item-content>
-					<v-list-item-title class="color--text">YIKOI</v-list-item-title>
+					<v-img 
+						:src="require('@/assets/img/final.png')" 
+						height="65"
+					/>
 				</v-list-item-content>
 			</v-list-item>
 
