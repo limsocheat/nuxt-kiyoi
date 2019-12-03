@@ -15,7 +15,10 @@
 		<v-navigation-drawer app clipped-left class="color" dense v-model="toggle">
 			<v-list-item class="text-center font-weight-bold color--item">
 				<v-list-item-content>
-					<v-list-item-title class="color--text">YIKOI</v-list-item-title>
+					<v-img 
+						:src="require('@/assets/img/final.png')" 
+						height="65"
+					/>
 				</v-list-item-content>
 			</v-list-item>
 
@@ -81,7 +84,6 @@
 						name: "Dashboard",
 						icon: "mdi-view-dashboard",
 						to: "/",
-						role: "administrator",
 						permission: "view users|add users"
 					},
 					{
@@ -114,454 +116,543 @@
 								permission: "delete users"
 							}
 						]
+					},
+					{
+						name: "Charge/Commision",
+						icon: "mdi-cash",
+						to: "/charge",
+						permission: "charge commission",
+					},
+					{
+						name: "Website Interface",
+						icon: "mdi-internet-explorer",
+						permission: "view website",
+						children: [
+							{
+								name: "menu",
+								icon: "mdi-menu",
+								to: "/webinterface/menu",
+								permission: "view website",
+							},
+							{
+								name: "Slide Image",
+								icon: "mdi-folder-multiple-image",
+								to: "/webinterface/slide",
+								permission: "view website",
+							},
+							{
+								name: "Logo",
+								icon: "mdi-file-image",
+								to: "/webinterface/logo",
+								permission: "view website",
+							},
+							{
+								name: "Team",
+								icon: "mdi-sitemap",
+								to: "/webinterface/team",
+								permission: "view website",
+							},
+							{
+								name: "Contact",
+								icon: "mdi-account-badge-horizontal-outline",
+								to: "/webinterface/contact",
+								permission: "view website",
+							},
+							{
+								name: "About",
+								icon: "mdi-information",
+								to: "/webinterface/about",
+								permission: "view website",
+							},
+							{
+								name: "Social",
+								icon: "mdi-facebook-box",
+								to: "/webinterface/social",
+								permission: "view website",
+							},
+							{
+								name: "Footer",
+								icon: "mdi-content-save-all-outline",
+								to: "/webinterface/footer",
+								permission: "view website",
+							},
+							{
+								name: "Testimonial",
+								icon: "mdi-message-reply-text",
+								to: "/webinterface/testimonial",
+								permission: "view website",
+							},
+							{
+								name: "User Tree Image",
+								icon: "mdi-account-circle",
+								to: "/webinterface/tree-image",
+								permission: "view website",
+							}
+						]
+					},
+					{
+						name: "Withdraw System",
+						icon: "mdi-account-cash",
+						permission: "view withdraw method",
+						children: [
+							{
+								name: "Withdraw Methods",
+								icon: "mdi-paypal",
+								to: "/withdraw/method/",
+								permission: "view withdraw method",
+							},
+							{
+								name: "Withdraw Requests",
+								icon: "mdi-loading",
+								to: "/withdraw/requests/",
+								permission: "view withdraw method",
+							},
+							{
+								name: "View Log",
+								icon: "mdi-eye-outline",
+								to: "/withdraw/log/",
+								permission: "view withdraw method",
+							}
+						]
+					},
+					{
+						name: "Payment Log",
+						icon: "mdi-google-cardboard",
+						to: "/payment-log/",
+						permission: "payment log",
+					},
+					{
+						name: "Users Management",
+						icon: "mdi-account-group",
+						to: "/users",
+						permission: "view users",
+					},
+					{
+						name: "Product",
+						icon: "mdi-cube",
+						permission: "view product",
+						children: [
+							{
+								name: "Category",
+								to: "/product/category",
+								icon: "mdi-tag-multiple",
+								permission: "view product",
+							},
+							{
+								name: "Product List",
+								to: "/product/product-list",
+								icon: "mdi-view-list",
+								permission: "view product",
+							},
+							{
+								name: "Add Product",
+								to: "/product/add-product",
+								icon: "mdi-plus-circle",
+								permission: "view product",
+							},
+							{
+								name: "Print Barcode",
+								to: "/product/print-barcode",
+								icon: "mdi-barcode",
+								permission: "view product",
+							},
+							{
+								name: "Adjustment List",
+								to: "/product/qty_adjustment",
+								icon: "mdi-format-list-bulleted-square",
+								permission: "view product",
+							},
+							{
+								name: "Add Adjustment",
+								to: "/product/add_adjustment",
+								icon: "mdi-playlist-edit",
+								permission: "view product",
+							},
+							{
+								name: "Stock Count",
+								to: "/product/stock-count",
+								icon: "mdi-shield-check",
+								permission: "view product",
+							}
+						]
+					},
+					{
+						name: "Purchase",
+						icon: "mdi-arrow-down-circle",
+						permission: "view purchase",
+						children: [
+							{
+								name: "Purchase List",
+								to: "/purchase/purchase-list",
+								icon: "mdi-view-list",
+								permission: "view purchase",
+							},
+							{
+								name: "Add Purchase",
+								to: "/purchase/add_purchase",
+								icon: "mdi-plus-circle",
+								permission: "view purchase",
+							},
+							{
+								name: "Import Purchase By CSV",
+								to: "/purchase/import_purchase",
+								icon: "mdi-file-import",
+								permission: "view purchase",
+							}
+						]
+					},
+					{
+						name: "POS",
+						icon: "mdi-wallet-giftcard",
+						to: "/pos/",
+						permission: "pos",
+					},
+					{
+						name: "Sale",
+						icon: "mdi-cart",
+						permission: "view sales",
+						children: [
+							{
+								name: "Sale List",
+								to: "/sale/sale-list",
+								icon: "mdi-view-list",
+								permission: "view sales",
+							},
+							{
+								name: "Add Sale",
+								to: "/sale/add_sale",
+								icon: "mdi-plus-circle",
+								permission: "view sales",
+							},
+							{
+								name: "Import Sale By CSV",
+								to: "/sale/import_sale",
+								icon: "mdi-file-import",
+								permission: "view sales",
+							},
+							{
+								name: "Gift Card List",
+								to: "/sale/gift_card",
+								icon: "mdi-id-card",
+								permission: "view sales",
+							},
+							{
+								name: "Coupon List",
+								to: "/sale/coupons",
+								icon: "mdi-ticket-percent",
+								permission: "view sales",
+							},
+							{
+								name: "Delivery List",
+								to: "/sale/delivery",
+								icon: "mdi-truck-delivery",
+								permission: "view sales",
+							}
+						]
+					},
+					{
+						name: "Expense",
+						icon: "mdi-calculator",
+						permission: "view expense",
+						children: [
+							{
+								name: "Expense Category",
+								icon: "mdi-tag-multiple",
+								to: "/expense/expense_categories",
+								permission: "view expense",
+							},
+							{
+								name: "Add Expense",
+								icon: "mdi-view-list",
+								to: "/expense/add_expense",
+								permission: "view expense",
+							}
+						]
+					},
+					{
+						name: "Quotation",
+						icon: "mdi-book-open-page-variant",
+						permission: "view quotation",
+						children: [
+							{
+								name: "Quotation List",
+								icon: "mdi-view-list",
+								to: "/quotation/quotations",
+								permission: "view quotation",
+							},
+							{
+								name: "Add Quotation",
+								icon: "mdi-plus-circle",
+								to: "/quotation/add_quotation",
+								permission: "view quotation",
+							}
+						]
+					},
+					{
+						name: "Transfer",
+						icon: "mdi-transfer-right",
+						permission: "view transfer",
+						children: [
+							{
+								name: "Transfer List",
+								icon: "mdi-view-list",
+								to: "/transfer/transfers",
+								permission: "view transfer",
+							},
+							{
+								name: "Add Transfer",
+								icon: "mdi-plus-circle",
+								to: "/transfer/add_transfer",
+								permission: "view transfer",
+							},
+							{
+								name: "Import Transfer By CSV",
+								icon: "mdi-file-import",
+								to: "/transfer/import_transfer",
+								permission: "view transfer",
+							}
+						]
+					},
+					{
+						name: "Return",
+						icon: "mdi-package-down",
+						permission: "return purchases | return sales",
+						children: [
+							{
+								name: "Sale",
+								icon: "mdi-view-list",
+								to: "/return/return-sale",
+								permission: "return purchases | return sales"
+							},
+							{
+								name: "Purchase",
+								icon: "mdi-plus-circle",
+								to: "/return/return-purchase",
+								permission: "return purchases | return sales"
+							}
+						]
+					},
+					{
+						name: "HRM",
+						icon: "mdi-account-group",
+						permission: "view employee",
+						children: [
+							{
+								name: "Department",
+								icon: "mdi-bank-plus",
+								to: "/hrm/department",
+								permission: "view employee",
+							},
+							{
+								name: "Employee",
+								icon: "mdi-account-tie",
+								to: "/hrm/employee",
+								permission: "view employee",
+							},
+							{
+								name: "Attendance",
+								icon: "mdi-map-clock",
+								to: "/hrm/attendance",
+								permission: "view employee",
+							},
+							{
+								name: "PayRoll",
+								icon: "mdi-credit-card-outline",
+								to: "/hrm/payroll",
+								permission: "view employee",
+							},
+							{
+								name: "Holiday",
+								icon: "mdi-beach",
+								to: "/hrm/holiday",
+								permission: "view employee",
+							}
+						]
+					},
+					{
+						name: "Accounting",
+						icon: "mdi-bank",
+						permission: "view account",
+						children: [
+							{
+								name: "Account List",
+								icon: "mdi-view-list",
+								to: "/accounting/account",
+								permission: "view account",
+							},
+							{
+								name: "Balance Sheet",
+								icon: "mdi-google-spreadsheet",
+								to: "/accounting/balancesheet",
+								permission: "view account",
+							}
+						]
+					},
+					{
+						name: "People",
+						icon: "mdi-account-circle",
+						permission: "view biller | view customer",
+						children: [
+							{
+								name: "User List",
+								icon: "mdi-account",
+								to: "/people/users",
+								permission: "view biller | view customer",
+							},
+							{
+								name: "Add User",
+								icon: "mdi-plus-circle",
+								to: "/people/add_user",
+								permission: "view biller | view customer",
+							},
+							{
+								name: "Customer List",
+								icon: "mdi-account-tie",
+								to: "/people/customer",
+								permission: "view biller | view customer",
+							},
+							{
+								name: "Add Customer",
+								icon: "mdi-plus-circle",
+								to: "/people/add_customer",
+								permission: "view biller | view customer",
+							},
+							{
+								name: "Biller List",
+								icon: "mdi-credit-card-outline",
+								to: "/people/biller",
+								permission: "view biller | view customer",
+							},
+							{
+								name: "Add Biller",
+								icon: "mdi-plus-circle",
+								to: "/people/add_biller",
+								permission: "view biller | view customer",
+							},
+							{
+								name: "Supplier List",
+								icon: "mdi-shield-star",
+								to: "/people/supplier",
+								permission: "view biller | view customer",
+							},
+							{
+								name: "Add Supplier",
+								icon: "mdi-plus-circle",
+								to: "/people/add_supplier",
+								permission: "view biller | view customer",
+							}
+						]
+					},
+					{
+						name: "Report",
+						icon: "mdi-newspaper-variant",
+						permission: "summary report",
+						children: [
+							{
+								name: "Summary Report",
+								icon: "mdi-book-open",
+								to: "/report/summary_report",
+								permission: "summary report",
+							},
+							{
+								name: "Best Seller",
+								icon: "mdi-account-tie",
+								permission: "summary report",
+								to: "/report/best_seller",
+							},
+							{
+								name: "Product Report",
+								icon: "mdi-newspaper-variant",
+								to: "/report/product_report",
+								permission: "summary report",
+							},
+							{
+								name: "Daily Sale",
+								icon: "mdi-alpha-s-circle-outline",
+								permission: "summary report",
+							},
+							{
+								name: "Monthly Sale",
+								icon: "mdi-alpha-s-circle",
+								permission: "summary report",
+							},
+							{
+								name: "Daily Purchase",
+								icon: "mdi-alpha-p-circle-outline",
+								permission: "summary report",
+							},
+							{
+								name: "Monthly Purchase",
+								icon: "mdi-alpha-p-circle",
+								permission: "summary report",
+							},
+							{
+								name: "Sale Report",
+								icon: "mdi-card-text",
+								to: "/report/sale_report",
+								permission: "summary report",
+							},
+							{
+								name: "Payment Report",
+								icon: "mdi-card-text-outline",
+								to: "/report/payment_report",
+								permission: "summary report",
+							},
+							{
+								name: "Purchase Report",
+								icon: "mdi-credit-card-multiple",
+								to: "/report/purchase_report",
+								permission: "summary report",
+							},
+							{
+								name: "Warehouse Report",
+								icon: "mdi-bank-outline",
+								to: "/report/warehouse_report",
+								permission: "summary report",
+							},
+							{
+								name: "Warehouse Stock Chart",
+								icon: "mdi-chart-bar",
+								permission: "summary report",
+							},
+							{
+								name: "Product Quantity Alert",
+								icon: "mdi-bell-alert",
+								to: "/report/product_quantity_alert",
+								permission: "summary report",
+							},
+							{
+								name: "User Report",
+								icon: "mdi-account-badge-horizontal-outline",
+								to: "/report/user_report",
+								permission: "summary report",
+							},
+							{
+								name: "Customer Report",
+								icon: "mdi-account-card-details",
+								to: "/report/customer_report",
+								permission: "summary report",
+							},
+							{
+								name: "Supplier Report",
+								icon: "mdi-shield-star",
+								to: "/report/supplier_report",
+								permission: "summary report",
+							},
+							{
+								name: "Due Report",
+								icon: "mdi-map-clock-outline",
+								to: "/report/due_report",
+								permission: "summary report",
+							}
+						]
+					},
+					{
+						name: "Support",
+						icon: "mdi-face-agent",
+						to: "/supports/",
+						permission: "support",
 					}
-					// {
-					// 	name: "Charge/Commision",
-					// 	icon: "mdi-cash",
-					// 	to: "/charge"
-					// },
-					// {
-					// 	name: "Website Interface",
-					// 	icon: "mdi-internet-explorer",
-					// 	children: [
-					// 		{
-					// 			name: "menu",
-					// 			icon: "mdi-menu",
-					// 			to: "/webinterface/menu"
-					// 		},
-					// 		{
-					// 			name: "Slide Image",
-					// 			icon: "mdi-folder-multiple-image",
-					// 			to: "/webinterface/slide"
-					// 		},
-					// 		{
-					// 			name: "Logo",
-					// 			icon: "mdi-file-image",
-					// 			to: "/webinterface/logo"
-					// 		},
-					// 		{
-					// 			name: "Team",
-					// 			icon: "mdi-sitemap",
-					// 			to: "/webinterface/team"
-					// 		},
-					// 		{
-					// 			name: "Contact",
-					// 			icon: "mdi-account-badge-horizontal-outline",
-					// 			to: "/webinterface/contact"
-					// 		},
-					// 		{
-					// 			name: "About",
-					// 			icon: "mdi-information",
-					// 			to: "/webinterface/about"
-					// 		},
-					// 		{
-					// 			name: "Social",
-					// 			icon: "mdi-facebook-box",
-					// 			to: "/webinterface/social"
-					// 		},
-					// 		{
-					// 			name: "Footer",
-					// 			icon: "mdi-content-save-all-outline",
-					// 			to: "/webinterface/footer"
-					// 		},
-					// 		{
-					// 			name: "Testimonial",
-					// 			icon: "mdi-message-reply-text",
-					// 			to: "/webinterface/testimonial"
-					// 		},
-					// 		{
-					// 			name: "User Tree Image",
-					// 			icon: "mdi-account-circle",
-					// 			to: "/webinterface/tree-image"
-					// 		}
-					// 	]
-					// },
-					// {
-					// 	name: "Withdraw System",
-					// 	icon: "mdi-account-cash",
-					// 	children: [
-					// 		{
-					// 			name: "Withdraw Methods",
-					// 			icon: "mdi-paypal",
-					// 			to: "/withdraw/method/"
-					// 		},
-					// 		{
-					// 			name: "Withdraw Requests",
-					// 			icon: "mdi-loading",
-					// 			to: "/withdraw/requests/"
-					// 		},
-					// 		{
-					// 			name: "View Log",
-					// 			icon: "mdi-eye-outline",
-					// 			to: "/withdraw/log/"
-					// 		}
-					// 	]
-					// },
-					// {
-					// 	name: "Payment Log",
-					// 	icon: "mdi-google-cardboard",
-					// 	to: "/payment-log/"
-					// },
-					// {
-					// 	name: "Users Management",
-					// 	icon: "mdi-account-group",
-					// 	to: "/users"
-					// },
-					// {
-					// 	name: "Product",
-					// 	icon: "mdi-cube",
-					// 	children: [
-					// 		{
-					// 			name: "Category",
-					// 			to: "/product/category",
-					// 			icon: "mdi-tag-multiple"
-					// 		},
-					// 		{
-					// 			name: "Product List",
-					// 			to: "/product/product-list",
-					// 			icon: "mdi-view-list"
-					// 		},
-					// 		{
-					// 			name: "Add Product",
-					// 			to: "/product/add-product",
-					// 			icon: "mdi-plus-circle"
-					// 		},
-					// 		{
-					// 			name: "Print Barcode",
-					// 			to: "/product/print-barcode",
-					// 			icon: "mdi-barcode"
-					// 		},
-					// 		{
-					// 			name: "Adjustment List",
-					// 			to: "/product/qty_adjustment",
-					// 			icon: "mdi-format-list-bulleted-square"
-					// 		},
-					// 		{
-					// 			name: "Add Adjustment",
-					// 			to: "/product/add_adjustment",
-					// 			icon: "mdi-playlist-edit"
-					// 		},
-					// 		{
-					// 			name: "Stock Count",
-					// 			to: "/product/stock-count",
-					// 			icon: "mdi-shield-check"
-					// 		}
-					// 	]
-					// },
-					// {
-					// 	name: "Purchase",
-					// 	icon: "mdi-arrow-down-circle",
-					// 	children: [
-					// 		{
-					// 			name: "Purchase List",
-					// 			to: "/purchase/purchase-list",
-					// 			icon: "mdi-view-list"
-					// 		},
-					// 		{
-					// 			name: "Add Purchase",
-					// 			to: "/purchase/add_purchase",
-					// 			icon: "mdi-plus-circle"
-					// 		},
-					// 		{
-					// 			name: "Import Purchase By CSV",
-					// 			to: "/purchase/import_purchase",
-					// 			icon: "mdi-file-import"
-					// 		}
-					// 	]
-					// },
-					// {
-					// 	name: "POS",
-					// 	icon: "mdi-wallet-giftcard",
-					// 	to: "/pos/"
-					// },
-					// {
-					// 	name: "Sale",
-					// 	icon: "mdi-cart",
-					// 	children: [
-					// 		{
-					// 			name: "Sale List",
-					// 			to: "/sale/sale-list",
-					// 			icon: "mdi-view-list"
-					// 		},
-					// 		{
-					// 			name: "Add Sale",
-					// 			to: "/sale/add_sale",
-					// 			icon: "mdi-plus-circle"
-					// 		},
-					// 		{
-					// 			name: "Import Sale By CSV",
-					// 			to: "/sale/import_sale",
-					// 			icon: "mdi-file-import"
-					// 		},
-					// 		{
-					// 			name: "Gift Card List",
-					// 			to: "/sale/gift_card",
-					// 			icon: "mdi-id-card"
-					// 		},
-					// 		{
-					// 			name: "Coupon List",
-					// 			to: "/sale/coupons",
-					// 			icon: "mdi-ticket-percent"
-					// 		},
-					// 		{
-					// 			name: "Delivery List",
-					// 			to: "/sale/delivery",
-					// 			icon: "mdi-truck-delivery"
-					// 		}
-					// 	]
-					// },
-					// {
-					// 	name: "Expense",
-					// 	icon: "mdi-calculator",
-					// 	children: [
-					// 		{
-					// 			name: "Expense Category",
-					// 			icon: "mdi-tag-multiple",
-					// 			to: "/expense/expense_categories"
-					// 		},
-					// 		{
-					// 			name: "Add Expense",
-					// 			icon: "mdi-view-list",
-					// 			to: "/expense/add_expense"
-					// 		}
-					// 	]
-					// },
-					// {
-					// 	name: "Quotation",
-					// 	icon: "mdi-book-open-page-variant",
-					// 	children: [
-					// 		{
-					// 			name: "Quotation List",
-					// 			icon: "mdi-view-list",
-					// 			to: "/quotation/quotations"
-					// 		},
-					// 		{
-					// 			name: "Add Quotation",
-					// 			icon: "mdi-plus-circle",
-					// 			to: "/quotation/add_quotation"
-					// 		}
-					// 	]
-					// },
-					// {
-					// 	name: "Transfer",
-					// 	icon: "mdi-transfer-right",
-					// 	children: [
-					// 		{
-					// 			name: "Transfer List",
-					// 			icon: "mdi-view-list",
-					// 			to: "/transfer/transfers"
-					// 		},
-					// 		{
-					// 			name: "Add Transfer",
-					// 			icon: "mdi-plus-circle",
-					// 			to: "/transfer/add_transfer"
-					// 		},
-					// 		{
-					// 			name: "Import Transfer By CSV",
-					// 			icon: "mdi-file-import",
-					// 			to: "/transfer/import_transfer"
-					// 		}
-					// 	]
-					// },
-					// {
-					// 	name: "Return",
-					// 	icon: "mdi-package-down",
-					// 	children: [
-					// 		{
-					// 			name: "Sale",
-					// 			icon: "mdi-view-list",
-					// 			to: "/return/return-sale"
-					// 		},
-					// 		{
-					// 			name: "Purchase",
-					// 			icon: "mdi-plus-circle",
-					// 			to: "/return/return-purchase"
-					// 		}
-					// 	]
-					// },
-					// {
-					// 	name: "HRM",
-					// 	icon: "mdi-account-group",
-					// 	children: [
-					// 		{
-					// 			name: "Department",
-					// 			icon: "mdi-bank-plus",
-					// 			to: "/hrm/department"
-					// 		},
-					// 		{
-					// 			name: "Employee",
-					// 			icon: "mdi-account-tie",
-					// 			to: "/hrm/employee"
-					// 		},
-					// 		{
-					// 			name: "Attendance",
-					// 			icon: "mdi-map-clock",
-					// 			to: "/hrm/attendance"
-					// 		},
-					// 		{
-					// 			name: "PayRoll",
-					// 			icon: "mdi-credit-card-outline",
-					// 			to: "/hrm/payroll"
-					// 		},
-					// 		{
-					// 			name: "Holiday",
-					// 			icon: "mdi-beach",
-					// 			to: "/hrm/holiday"
-					// 		}
-					// 	]
-					// },
-					// {
-					// 	name: "Accounting",
-					// 	icon: "mdi-bank",
-					// 	children: [
-					// 		{
-					// 			name: "Account List",
-					// 			icon: "mdi-view-list",
-					// 			to: "/accounting/account"
-					// 		},
-					// 		{
-					// 			name: "Balance Sheet",
-					// 			icon: "mdi-google-spreadsheet",
-					// 			to: "/accounting/balancesheet"
-					// 		}
-					// 	]
-					// },
-					// {
-					// 	name: "People",
-					// 	icon: "mdi-account-circle",
-					// 	children: [
-					// 		{
-					// 			name: "User List",
-					// 			icon: "mdi-account",
-					// 			to: "/people/users"
-					// 		},
-					// 		{
-					// 			name: "Add User",
-					// 			icon: "mdi-plus-circle",
-					// 			to: "/people/add_user"
-					// 		},
-					// 		{
-					// 			name: "Customer List",
-					// 			icon: "mdi-account-tie",
-					// 			to: "/people/customer"
-					// 		},
-					// 		{
-					// 			name: "Add Customer",
-					// 			icon: "mdi-plus-circle",
-					// 			to: "/people/add_customer"
-					// 		},
-					// 		{
-					// 			name: "Biller List",
-					// 			icon: "mdi-credit-card-outline",
-					// 			to: "/people/biller"
-					// 		},
-					// 		{
-					// 			name: "Add Biller",
-					// 			icon: "mdi-plus-circle",
-					// 			to: "/people/add_biller"
-					// 		},
-					// 		{
-					// 			name: "Supplier List",
-					// 			icon: "mdi-shield-star",
-					// 			to: "/people/supplier"
-					// 		},
-					// 		{
-					// 			name: "Add Supplier",
-					// 			icon: "mdi-plus-circle",
-					// 			to: "/people/add_supplier"
-					// 		}
-					// 	]
-					// },
-					// {
-					// 	name: "Report",
-					// 	icon: "mdi-newspaper-variant",
-					// 	children: [
-					// 		{
-					// 			name: "Summary Report",
-					// 			icon: "mdi-book-open",
-					// 			to: "/report/summary_report"
-					// 		},
-					// 		{
-					// 			name: "Best Seller",
-					// 			icon: "mdi-account-tie"
-					// 		},
-					// 		{
-					// 			name: "Product Report",
-					// 			icon: "mdi-newspaper-variant",
-					// 			to: "/report/product_report"
-					// 		},
-					// 		{
-					// 			name: "Daily Sale",
-					// 			icon: "mdi-alpha-s-circle-outline"
-					// 		},
-					// 		{
-					// 			name: "Monthly Sale",
-					// 			icon: "mdi-alpha-s-circle"
-					// 		},
-					// 		{
-					// 			name: "Daily Purchase",
-					// 			icon: "mdi-alpha-p-circle-outline"
-					// 		},
-					// 		{
-					// 			name: "Monthly Purchase",
-					// 			icon: "mdi-alpha-p-circle"
-					// 		},
-					// 		{
-					// 			name: "Sale Report",
-					// 			icon: "mdi-card-text",
-					// 			to: "/report/sale_report"
-					// 		},
-					// 		{
-					// 			name: "Payment Report",
-					// 			icon: "mdi-card-text-outline",
-					// 			to: "/report/payment_report"
-					// 		},
-					// 		{
-					// 			name: "Purchase Report",
-					// 			icon: "mdi-credit-card-multiple",
-					// 			to: "/report/purchase_report"
-					// 		},
-					// 		{
-					// 			name: "Warehouse Report",
-					// 			icon: "mdi-bank-outline",
-					// 			to: "/report/warehouse_report"
-					// 		},
-					// 		{
-					// 			name: "Warehouse Stock Chart",
-					// 			icon: "mdi-chart-bar"
-					// 		},
-					// 		{
-					// 			name: "Product Quantity Alert",
-					// 			icon: "mdi-bell-alert",
-					// 			to: "/report/product_quantity_alert"
-					// 		},
-					// 		{
-					// 			name: "User Report",
-					// 			icon: "mdi-account-badge-horizontal-outline",
-					// 			to: "/report/user_report"
-					// 		},
-					// 		{
-					// 			name: "Customer Report",
-					// 			icon: "mdi-account-card-details",
-					// 			to: "/report/customer_report"
-					// 		},
-					// 		{
-					// 			name: "Supplier Report",
-					// 			icon: "mdi-shield-star",
-					// 			to: "/report/supplier_report"
-					// 		},
-					// 		{
-					// 			name: "Due Report",
-					// 			icon: "mdi-map-clock-outline",
-					// 			to: "/report/due_report"
-					// 		}
-					// 	]
-					// },
-					// {
-					// 	name: "Support",
-					// 	icon: "mdi-face-agent",
-					// 	to: "/supports/"
-					// }
 				]
 			};
 		},
@@ -585,7 +676,7 @@
 	.color {
 		background: #34495e;
 		&--item {
-			background: #257db9;
+			background: #455A64;
 		}
 	}
 
