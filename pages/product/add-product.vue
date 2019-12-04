@@ -1,7 +1,7 @@
 <template>
 	<v-app>
 		<v-card class="mx-5 my-5">
-			<v-card-title class="headline font-weight-light">
+			<v-card-title class="headline" dark>
 				ADD PRODUCT
 			</v-card-title>
 			<v-divider></v-divider>
@@ -12,6 +12,7 @@
 					<v-text-field 
 						outlined solo dense
 						label="Product Name"
+						v-model="form.name"
 					></v-text-field>
 				</v-col>
 				<v-col sm="6" cols="12">
@@ -20,47 +21,42 @@
 						<v-text-field 
 							outlined solo dense
 							label="Product Code"
+							v-model="form.code"
 						></v-text-field>
-						<v-btn class="mx-1 mt-1">Generate</v-btn>
+						<v-btn 
+							class="mx-1 mt-1" color="primary" 
+							dark 
+							@click="randomNumber"
+						>
+							Generate
+						</v-btn>
 					</div>
 				</v-col>
 				<v-col sm="6" cols="12">
 					<label class="font-weight-bold" for="">Product Type*</label>
-					<v-select outlined solo dense :items="product_type" label="Please Select"></v-select>
+					<v-select 
+						outlined solo dense :items="product_type" 
+						label="Please Select"
+						v-model="form.type"
+					>
+					</v-select>
 				</v-col>
 				<v-col sm="6" cols="12">
 					<label class="font-weight-bold" for="">Barcode Symbology*</label>
-					<v-select outlined solo dense :items="barcodes" label="Please Select"></v-select>
-				</v-col>
-				<v-col sm="6" cols="12">
-					<label class="font-weight-bold" for="">Brand</label>
-					<v-select outlined solo dense :items="brands" label="Please Select"></v-select>
-				</v-col>
-				<v-col sm="6" cols="12">
-					<label class="font-weight-bold" for="">Category*</label>
-					<v-select outlined solo dense :items="categories" label="Please Select"></v-select>
-				</v-col>
-				<v-col sm="6" cols="12">
-					<label class="font-weight-bold" for="">Product Unit*</label>
-					<v-select outlined solo dense :items="product_unit" label="Please Select"></v-select>
-				</v-col>
-				<v-col sm="6" cols="12">
-					<label class="font-weight-bold" for="">Sale Unit</label>
-					<v-select outlined solo dense :items="sale_unit" label="Please Select"></v-select>
+					<v-select 
+						outlined solo dense :items="barcodes" 
+						label="Please Select"
+						v-model="form.barcode"
+					></v-select>
 				</v-col>
 			</v-row>
 			<v-row class="px-5">
 				<v-col sm="6" cols="12">
-					<label class="font-weight-bold">Purchaes Unit</label>
-					<v-select outlined solo dense :items="purchase_unit" label="Please Select"></v-select>
-				</v-col>
-			</v-row>
-			<v-row class="px-5">
-				<v-col sm="6" cols="12">
-					<label class="font-weight-bold">Purchases Cost*</label>
+					<label class="font-weight-bold">Product Unit*</label>
 					<v-text-field 
 						outlined solo dense
-						label="Purchases Cost"
+						label="Purchases Unit"
+						v-model="form.unit"
 					></v-text-field>
 				</v-col>
 				<v-col sm="6" cols="12">
@@ -68,11 +64,8 @@
 					<v-text-field 
 						outlined solo dense
 						label="Purchases Price"
+						v-model="form.price"
 					></v-text-field>
-				</v-col>
-				<v-col sm="6" cols="12">
-					<label class="font-weight-bold">Alert Quantity</label>
-					<v-text-field outlined solo dense></v-text-field>
 				</v-col>
 				<v-col sm="6" cols="12">
 					<div class="d-flex align-center">
@@ -140,23 +133,6 @@
 			          ></v-date-picker>
 			        </v-menu>
 			    </v-col>
-
-				<v-col sm="6" cols="12">
-					<label class="font-weight-bold">Product Tax</label>
-					<v-select
-						outlined solo dense
-						label="No Tax"
-						:items="tax"
-					></v-select>
-				</v-col>
-				<v-col sm="6" cols="12">
-					<label class="font-weight-bold">Tax Methods</label>
-					<v-select
-						outlined solo dense
-						label="Exclusive"
-						:items="tax_method"
-					></v-select>
-				</v-col>
 				<v-col sm="12" cols="12">
 					<label class="font-weight-bold" for="image">Product Image</label>
 					<client-only>
@@ -178,15 +154,14 @@
 				</v-col>
 				<v-col md="12" sm="12" cols="12">
 					<label class="font-weight-bold" for="">Product Details</label>
-					<vue-editor v-model="content1"></vue-editor>
-				</v-col>
-				<v-col md="12" sm="12" cols="12">
-					<label class="font-weight-bold" for="">Product Invoice Details</label>
-					<vue-editor v-model="content2"></vue-editor>
+					<vue-editor v-model="form.description"></vue-editor>
 				</v-col>
 			</v-row>
-			<v-card-actions>
-				<v-btn color="primary">Create</v-btn>
+			<v-card-actions class="px-5">
+				<v-btn color="primary" @click.prevent="createItem">
+					<v-icon>mdi-check</v-icon>
+					Create
+				</v-btn>
 			</v-card-actions>
 		</v-card>
 	</v-app>
@@ -195,26 +170,23 @@
 <script>
 	import moment from 'moment';
 	export default {
+		name: "Add Product",
 		data() {
 			return {
+				form: {
+					code: '',
+				},
+				items: [],
 				checkbox: false,
 				product_type: 
 				[
 					'Standard', 'Combo', 'Digital',			
 				],
 				barcodes: ['Code 128', 'Code 39', 'UPC-A', 'UPC-E', 'EAN-8', 'EAN-13'],
-				brands: ['HP', 'Apple', 'Samsung'],
-				categories: ['Fruits', 'Electronics', 'Computer', 'Toy', 'Food', 'Accessories'],
-				product_unit: ['Piece', 'Meter', 'Kilogram'],
-				sale_unit: [],
-				purchase_unit: [],
-				menu1: false,
 				menu2: false,
 				date: new Date().toISOString().substr(0, 10),
 				tax: ['No Tax', 'vat@10', 'vat@15', 'vat@20'],
 				tax_method: ['Exclusive', 'Inclusive'],
-				content1: '<p>ddd</p>',
-				content2: '<p>ddd</p>',
 			}
 		},
 		computed: {
@@ -222,5 +194,23 @@
 		        return this.date ? moment(this.date).format('dddd, MMMM Do YYYY') : ''
 		    },
     	},
+
+    	methods: {
+		    randomNumber() {
+		     	return this.form.code = Math.floor(1000000 + Math.random() * 90000000)
+		    },
+
+		    createItem() {
+		    	this.$axios.$post(`api/product`, this.form)
+		    	.then(res => {
+		    		this.items = res;
+		    		this.$toast.info('Succeessfully created');
+		    		this.$router.push('/product/product-list');
+		    	})
+		    	.catch(err => {
+		    		console.log(err.response);
+		    	})
+		    }
+    	}
 	}
 </script>

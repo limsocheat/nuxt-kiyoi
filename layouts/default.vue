@@ -15,10 +15,10 @@
 		<v-navigation-drawer app clipped-left class="color" dense v-model="toggle">
 			<v-list-item class="text-center font-weight-bold color--item">
 				<v-list-item-content>
-					<v-img 
+					<!-- <v-img 
 						:src="require('@/assets/img/final.png')" 
 						height="65"
-					/>
+					/> -->
 				</v-list-item-content>
 			</v-list-item>
 
@@ -232,12 +232,6 @@
 						icon: "mdi-cube",
 						permission: "view product",
 						children: [
-							{
-								name: "Category",
-								to: "/product/category",
-								icon: "mdi-tag-multiple",
-								permission: "view product",
-							},
 							{
 								name: "Product List",
 								to: "/product/product-list",
@@ -491,55 +485,55 @@
 					{
 						name: "People",
 						icon: "mdi-account-circle",
-						permission: "view biller | view customer",
+						permission: "view biller",
 						children: [
 							{
 								name: "User List",
 								icon: "mdi-account",
 								to: "/people/users",
-								permission: "view biller | view customer",
+								permission: "view biller",
 							},
 							{
 								name: "Add User",
 								icon: "mdi-plus-circle",
 								to: "/people/add_user",
-								permission: "view biller | view customer",
+								permission: "view biller",
 							},
 							{
 								name: "Customer List",
 								icon: "mdi-account-tie",
 								to: "/people/customer",
-								permission: "view biller | view customer",
+								permission: "view biller",
 							},
 							{
 								name: "Add Customer",
 								icon: "mdi-plus-circle",
 								to: "/people/add_customer",
-								permission: "view biller | view customer",
+								permission: "view biller",
 							},
 							{
 								name: "Biller List",
 								icon: "mdi-credit-card-outline",
 								to: "/people/biller",
-								permission: "view biller | view customer",
+								permission: "view biller",
 							},
 							{
 								name: "Add Biller",
 								icon: "mdi-plus-circle",
 								to: "/people/add_biller",
-								permission: "view biller | view customer",
+								permission: "view biller",
 							},
 							{
 								name: "Supplier List",
 								icon: "mdi-shield-star",
 								to: "/people/supplier",
-								permission: "view biller | view customer",
+								permission: "view biller",
 							},
 							{
 								name: "Add Supplier",
 								icon: "mdi-plus-circle",
 								to: "/people/add_supplier",
-								permission: "view biller | view customer",
+								permission: "view biller",
 							}
 						]
 					},

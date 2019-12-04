@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <v-app>
   	<div class="small mx-auto py-5">
   		<h3>Best Seller From October 2019 - December 2019</h3>
@@ -26,4 +26,4 @@
 .small {
 	width: 70%;
 }
-</style>
+</style> -->

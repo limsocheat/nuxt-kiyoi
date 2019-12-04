@@ -94,14 +94,13 @@
 							</v-col>
 							<v-col cols="12" sm="6">
 								<label class="font-weight-bold">Type</label>
-								<v-select
+								<v-text-field
 									solo
 									outlined
 									dense
-									:items="type"
-									label="Product Type"
-									v-model="type"
-								></v-select>
+									label="Product Code"
+									v-model="form.type"
+								></v-text-field>
 							</v-col>
 							<v-col cols="12" sm="6">
 								<label class="font-weight-bold">Barcode</label>
@@ -110,29 +109,8 @@
 									outlined
 									dense
 									:items="barcode"
-									v-model="barcode"
+									v-model="form.barcode"
 								></v-select>
-							</v-col>
-							<v-col cols="12" sm="6">
-								<label class="font-weight-bold">Category</label>
-								<v-select
-									solo
-									outlined
-									dense
-									:items="categories"
-									label="Product Category"
-									v-model="form.category"
-								></v-select>
-							</v-col>
-							<v-col cols="12" sm="6">
-								<label class="font-weight-bold">Product Cost</label>
-								<v-text-field
-									solo
-									outlined
-									dense
-									label="Product Cost"
-									v-model="form.cost"
-								></v-text-field>
 							</v-col>	
 							<v-col cols="12" sm="6">
 								<label class="font-weight-bold">Product Price</label>
@@ -144,15 +122,6 @@
 									v-model="form.price"
 								></v-text-field>
 							</v-col>
-							<v-col cols="12" sm="6">
-								<label class="font-weight-bold">Product Unit</label>
-								<v-text-field
-									solo
-									outlined
-									dense
-									label="Product Unit"
-									v-model="form.unit"
-								></v-text-field>
 							</v-col>
 						</v-row>
 						<v-card-actions>
@@ -213,14 +182,8 @@ export default {
 
 	data() {
 		return {
-			type: [
-				'Standard', 'Combo', 'Digital',
-			],
 			barcode: [
 				'Code 128', 'Code 39', 'UPC-A', 'UPC-E', 'EAN-8', 'EAN-13'
-			],
-			categories: [
-				'Fruit', 'Electrics', 'Computer', 'Food', 'Accessories'
 			],
 			items: [],
 			search: '',
@@ -247,16 +210,6 @@ export default {
 					text: "Code",
 					sortable: false,
 					value: "code",
-				}, {
-					text: "Brand",
-					sortable: false,
-				}, {
-					text: "Category",
-					sortable: false,
-					value: "category",
-				},{
-					text: "Quantity",
-					sortable: false,
 				},{
 					text: "Unit",
 					sortable: false,
@@ -297,16 +250,15 @@ export default {
   			this.$axios.$patch(`api/product/` + this.form.id, {
   				name: this.form.name,
   				code: this.form.code,
-  				barcode: this.form.barcode,
-  				category: this.form.category,
-  				cost: this.form.cost,
-  				price: this.form.price,
   				type: this.form.type,
+  				barcode: this.form.barcode,
   				unit: this.form.unit,
+  				price: this.form.price,
   			})
   			.then(res => {
   				this.fetchData();
   				this.close();
+  				this.$toast.info('Succeessfully Updated');
   			})
   			.catch(err => {
   				console.log(err.response);
