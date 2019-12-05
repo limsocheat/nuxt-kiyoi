@@ -5,16 +5,122 @@
 				<nuxt-link class="nuxt--link" to="/purchase/add_purchase">
 					<v-btn class="teal darken-1" dark v-permission="'add sales'">
 						<v-icon left>mdi-plus-circle</v-icon>
-						Add Category
+						Add Purchase
 					</v-btn>
 				</nuxt-link>
 				<nuxt-link class="nuxt--link px-3" to="/purchase/import_purchase">
 					<v-btn class="purple darken-1" dark v-permission="'add sales'">
 						<v-icon left>mdi-file</v-icon>
-						Import Category
+						Import Purchase
 					</v-btn>
 				</nuxt-link>
 			</div>
+		</div>
+		<div class="pb-5 dialog2">
+			<v-dialog v-model="dialog2" max-width="700px" v-permission="'add sales'">
+				<!-- Form Modal -->
+				<v-card>
+					<v-card-title class="headline font-weight-light">
+						Edit Purchase 
+					</v-card-title>
+					<v-divider></v-divider>
+					<v-col cols="12">
+						<p class="mt-5">The correct column order is (name*, parent_category) and you must follow this.</p>
+					</v-col>
+					<v-row class="px-4">
+						<v-col cols="12" sm="6">
+							<label class="font-weight-bold">Date</label>
+							<v-menu
+					          v-model="menu1"
+					          :close-on-content-click="false"
+					          max-width="290"
+					        >
+					          <template v-slot:activator="{ on }">
+					            <v-text-field
+					              :value="computedDateFormattedMomentjs"
+					              clearable
+					              readonly
+					              dense
+					              outlined
+					              solo
+					              v-model="form.date"
+					              v-on="on"
+					              @click:clear="date = null"
+					            ></v-text-field>
+					          </template>
+					          <v-date-picker
+					            v-model="form.date"
+					            @change="menu1 = false"
+					          ></v-date-picker>
+					        </v-menu>
+						</v-col>
+						<v-col cols="12" sm="6">
+							<label class="font-weight-bold">Name</label>
+							<v-text-field
+								solo
+								outlined
+								dense
+								label="Product Name"
+								v-model="form.name"
+							></v-text-field>
+						</v-col>
+						<v-col cols="12" sm="6">
+							<label class="font-weight-bold">Supplier</label>
+							<v-text-field
+								solo
+								outlined
+								dense
+								label="Supplier"
+								v-model="form.supplier"
+							></v-text-field>
+						</v-col>
+						<v-col cols="12" sm="6">
+							<label class="font-weight-bold">Total</label>
+							<v-text-field
+								solo
+								outlined
+								dense
+								label="Total"
+								v-model="form.total"
+							></v-text-field>
+						</v-col>
+						<v-col cols="12" sm="6">
+							<label class="font-weight-bold">Paid</label>
+							<v-text-field
+								solo
+								outlined
+								dense
+								v-model="form.paid"
+							></v-text-field>
+						</v-col>	
+						<v-col cols="12" sm="6">
+							<label class="font-weight-bold">Purchase Status</label>
+							<v-text-field
+								solo
+								outlined
+								dense
+								label="Purchase Status"
+								v-model="form.purchase_status"
+							></v-text-field>
+						</v-col>
+						<v-col cols="12" sm="6">
+							<label class="font-weight-bold">Payment Status</label>
+							<v-text-field
+								solo
+								outlined
+								dense
+								label="Purchase Status"
+								v-model="form.payment_status"
+							></v-text-field>
+						</v-col>
+					</v-row>
+					<v-card-actions>
+						<v-spacer></v-spacer>
+						<v-btn color="blue darken-1" text @click="close">Close</v-btn>
+						<v-btn color="primary" @click="updateItem">Save</v-btn>
+					</v-card-actions>
+				</v-card>
+			</v-dialog>
 		</div>
 		<div class="d-flex justify-space-between">
 			<div>
@@ -32,27 +138,28 @@
 			</div>
 		</div>
 		<v-card>
-			<v-data-table :headers="headers" :items="items" :items-per-page="itemsPerPage" :options.sync="options" :server-items-length="total">
+			<v-data-table 
+				:headers="headers" :items="items" 
+				:items-per-page="itemsPerPage" 
+				:options.sync="options" :server-items-length="total"
+			>
 				<template v-slot:item.action="{ item }">
-					<v-tooltip bottom>
-						<template v-slot:activator="{ on }">
-							<!-- Edit Item -->
-							<v-icon left fab color="primary" v-on="on">
-								mdi-pencil
-							</v-icon>
-						</template>
-						<span>Edit Supplier</span>
-					</v-tooltip>
-					<v-tooltip bottom>
-						<template v-slot:activator="{ on }">
-
-							<!-- Delete Item -->
-							<v-icon left fab color="primary" v-on="on">
-								mdi-delete
-							</v-icon>
-						</template>
-						<span>Delete Supplier</span>
-					</v-tooltip>
+					<v-tooltip top v-permission="'edit sales'">
+					<template v-slot:activator="{ on }">
+						<v-btn icon @click="editItem(item)" color="primary" outlined v-on="on">
+							<v-icon small>mdi-pencil</v-icon>
+						</v-btn>
+					</template>
+					<span>Edit</span>
+				</v-tooltip>
+				<v-tooltip top v-permission="'delete sales'">
+					<template v-slot:activator="{ on }">
+						<v-btn icon @click="deleteItem(item)" color="red" outlined v-on="on">
+							<v-icon small>mdi-delete</v-icon>
+						</v-btn>
+					</template>
+					<span>Delete</span>
+				</v-tooltip>
 				</template>
 			</v-data-table>
 		</v-card>
@@ -61,14 +168,25 @@
 
 
 <script>
+import moment from 'moment'
 export default {
 
 	created() {
-		// this.fetchData()
+		this.fetchData()
+	},
+
+	watch: {
+		options: {
+			handler() {
+				this.fetchData();
+			}
+		}
 	},
 
 	data() {
 		return {
+			date: new Date().toISOString().substr(0, 10),
+			menu1: false,
 			items: [],
 			search: '',
 			form: {},
@@ -79,34 +197,108 @@ export default {
 			created: true,
 			dialog1: false,
 			dialog2: false,
-			headers: [{
-					text: 'Team Member Image',
+			headers: [
+				{
+					text: 'Date',
 					sortable: false,
+					value: 'date',
 				}, {
-					text: '	Full Name',
+					text: 'Name',
 					sortable: false,
+					value: 'name',
 				}, {
-					text: 'Designation',
+					text: 'Supplier',
 					sortable: false,
+					value: 'supplier',
 				}, {
-					text: 'FaceBook Profile Link',
+					text: 'total',
 					sortable: false,
+					value: 'total',
 				}, {
-					text: 'Twiter Profile Link',
+					text: 'Paid',
 					sortable: false,
+					value: 'paid',
+				}, {
+					text: 'Purchase Status',
+					sortable: false,
+					value: 'purchase_status',
+				},{
+					text: 'Payment Status',
+					sortable: false,
+					value: 'payment_status',
 				},{
 					text: 'Actions',
 					sortable: false,
+					value: 'action',
 				},
-			],
-			selects: 
-			[
-				'Fruits', 'Electronics', 'Computer', 'Toy', 'Food', 'Accessories'			
 			],
 		}
 	},
 
+	computed: {
+		computedDateFormattedMomentjs () {
+	        return this.date ? moment(this.date).format('dddd, MMMM Do YYYY') : ''
+      	},
+	},
+
 	methods: {
+		fetchData() {
+			this.$axios.$get(`api/purchase?temsPerPage=${this.options.itemsPerPage}&page=${this.options.page}`)
+			.then(res => {
+				this.items = res.data;
+				this.total = res.total;
+				console.log(res);
+			})
+			.catch(err => {
+				console.log(err.response);
+			})
+		},
+
+		editItem (item) {
+	        this.editedIndex = this.items.indexOf(item);
+	        this.form = Object.assign({}, item);
+	        this.dialog2 = true
+      	},
+
+      	updateItem() {
+  			this.$axios.$patch(`api/purchase/` + this.form.id, {
+  				date: this.form.date,
+  				name: this.form.name,
+  				supplier: this.form.supplier,
+  				total: this.form.total,
+  				paid: this.form.paid,
+  				purchase_status: this.form.purchase_status,
+  				payment_status: this.form.payment_status,
+  			})
+  			.then(res => {
+  				this.fetchData();
+  				this.close();
+  				this.$toast.info('Succeessfully Updated');
+  			})
+  			.catch(err => {
+  				console.log(err.response);
+  			})
+      	},
+
+      	close() {
+      		this.dialog2 = false;
+      		this.form = {};
+      	},
+
+      	deleteItem(item) {
+      		if(confirm('Are u sure to Delete it?')) {
+      			this.$axios.$delete(`api/purchase/` + item.id)
+      			.then(res => {
+      				this.items = res.data;
+      				this.fetchData();
+      				console.log(res);
+      			})
+      			.catch(err => {
+      				console.log(err.response);
+      			})
+      		}
+      	},
+
 		uploadCsv(image) {
 			const URL = 'http://127.0.0.1:3000/product/category'
 

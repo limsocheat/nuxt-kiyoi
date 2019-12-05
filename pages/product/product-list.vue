@@ -244,7 +244,7 @@ export default {
 	methods: {
 		fetchData() {
 			let vm = this;
-			this.$axios.$get(`/api/product?column=${this.column}&order=${this.order}&temsPerPage=${this.options.itemsPerPage}&page=${this.options.page}`)
+			this.$axios.$get(`/api/product?temsPerPage=${this.options.itemsPerPage}&page=${this.options.page}`)
 			.then(res => {
 				vm.items = res.data;
 				vm.total = res.total;
