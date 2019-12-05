@@ -177,6 +177,7 @@
 					code: '',
 				},
 				items: [],
+				itemsPerPage: 5,
 				checkbox: false,
 				product_type: 
 				[

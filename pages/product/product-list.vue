@@ -148,7 +148,14 @@
 				<v-btn class="blue lighten-1">Print</v-btn>
 			</div>
 		</div>
-		<v-data-table :headers="headers" :items="items" >
+		<v-data-table 
+			:headers="headers" 
+			:items="items" 
+			:items-per-page="itemsPerPage"
+		    :sort-by="column"
+			:options.sync="options"
+			:server-items-length="total"
+		>
 			<template v-slot:item.action="{ item }">
 				<v-tooltip top v-permission="'edit sales'">
 					<template v-slot:activator="{ on }">
@@ -180,6 +187,14 @@ export default {
 		this.fetchData()
 	},
 
+	watch: {
+		options: {
+			handler() {
+				this.fetchData();
+			}
+		}
+	},
+
 	data() {
 		return {
 			barcode: [
@@ -188,6 +203,7 @@ export default {
 			items: [],
 			search: '',
 			form: {},
+			page: 1,
 			total: 0,
 			options: {},
 			itemsPerPage: 5,
@@ -197,14 +213,12 @@ export default {
 			dialog2: false,
 			headers: [{
 					text: "ID",
-					sortable: false,
 					value: "id",
 				},{
 					text: "Image",
 					sortable: false,
 				}, {
 					text: "Name",
-					sortable: false,
 					value: "name",
 				}, {
 					text: "Code",
@@ -230,9 +244,10 @@ export default {
 	methods: {
 		fetchData() {
 			let vm = this;
-			this.$axios.$get(`/api/product`)
+			this.$axios.$get(`/api/product?column=${this.column}&order=${this.order}&temsPerPage=${this.options.itemsPerPage}&page=${this.options.page}`)
 			.then(res => {
-				vm.items = res;
+				vm.items = res.data;
+				vm.total = res.total;
 				console.log(res)
 			})
 			.catch(err => {
@@ -323,5 +338,6 @@ export default {
 .dialog2 {
 	display: none;
 }
+
 
 </style>
