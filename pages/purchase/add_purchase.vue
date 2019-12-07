@@ -43,23 +43,27 @@
 					</v-col>
 					<v-col md="6" cols="12" class="d-flex flex-column">
 						<label for="" class="font-weight-bold pt-1">Attach Document</label>
-						<input type="file" @change="uploadFile($event)">
+						<input type="file" @change="uploadFile($event)" class="attach-doc">
 					</v-col>
 					<v-col cols="12">
 						<label class="font-weight-bold">Select Product</label>
-						<v-text-field
-							solo
-							outlined
-							dense
-							label="Please type product code and select"
-							append-icon="mdi-barcode"
-						></v-text-field>
+						<v-autocomplete
+					      :items="products"
+					      dense
+					      solo
+					      v-model="model"
+					      item-text="name"
+					      item-value="name"
+					      clearable
+    					></v-autocomplete>
+    					<p>{{ model }}</p>
 					</v-col>
 				</v-row>
 				<div>
 					<label class="font-weight-bold">Order Table</label>
 					<v-data-table
 						:headers="headers"
+						:items="products"
 					></v-data-table>
 				</div>
 				<v-row>
@@ -103,12 +107,21 @@
 
 <script>
 	export default {
+		name: 'Add Purchase',
+		created() {
+			this.fetchData()
+		},
+
 		data() {
 			return {
+				products: [],
+				purchases: [],
+				model: [],
 				headers: [
 					{
 						text: 'Name',
 						sortable: false,
+						value: 'name',
 					},
 					{
 						text: 'Code',
@@ -142,7 +155,19 @@
 				purchase_status: ['Received', 'Partial', 'Pending', 'Ordered'],
 			}
 		},
+
 		methods: {
+			fetchData() {
+				this.$axios.$get(`/api/product`)
+				.then(res => {
+					this.products = res.data;
+					console.log(res)
+				})
+				.catch(err => {
+					console.log(err);
+				})
+			},
+
 			uploadFile(event) {
 				const url = 'http://127.0.0.1:3000/product/add_adjustment';
 				let data = new FormData();
@@ -167,6 +192,11 @@
 	.textarea {
 		border: 1px solid rgba(0,0,0,0.125);
 		outline: 1px solid #461577;
+	}
+	
+	.attach-doc {
+		border: 1px solid rgba(0,0,0,0.125);
+		padding: 5px 10px 5px 10px;
 	}
 
 </style>
