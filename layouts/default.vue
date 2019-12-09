@@ -5,6 +5,10 @@
 			<v-toolbar-title>KIYOI</v-toolbar-title>
 			<v-spacer></v-spacer>
 			<v-toolbar-items>
+				<v-btn text dark>
+					<v-icon left>mdi-cart</v-icon>
+					<nuxt-link  style="color: #fff" class="pos--link" to="/pos">POS</nuxt-link>
+				</v-btn>
 				<v-btn text dark>{{ user.user ? user.user.name : null }}</v-btn>
 				<v-btn text dark @click="logout()">
 					<v-icon>mdi-logout</v-icon>
@@ -676,5 +680,9 @@
 
 	.subMenu {
 		padding-left: 2em;
+	}
+
+	.pos--link {
+		text-decoration: none;
 	}
 </style>
