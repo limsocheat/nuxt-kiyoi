@@ -47,24 +47,54 @@
 					</v-col>
 					<v-col cols="12">
 						<label class="font-weight-bold">Select Product</label>
-						<v-autocomplete
-					      :items="products"
-					      dense
-					      solo
-					      v-model="model"
-					      item-text="name"
-					      item-value="name"
-					      clearable
-    					></v-autocomplete>
-    					<p>{{ model }}</p>
+						<div class="d-flex">
+							<v-autocomplete
+						      :items="products"
+						      dense
+						      solo
+						      v-model="model"
+						      item-text="name"
+						      item-value="name"
+						      return-object
+						      clearable
+	    					></v-autocomplete>
+	    					<v-btn color="primary" @click="addTocart(model)"> 
+	                 			<v-icon>mdi-circle-plus</v-icon>
+	                 			Add
+	               			</v-btn>
+						</div>
 					</v-col>
 				</v-row>
 				<div>
-					<label class="font-weight-bold">Order Table</label>
-					<v-data-table
-						:headers="headers"
-						:items="products"
-					></v-data-table>
+					<label class="font-weight-bold mb-3">Order Table</label>
+					<table class="tablePurchase">
+						<thead class="tablePurchase--header">
+							<tr>
+								<th>Name</th>
+								<th>Code</th>
+								<th>Quantity</th>
+								<th>Discount</th>
+								<th>Tax</th>
+								<th>Total</th>
+								<th>Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr v-for="(item, index) in items">
+								<td  class="tablePurchase--td">{{item.name}}</td>
+								<td  class="tablePurchase--td">{{item.code}}</td>
+								<td  class="tablePurchase--td">
+									<input type="number" v-model="item.unit">
+								</td>
+								<td  class="tablePurchase--td">$ {{item.price}}</td>
+								<td  class="tablePurchase--td">
+	                              	<v-btn @click="removeItem(index)">
+	                              		<v-icon>mdi-delete</v-icon>
+	                              	</v-btn>
+	                           </td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
 				<v-row>
 					<v-col md="4" cols="12">
@@ -115,43 +145,8 @@
 		data() {
 			return {
 				products: [],
-				purchases: [],
 				model: [],
-				headers: [
-					{
-						text: 'Name',
-						sortable: false,
-						value: 'name',
-					},
-					{
-						text: 'Code',
-						sortable: false,
-					},
-					{
-						text: 'Quantity',
-						sortable: false,
-					},
-					{
-						text: 'Net Unit Cost',
-						sortable: false,
-					},
-					{
-						text: 'Discount',
-						sortable: false,
-					},
-					{
-						text: 'Tax',
-						sortable: false,
-					},
-					{
-						text: 'SubTotal',
-						sortable: false,
-					},
-					{
-						text: 'Action',
-						sortable: false,
-					},
-				],
+				items: [],
 				purchase_status: ['Received', 'Partial', 'Pending', 'Ordered'],
 			}
 		},
@@ -167,6 +162,20 @@
 					console.log(err);
 				})
 			},
+
+			addTocart (item) {
+		        if(this.items.includes(item)) {
+		          	alert("already there");
+		        }else {
+		          	this.items.push(item);
+		        }
+
+		        item.unit = 1;
+		    },
+
+			removeItem(index) {
+		      	this.items.splice(index, 1)
+		    },
 
 			uploadFile(event) {
 				const url = 'http://127.0.0.1:3000/product/add_adjustment';
@@ -197,6 +206,18 @@
 	.attach-doc {
 		border: 1px solid rgba(0,0,0,0.125);
 		padding: 5px 10px 5px 10px;
+	}
+	
+	.tablePurchase {
+		width: 100%;
+		margin-top: 10px;
+		&--header {
+			text-align: left;
+		}
+
+		&--td {
+			border-bottom: 1px solid rgba(0,0,0,0.125);
+		}
 	}
 
 </style>

@@ -31,29 +31,33 @@
 				<v-btn class="blue lighten-1">Print</v-btn>
 			</div>
 		</div>
+		<div>
+		</div>
 		<v-card>
-			<v-data-table :headers="headers" :items="items" :items-per-page="itemsPerPage" :options.sync="options" :server-items-length="total">
-				<template v-slot:item.action="{ item }">
-					<v-tooltip bottom>
-						<template v-slot:activator="{ on }">
-							<!-- Edit Item -->
-							<v-icon left fab color="primary" v-on="on">
-								mdi-pencil
-							</v-icon>
-						</template>
-						<span>Edit Supplier</span>
-					</v-tooltip>
-					<v-tooltip bottom>
-						<template v-slot:activator="{ on }">
-
-							<!-- Delete Item -->
-							<v-icon left fab color="primary" v-on="on">
-								mdi-delete
-							</v-icon>
-						</template>
-						<span>Delete Supplier</span>
-					</v-tooltip>
-				</template>
+			<v-data-table :headers="headers" :items="items" :items-per-page="itemsPerPage">
+			    <template v-slot:item="{ item }">
+			    	<tr class="sale-tr" @click="viewInfo(item.id)">
+						<td>{{ item.date }}</td>
+						<td></td>
+						<td>{{ item.customer.name }}</td>
+						<td>
+							<span :class="item.sale_status === 'completed' ? 'paid' : 'due'">
+								{{ item.sale_status }}
+							</span>
+						</td>
+						<td>
+							<span :class="item.payment_status === 'Paid' ? 'paid' : 'due'">
+							{{ item.payment_status }}
+							</span>
+						</td>
+						<td>{{ item.total }}</td>
+						<td>{{ item.paid }}</td>
+						<td>{{ item.due }}</td>
+						<td>
+							<v-icon small outlined text>mdi-pencil</v-icon>
+						</td>
+			    	</tr>
+			    </template>
 			</v-data-table>
 		</v-card>
 	</v-app>
@@ -62,13 +66,13 @@
 
 <script>
 export default {
-
 	created() {
-		// this.fetchData()
+		this.fetchData()
 	},
 
 	data() {
 		return {
+			completed: true,
 			items: [],
 			search: '',
 			form: {},
@@ -76,39 +80,41 @@ export default {
 			options: {},
 			itemsPerPage: 5,
 			editedIndex: -1,
-			created: true,
-			dialog1: false,
-			dialog2: false,
-			headers: [{
+			headers: [
+				{
 					text: 'Date',
 					sortable: false,
+					value: 'date',
 				}, {
-					text: 'Reference',
+					text: 'Reference No',
 					sortable: false,
-				}, {
-					text: 'Biller',
-					sortable: false,
-				}, {
+				}, , {
 					text: 'Customer',
 					sortable: false,
 				}, {
 					text: 'Sale Status',
 					sortable: false,
+					value: 'sale_status',
 				},{
 					text: 'Payment Status',
 					sortable: false,
+					value: 'payment_status',
 				},{
 					text: 'Grand Total',
 					sortable: false,
+					value: 'total',
 				},{
 					text: 'Paid',
 					sortable: false,
+					value: 'paid',
 				},{
 					text: 'Due',
 					sortable: false,
+					value: 'due',
 				},{
 					text: 'Actions',
 					sortable: false,
+					value: 'action',
 				},
 			],
 			selects: 
@@ -119,6 +125,35 @@ export default {
 	},
 
 	methods: {
+		getColor (status) {
+	        if (status === "Paid") return 'purple'
+	        else {
+	        	return 'red';
+	        }
+	    },
+		getColorSale (status) {
+	        if (status === "completed") return 'blue'
+	        else {
+	        	return 'red';
+	        }
+	    },
+		fetchData() {
+			this.$axios.$get(`api/sale`)
+			.then(res => {
+				this.items = res.data;
+				console.log(res.data);
+			})
+			.catch(err => {
+				console.log(err.response);
+			})
+		},
+
+		close() {
+			this.dialog = false;
+			this.editedIndex = -1;
+			this.form = {};
+		},
+
 		uploadCsv(image) {
 			const URL = 'http://127.0.0.1:3000/product/category'
 
@@ -141,6 +176,10 @@ export default {
 		        console.log('Csv upload response > ', response)
 		      }
 		    )
+		},
+
+		viewInfo(id) {
+			this.$router.push(`/sale/${id}`);
 		}
 	}
 }
@@ -162,6 +201,24 @@ export default {
 	outline: none;
 	border-radius: 5px;
 	border: 1px solid #616161;
+}
+
+.paid {
+	background-color: #433ac1;
+	padding: 5px 7px 5px 7px;
+	border-radius: 5px;
+	color: #fff;
+}
+
+.due {
+	background-color: #e0355a;	
+	padding: 5px 7px 5px 7px;
+	border-radius: 5px;
+	color: #fff;
+}
+
+.sale-tr {
+	cursor: pointer;
 }
 
 </style>
