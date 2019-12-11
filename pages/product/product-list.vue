@@ -152,7 +152,6 @@
 			:headers="headers" 
 			:items="items" 
 			:items-per-page="itemsPerPage"
-		    :sort-by="column"
 			:options.sync="options"
 			:server-items-length="total"
 		>

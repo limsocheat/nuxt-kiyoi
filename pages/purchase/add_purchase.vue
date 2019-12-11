@@ -57,9 +57,11 @@
 						      item-value="name"
 						      return-object
 						      clearable
-	    					></v-autocomplete>
+						      @input="addTocart"
+	    					>
+	    					</v-autocomplete>
 	    					<v-btn color="primary" @click="addTocart(model)"> 
-	                 			<v-icon>mdi-circle-plus</v-icon>
+	                 			<v-icon left>mdi-plus-circle</v-icon>
 	                 			Add
 	               			</v-btn>
 						</div>
@@ -68,30 +70,37 @@
 				<div>
 					<label class="font-weight-bold mb-3">Order Table</label>
 					<table class="tablePurchase">
-						<thead class="tablePurchase--header">
-							<tr>
-								<th>Name</th>
-								<th>Code</th>
-								<th>Quantity</th>
-								<th>Discount</th>
-								<th>Tax</th>
-								<th>Total</th>
-								<th>Actions</th>
+						<thead>
+							<tr  class="tablePurchase--header">
+								<td>Name</td>
+								<td>Code</td>
+								<td>Quantity</td>
+								<td>Unit Price</td>
+								<td>Discount</td>
+								<td>Tax</td>
+								<td>Total</td>
+								<td>Actions</td>
 							</tr>
 						</thead>
 						<tbody>
-							<tr v-for="(item, index) in items">
-								<td  class="tablePurchase--td">{{item.name}}</td>
-								<td  class="tablePurchase--td">{{item.code}}</td>
-								<td  class="tablePurchase--td">
-									<input type="number" v-model="item.unit">
+							<tr class="tablePurchase--td" v-for="(item, index) in items">
+								<td>{{item.name}}</td>
+								<td>{{item.code}}</td>
+								<td>
+									<input type="number" class="table-quantity" v-model="item.unit">
 								</td>
-								<td  class="tablePurchase--td">$ {{item.price}}</td>
-								<td  class="tablePurchase--td">
+								<td>{{ item.order.unit_price }}</td>
+								<td>{{ item.order.discount }}</td>
+								<td>$ {{ item.order.tax }}</td>
+								<td>$ {{ total }}</td>
+								<td>
 	                              	<v-btn @click="removeItem(index)">
 	                              		<v-icon>mdi-delete</v-icon>
 	                              	</v-btn>
 	                           </td>
+							</tr>
+							<tr>
+								<td class="py-3">Total</td>
 							</tr>
 						</tbody>
 					</table>
@@ -140,14 +149,26 @@
 		name: 'Add Purchase',
 		created() {
 			this.fetchData()
+			this.fetchPurchase()
 		},
 
 		data() {
 			return {
 				products: [],
+				purchases: [],
 				model: [],
 				items: [],
 				purchase_status: ['Received', 'Partial', 'Pending', 'Ordered'],
+			}
+		},
+
+		computed: {
+			total() {
+				let total = 0;
+			    this.products.forEach(item => {
+			        // total += (item);
+			    });
+			    return total;
 			}
 		},
 
@@ -160,6 +181,17 @@
 				})
 				.catch(err => {
 					console.log(err);
+				})
+			},
+
+			fetchPurchase() {
+				this.$axios.$get(`api/purchase`)
+				.then(res => {
+					this.purchases = res.data;
+					console.log(res)
+				})
+				.catch(err => {
+					console.log(res.response);
 				})
 			},
 
@@ -211,13 +243,23 @@
 	.tablePurchase {
 		width: 100%;
 		margin-top: 10px;
+		border-collapse: collapse;
 		&--header {
+			font-weight: 500;
 			text-align: left;
+			border-bottom: 1px solid rgba(0,0,0,0.125);
 		}
-
+		
 		&--td {
 			border-bottom: 1px solid rgba(0,0,0,0.125);
 		}
+	}
+
+	.table-quantity {
+		border: 1px solid rgba(0,0,0,0.125);
+		padding: 5px 10px 5px 10px;
+		margin-top: 5px;
+		margin-bottom: 5px;
 	}
 
 </style>
