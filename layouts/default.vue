@@ -360,8 +360,14 @@
 								permission: "view expense",
 							},
 							{
-								name: "Add Expense",
+								name: "Expense List",
 								icon: "mdi-view-list",
+								to: "/expense/expense_list",
+								permission: "view expense",
+							},
+							{
+								name: "Add Expense",
+								icon: "mdi-plus-circle",
 								to: "/expense/add_expense",
 								permission: "view expense",
 							}
