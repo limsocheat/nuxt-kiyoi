@@ -3,8 +3,9 @@
 		<div class="d-flex">
 			<div class="pb-5 pr-3">
 				<v-dialog 
-					v-model="dialog1" max-width="600px" 
+					v-model="dialog" max-width="600px" 
 					v-permission="'add expense'"
+					persistent
 				>
 					<template v-slot:activator="{ on }">
 						<v-btn class="teal darken-1" dark v-on="on">
@@ -27,8 +28,9 @@
 									outlined
 									dense
 									label="Click Generate to Generate Code"
+									v-model="form.code"
 								></v-text-field>
-								<v-btn color="primary">Generate</v-btn>
+								<v-btn color="primary" @click="randomNumber">Generate</v-btn>
 							</div>
 						</v-col>
 						<v-col cols="12">
@@ -38,18 +40,19 @@
 								solo
 								dense
 								label="Type expense category name"
+								v-model="form.name"
 							></v-text-field>
 						</v-col>
 						<v-card-actions>
 							<v-spacer></v-spacer>
-							<v-btn color="blue darken-1" text>Close</v-btn>
-							<v-btn color="primary">Save</v-btn>
+							<v-btn color="blue darken-1" text @click="closeDialog">Close</v-btn>
+							<v-btn color="primary" @click="createItem">Save</v-btn>
 						</v-card-actions>
 					</v-card>
 				</v-dialog>
 			</div>
 			<div class="pb-5">
-				<v-dialog v-model="dialog2" max-width="700px" v-permission="'add expense'">
+				<v-dialog v-model="dialog2" max-width="700px" v-permission="'add expense'" persistent>
 					<template v-slot:activator="{ on }">
 						<v-btn class="purple darken-1" dark v-on="on">
 							<v-icon left>mdi-file</v-icon>
@@ -81,7 +84,7 @@
 						</v-row>
 						<v-card-actions>
 							<v-spacer></v-spacer>
-							<v-btn color="blue darken-1" text>Close</v-btn>
+							<v-btn color="blue darken-1" text @click="closeDialog">Close</v-btn>
 							<v-btn color="primary">Save</v-btn>
 						</v-card-actions>
 					</v-card>
@@ -107,8 +110,6 @@
 			<v-data-table 
 				:headers="headers" :items="items" 
 				:items-per-page="itemsPerPage" 
-				:options.sync="options" 
-				:server-items-length="total"
 			>
 				<template v-slot:item.action="{item}">
 					<v-tooltip top v-permission="'edit users'">
@@ -138,36 +139,107 @@
 export default {
 	name: 'Menu',
 	created() {
-		// this.fetchData()
+		this.fetchData()
 	},
 
 	data() {
 		return {
 			items: [],
 			search: '',
-			form: {},
+			form: {
+				code: '',
+			},
 			total: 0,
 			options: {},
 			itemsPerPage: 5,
 			editedIndex: -1,
 			created: true,
-			dialog1: false,
+			dialog: false,
 			dialog2: false,
 			headers: [{
 					text: 'Code',
 					sortable: false,
+					value: 'code',
 				}, {
 					text: 'Name',
 					sortable: false,
+					value: 'name',
 				},{
 					text: 'Actions',
 					sortable: false,
+					value: 'action',
 				},
 			],
 		}
 	},
 
 	methods: {
+		randomNumber() {
+	     	return this.form.code = Math.floor(1000000 + Math.random() * 90000000)
+	    },
+
+		fetchData() {
+			this.$axios.$get(`api/expense-category`)
+			.then(res => {
+				this.items = res;
+				console.log(res)
+			})
+			.catch(err => {
+				console.log(err.response);
+			})
+		},
+
+		editItem (item) {
+	        this.editedIndex = this.items.indexOf(item);
+	        this.form = Object.assign({}, item);
+	        this.dialog = true
+      	},
+
+      	closeDialog() {
+      		this.dialog = false;
+      		this.editedIndex = -1;
+      		this.form = {};
+      	},
+
+      	deleteItem(item) {
+			if(confirm('Are u sure to delete it?')) {
+				this.$axios.$delete(`/api/expense-category/` + item.id)
+				.then(res => {
+					this.fetchData();
+					this.$toast.info('Succeessfully Delete');
+				})
+				.catch(err => {
+					console.log(err.response);
+				})
+			}
+		},
+
+		createItem() {
+			if(this.editedIndex > -1) {
+					this.$axios.$patch(`/api/expense-category/` + this.form.id, {
+						'code': this.form.code,
+						'name': this.form.name,
+					})
+					.then(res => {
+						this.fetchData();
+						this.closeDialog();
+						this.$toast.info('Succeessfully Updated');
+					})
+				}
+			else {
+				this.$axios.$post(`/api/expense-category`, this.form)
+				.then(res => {
+					this.form = res;
+					this.fetchData();
+					this.$toast.info('Succeessfully Created');
+					this.closeDialog();
+				})
+				.catch(err => {
+					console.log(err.response);
+				})
+			}
+		},
+
 		uploadCsv(image) {
 			const URL = 'http://127.0.0.1:3000/product/category'
 
