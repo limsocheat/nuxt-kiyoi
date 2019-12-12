@@ -365,12 +365,6 @@
 								to: "/expense/expense_list",
 								permission: "view expense",
 							},
-							{
-								name: "Add Expense",
-								icon: "mdi-plus-circle",
-								to: "/expense/add_expense",
-								permission: "view expense",
-							}
 						]
 					},
 					{
