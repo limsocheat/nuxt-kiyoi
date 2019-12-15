@@ -12,7 +12,19 @@
 							outlined
 							dense
 							label="Name"
+							v-model="form.name"
 						></v-text-field>
+					</v-col>
+					<v-col md="6" cols="12">
+						<label class="font-weight-bold">Gender</label>
+						<v-select
+							solo
+							outlined
+							dense
+							label="Gender"
+							:items="genders"
+							v-model="form.gender"
+						></v-select>
 					</v-col>
 					<v-col md="6" cols="12">
 						<label class="font-weight-bold">Department</label>
@@ -20,16 +32,12 @@
 							solo
 							outlined
 							dense
-						></v-select>
-					</v-col>
-					<v-col md="6" cols="12">
-						<label class="font-weight-bold">Email</label>
-						<v-text-field
-							solo
-							outlined
-							dense
-							label="email@email.com"
-						></v-text-field>
+							:items="items"
+							item-text="name"
+							label="Please Select"
+							v-model="form.department"
+						>
+						</v-select>
 					</v-col>
 					<v-col md="6" cols="12">
 						<label class="font-weight-bold">Phone Number</label>
@@ -38,6 +46,7 @@
 							outlined
 							dense
 							label="Phone Number"
+							v-model="form.phone"
 						></v-text-field>
 					</v-col>
 					<v-col md="6" cols="12">
@@ -47,6 +56,7 @@
 							outlined
 							dense
 							label="Address"
+							v-model="form.address"
 						></v-text-field>
 					</v-col>
 					<v-col md="6" cols="12">
@@ -56,6 +66,7 @@
 							outlined
 							dense
 							label="City"
+							v-model="form.city"
 						></v-text-field>
 					</v-col>
 					<v-col md="6" cols="12">
@@ -65,47 +76,15 @@
 							outlined
 							dense
 							label="Country"
+							v-model="form.country"
 						></v-text-field>
-					</v-col>
-				</v-row>
-				<v-row>
-					<v-col md="6" cols="12" class="d-flex align-center pl-3">
-						<label class="font-weight-bold">Add User</label>
-						<v-checkbox v-model="checkbox"></v-checkbox>
-					</v-col>
-				</v-row>
-				<v-row v-if="checkbox">
-					<v-col md="6" cols="12">
-						<label class="font-weight-bold">User Name</label>
-						<v-text-field 
-							solo
-							outlined
-							label="User Name"
-							dense
-						></v-text-field>
-					</v-col>
-					<v-col md="6" cols="12">
-						<label class="font-weight-bold">Password</label>
-						<v-text-field 
-							solo
-							outlined
-							label="Password"
-							dense
-						></v-text-field>
-					</v-col>
-					<v-col md="6" cols="12">
-						<label class="font-weight-bold">Role</label>
-						<v-select 
-							solo
-							outlined
-							dense
-						></v-select>
 					</v-col>
 				</v-row>
 			</div>
 			<v-btn 
 				v-permission="'add employee'"
 				class="purple darken-1 mx-5 mb-5" dark
+				@click="createItem"
 			>	
 				Submit
 			</v-btn>
@@ -116,9 +95,35 @@
 
 <script>
 	export default {
+		created() {
+			this.fetchData()
+		},
+
 		data() {
 			return {
 				checkbox: true,
+				form: {},
+				items: [],
+				genders: ['Male', 'Female'],
+			}
+		},
+
+		methods: {
+			fetchData() {
+				this.$axios.$get(`api/hr-department`)
+				.then(res => {
+					this.items = res;
+				})
+				.catch(err => {
+					console.log(err.response)
+				})
+			},
+
+			createItem() {
+				this.$axios.$post(`api/employee`, this.form)
+				.then(res => {
+					this.$router.push('/hrm/employee');
+				})
 			}
 		}
 	}
