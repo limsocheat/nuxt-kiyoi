@@ -201,7 +201,7 @@
 										</v-icon>
 									</v-btn>
 								</template>
-								<span>Edit Supplier</span>
+								<span>Edit Attendance</span>
 							</v-tooltip>
 							<v-tooltip bottom>
 								<template v-slot:activator="{ on }">
@@ -211,7 +211,7 @@
 										</v-icon>
 									</v-btn>
 								</template>
-								<span>Delete Supplier</span>
+								<span>Delete Attendance</span>
 							</v-tooltip>
 						</td>
 					</tr>

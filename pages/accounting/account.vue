@@ -3,7 +3,8 @@
 		<div class="d-flex">
 			<div class="pr-5 py-5">
 				<v-dialog 
-					v-model="dialog1" max-width="600px" v-permission="'add account'"
+					v-model="dialog" max-width="600px" v-permission="'add account'"
+					persistent
 				>
 					<template v-slot:activator="{ on }">
 						<v-btn class="teal darken-1" dark v-on="on">
@@ -25,6 +26,7 @@
 								dense
 								outlined
 								label="Account No"
+								v-model="form.code"
 							></v-text-field>
 						</v-col>
 						<v-col cols="12">
@@ -34,6 +36,7 @@
 								solo
 								dense
 								label="Name"
+								v-model="form.name"
 							></v-text-field>
 						</v-col>
 						<v-col cols="12">
@@ -43,18 +46,23 @@
 								solo
 								dense
 								label="Balance"
+								v-model="form.balance"
 							></v-text-field>
 						</v-col>
 						<v-col cols="12">
 							<div class="d-flex flex-column">
 								<label class="font-weight-bold" for="balance">Note</label>
-								<textarea cols="30" rows="10" class="account_note"></textarea>
+								<textarea 
+									v-model="form.description" 
+									cols="20" rows="5" 
+									class="account_note"
+								></textarea>
 							</div>
 						</v-col>
 						<v-card-actions>
 							<v-spacer></v-spacer>
-							<v-btn color="blue darken-1" text>Close</v-btn>
-							<v-btn color="primary">Save</v-btn>
+							<v-btn color="blue darken-1" text @click="closeDialog">Close</v-btn>
+							<v-btn color="primary" @click="createItem">Save</v-btn>
 						</v-card-actions>
 					</v-card>
 				</v-dialog>
@@ -119,7 +127,7 @@
 						</v-col>
 						<v-card-actions>
 							<v-spacer></v-spacer>
-							<v-btn color="blue darken-1" text>Close</v-btn>
+							<v-btn color="blue darken-1" text >Close</v-btn>
 							<v-btn color="primary">Save</v-btn>
 						</v-card-actions>
 					</v-card>
@@ -142,26 +150,37 @@
 			</div>
 		</div>
 		<v-card>
-			<v-data-table :headers="headers" :items="items" :items-per-page="itemsPerPage" :options.sync="options" :server-items-length="total">
+			<v-data-table 
+				:headers="headers" 
+				:items="items" 
+				:items-per-page="itemsPerPage" 
+			>
 				<template v-slot:item.action="{ item }">
 					<v-tooltip bottom>
 						<template v-slot:activator="{ on }">
 							<!-- Edit Item -->
-							<v-icon left fab color="primary" v-on="on">
-								mdi-pencil
-							</v-icon>
+							<v-btn  
+								@click="editItem(item)" 
+								small color="primary" v-on="on" icon outlined
+							>
+								<v-icon small>
+									mdi-pencil
+								</v-icon>
+							</v-btn>
 						</template>
-						<span>Edit Supplier</span>
+						<span>Edit Account</span>
 					</v-tooltip>
 					<v-tooltip bottom>
 						<template v-slot:activator="{ on }">
 
 							<!-- Delete Item -->
-							<v-icon left fab color="primary" v-on="on">
-								mdi-delete
-							</v-icon>
+							<v-btn @click="deleteItem(item)" small icon outlined color="red" v-on="on">
+								<v-icon small>
+									mdi-delete
+								</v-icon>
+							</v-btn>
 						</template>
-						<span>Delete Supplier</span>
+						<span>Delete Account</span>
 					</v-tooltip>
 				</template>
 			</v-data-table>
@@ -177,7 +196,7 @@ import moment from 'moment';
 export default {
 	
 	created() {
-		// this.fetchData()
+		this.fetchData()
 	},
 
 	data() {
@@ -190,26 +209,32 @@ export default {
 			itemsPerPage: 5,
 			editedIndex: -1,
 			created: true,
-			dialog1: false,
+			dialog: false,
 			dialog2: false,
-			headers: [{
+			headers: [
+				{
 					text: 'Account No',
 					sortable: false,
+					value: 'code',
 				}, {
 					text: 'Name',
 					sortable: false,
+					value: 'name'
 				}, {
 					text: 'Initial Balance',
 					sortable: false,
+					value: 'balance'
 				}, {
 					text: 'Default',
 					sortable: false,
 				}, {
 					text: 'Note', 
 					sortable: false,
+					value: 'description'
 				},{
 					text: 'Actions',
 					sortable: false,
+					value: 'action',
 				},
 			],
 			menu1: false,
@@ -218,6 +243,72 @@ export default {
 	},
 
 	methods: {
+		fetchData() {
+			this.$axios.$get(`api/account`)
+			.then(res => {
+				this.items = res;
+				console.log(res);
+			})
+			.catch(err => {
+				console.log(err.response);
+			})
+		},
+
+		editItem (item) {
+	        this.editedIndex = this.items.indexOf(item);
+	        this.form = Object.assign({}, item);
+	        this.dialog = true
+      	},
+
+      	closeDialog() {
+      		this.dialog = false;
+      		this.editedIndex = -1;
+      		this.form = {};
+      	},
+
+		createItem() {
+			if(this.editedIndex > -1) {
+				this.$axios.$patch(`/api/account/` + this.form.id, {
+					'code': this.form.code,
+					'name': this.form.name,
+					'balance': this.form.balance,
+					'checkout': this.form.checkout,
+					'status': this.form.status,
+				})
+				.then(res => {
+					this.fetchData();
+					this.closeDialog();
+					this.$toast.info('Succeessfully Updated');
+				})
+			}
+			else {
+				this.$axios.$post(`/api/account`, this.form)
+				.then(res => {
+					this.items = res.data;
+					this.fetchData();
+					this.$toast.info('Succeessfully Created');
+					this.closeDialog();
+				})
+				.catch(err => {
+					console.log(err.response);
+				})
+			}
+		},
+
+		
+      	deleteItem(item) {
+			if(confirm('Are u sure to delete it?')) {
+				this.$axios.$delete(`/api/account/` + item.id)
+				.then(res => {
+					this.fetchData();
+					this.$toast.info('Succeessfully Delete');
+				})
+				.catch(err => {
+					console.log(err.response);
+				})
+			}
+		},
+
 		uploadCsv(image) {
 			const URL = 'http://127.0.0.1:3000/product/category'
 
@@ -254,7 +345,7 @@ export default {
 <style lang="scss">
 
 .account_note {
-	border: 1px solid #333333;
+	border: 1px solid #2b90bf;
 }
 
 </style>
