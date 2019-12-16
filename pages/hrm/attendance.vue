@@ -3,7 +3,7 @@
 		<div class="d-flex">
 			<div class="pb-5 pr-3">
 				<v-dialog 
-					v-model="dialog1" max-width="700px" 
+					v-model="dialog" max-width="700px" persistent
 					v-permission="'add employee'"
 				>
 					<template v-slot:activator="{ on }">
@@ -26,7 +26,15 @@
 									solo
 									outlined
 									dense
-								></v-select>
+									:items="items"
+									item-text="employee.name"
+									label="Please Select"
+									v-model="form.employee_name"
+								>
+									<template v-slot:item="{ item }">
+										{{ item.employee.name }}
+									</template>
+								</v-select>
 							</v-col>
 							<v-col sm="6" cols="12">
 								<label class="font-weight-bold" for="">Date</label>
@@ -40,15 +48,17 @@
 						              :value="computedDateFormattedMomentjs"
 						              clearable
 						              readonly
+						              label="Pickup Date"
 						              dense
 						              solo 
 						              outlined
 						              v-on="on"
 						              @click:clear="date = null"
+						              v-model="form.date"
 						            ></v-text-field>
 						          </template>
 						          <v-date-picker
-						            v-model="date"
+						            v-model="form.date"
 						            @change="menu1 = false"
 						          ></v-date-picker>
 						        </v-menu>
@@ -68,20 +78,21 @@
 							      >
 							        <template v-slot:activator="{ on }">
 							          <v-text-field
-							            v-model="time"
-							        	label="Pick up Time"
-							            solo
-							            dense
-							            outlined
+							            v-model="form.checkin"
+							            label="Pickup Time"
 							            readonly
 							            v-on="on"
+							            solo
+							            outlined
+							            dense
 							          ></v-text-field>
 							        </template>
 							        <v-time-picker
 							          v-if="menu2"
-							          v-model="time"
+							          v-model="form.checkin"
 							          full-width
 							          @click:minute="$refs.menu.save(time)"
+							          ampm-in-title
 							        ></v-time-picker>
 							      </v-menu>
 							</v-col>
@@ -100,32 +111,50 @@
 							      >
 							        <template v-slot:activator="{ on }">
 							          <v-text-field
-							            v-model="time1"
-							        	label="Pick up Time"
-							            solo
-							            dense
-							            outlined
+							            v-model="form.checkout"
+							            label="Pickup Time"
 							            readonly
+							            solo
+							            outlined
+							            dense
 							            v-on="on"
 							          ></v-text-field>
 							        </template>
 							        <v-time-picker
 							          v-if="menu3"
-							          v-model="time1"
+							          v-model="form.checkout"
 							          full-width
 							          @click:minute="$refs.menu.save(time)"
+							          ampm-in-title
 							        ></v-time-picker>
 							      </v-menu>
 							</v-col>
+							<v-col cols="12">
+								<label class="font-weight-bold">Status</label>
+								<v-select 
+									dense
+									solo
+									outlined
+									label="Selece One"
+									v-model="form.status"
+									item-text="status"
+									:items="status"
+								></v-select>
+							</v-col>
 							<v-col cols="12" class="d-flex flex-column">
 								<label class="font-weight-bold" for="Note">Note</label>
-								<textarea cols="30" rows="7" class="attendance_note"></textarea>
+								<textarea 
+									cols="30" 
+									rows="7" 
+									class="attendance_note"
+									v-model="form.description"
+								></textarea>
 							</v-col>
 						</v-row>
 						<v-card-actions>
 							<v-spacer></v-spacer>
-							<v-btn color="blue darken-1" text>Close</v-btn>
-							<v-btn color="primary">Save</v-btn>
+							<v-btn color="blue darken-1" text @click="closeDialog">Close</v-btn>
+							<v-btn color="primary" @click="createItem">Save</v-btn>
 						</v-card-actions>
 					</v-card>
 				</v-dialog>
@@ -147,27 +176,45 @@
 			</div>
 		</div>
 		<v-card>
-			<v-data-table :headers="headers" :items="items" :items-per-page="itemsPerPage" :options.sync="options" :server-items-length="total">
-				<template v-slot:item.action="{ item }">
-					<v-tooltip bottom>
-						<template v-slot:activator="{ on }">
-							<!-- Edit Item -->
-							<v-icon left fab color="primary" v-on="on">
-								mdi-pencil
-							</v-icon>
-						</template>
-						<span>Edit Supplier</span>
-					</v-tooltip>
-					<v-tooltip bottom>
-						<template v-slot:activator="{ on }">
-
-							<!-- Delete Item -->
-							<v-icon left fab color="primary" v-on="on">
-								mdi-delete
-							</v-icon>
-						</template>
-						<span>Delete Supplier</span>
-					</v-tooltip>
+			<v-data-table 
+				:headers="headers" 
+				:items="items" 
+			>	
+				<template v-slot:item="{ item }">
+					<tr>
+						<td>{{ item.date }}</td>
+						<td>{{ item.employee_name }}</td>
+						<td>{{ item.checkin }}</td>
+						<td>{{ item.checkout }}</td>
+						<td>
+							<span :class="item.status === 'Present' ? 'present' : 'absent'">
+								{{ item.status }}
+							</span>
+						</td>
+						<td></td>
+						<td>
+							<v-tooltip bottom>
+								<template v-slot:activator="{ on }">
+									<v-btn @click="editItem(item)" v-on="on" left icon small outlined color="primary" >
+										<v-icon small>
+											mdi-pencil
+										</v-icon>
+									</v-btn>
+								</template>
+								<span>Edit Supplier</span>
+							</v-tooltip>
+							<v-tooltip bottom>
+								<template v-slot:activator="{ on }">
+									<v-btn @click="deleteItem(item)" v-on="on" left icon small outlined color="red">
+										<v-icon small >
+											mdi-delete
+										</v-icon>
+									</v-btn>
+								</template>
+								<span>Delete Supplier</span>
+							</v-tooltip>
+						</td>
+					</tr>
 				</template>
 			</v-data-table>
 		</v-card>
@@ -180,18 +227,17 @@ import moment from 'moment'
 export default {
 	name: 'Menu',
 	created() {
-		// this.fetchData()
+		this.fetchData()
 	},
 
 	data() {
 		return {
 			date: new Date().toISOString().substr(0, 10),
 	      	menu1: false,	
-	      	time: null,
-        	menu2: false,
-        	menu3: false,
-        	time1: null,
 			items: [],
+			time: null,
+			menu2: false,
+			menu3: false,
 			search: '',
 			form: {},
 			total: 0,
@@ -199,9 +245,10 @@ export default {
 			itemsPerPage: 5,
 			editedIndex: -1,
 			created: true,
-			dialog1: false,
-			dialog2: false,
-			headers: [{
+			dialog: false,
+			status: ['Absent', 'Present'],
+			headers: [
+				{
 					text: 'Date',
 					sortable: false,
 				}, {
@@ -228,6 +275,71 @@ export default {
 	},
 
 	methods: {
+		fetchData() {
+			this.$axios.$get(`/api/attendance`)
+			.then(res => {
+				this.items = res;
+				console.log(res)
+			})
+			.catch(err => {
+				console.log(err.response)
+			})
+		},
+
+		editItem (item) {
+	        this.editedIndex = this.items.indexOf(item);
+	        this.form = Object.assign({}, item);
+	        this.dialog = true
+      	},
+
+      	closeDialog() {
+      		this.dialog = false;
+      		this.editedIndex = -1;
+      		this.form = {};
+      	},
+
+		createItem() {
+			if(this.editedIndex > -1) {
+				this.$axios.$patch(`/api/attendance/` + this.form.id, {
+					'date': this.form.date,
+					'employee_name': this.form.employee_name,
+					'checkin': this.form.checkin,
+					'checkout': this.form.checkout,
+					'status': this.form.status,
+				})
+				.then(res => {
+					this.fetchData();
+					this.closeDialog();
+					this.$toast.info('Succeessfully Updated');
+				})
+			}
+			else {
+				this.$axios.$post(`/api/attendance`, this.form)
+				.then(res => {
+					this.items = res.data;
+					this.fetchData();
+					this.$toast.info('Succeessfully Created');
+					this.closeDialog();
+				})
+				.catch(err => {
+					console.log(err.response);
+				})
+			}
+		},
+
+		
+      	deleteItem(item) {
+			if(confirm('Are u sure to delete it?')) {
+				this.$axios.$delete(`/api/attendance/` + item.id)
+				.then(res => {
+					this.fetchData();
+					this.$toast.info('Succeessfully Delete');
+				})
+				.catch(err => {
+					console.log(err.response);
+				})
+			}
+		},
 	},
 
 	computed: {
@@ -247,4 +359,19 @@ export default {
 .attendance_note {
 	border: 1px solid rgba(0,0,0,0.125);
 }
+
+.present {
+	background: blue;
+	padding: 5px 10px 5px 10px;
+	border-radius: 3px;
+	color: #fff;
+}
+
+.absent {
+	background: red;
+	padding: 5px 10px 5px 10px;
+	border-radius: 3px;
+	color: #fff;	
+}
+
 </style>

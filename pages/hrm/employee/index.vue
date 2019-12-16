@@ -12,7 +12,7 @@
 		</div>
 		<div>
 			<v-dialog 
-				v-model="dialog" max-width="700px" 
+				v-model="dialog" max-width="700px" persistent
 				v-permission="'add expense'"
 				persistent
 			>
