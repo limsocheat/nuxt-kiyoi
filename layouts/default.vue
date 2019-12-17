@@ -414,19 +414,19 @@
 					{
 						name: "Return",
 						icon: "mdi-package-down",
-						permission: "return purchases | return sales",
+						permission: "return purchases",
 						children: [
 							{
 								name: "Sale",
 								icon: "mdi-view-list",
 								to: "/return/return-sale",
-								permission: "return purchases | return sales"
+								permission: "return purchases"
 							},
 							{
 								name: "Purchase",
 								icon: "mdi-plus-circle",
 								to: "/return/return-purchase",
-								permission: "return purchases | return sales"
+								permission: "return purchases"
 							}
 						]
 					},
