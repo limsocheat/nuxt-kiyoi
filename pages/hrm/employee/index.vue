@@ -54,7 +54,7 @@
 								label="Department"
 								item-text="name"
 								:items="departments"
-								v-model="form.department"
+								v-model="form.department_name"
 							>
 								<template v-slot:item="{ item }">
 									{{ item.name }}
@@ -136,7 +136,7 @@
 					<tr>
 						<td>{{ item.name }}</td>
 						<td>{{ item.phone }}</td>
-						<td>{{ item.department }}</td>
+						<td>{{ item.department_name }}</td>
 						<td>{{ item.address }}</td>
 						<td>
 							<v-tooltip bottom>
@@ -148,7 +148,7 @@
 										</v-icon>
 									</v-btn>
 								</template>
-								<span>Edit Supplier</span>
+								<span>Edit Employee</span>
 							</v-tooltip>
 							<v-tooltip bottom>
 								<template v-slot:activator="{ on }">
@@ -159,7 +159,7 @@
 										</v-icon>
 									</v-btn>
 								</template>
-								<span>Delete Supplier</span>
+								<span>Delete Employee</span>
 							</v-tooltip>
 						</td>
 					</tr>
@@ -232,7 +232,7 @@ export default {
 		fetchData() {
 			this.$axios.$get(`api/employee`)
 			.then(res => {
-				this.items = res.data;
+				this.items = res.employee.data;
 				console.log(res);
 			})
 			.catch(err => {
@@ -270,7 +270,7 @@ export default {
 				this.$axios.$patch(`/api/employee/` + this.form.id, {
 					'name': this.form.name,
 					'city': this.form.city,
-					'department': this.form.department,
+					'department_name': this.form.department_name,
 					'gender': this.form.gender,
 					'phone': this.form.phone,
 					'address': this.form.address,

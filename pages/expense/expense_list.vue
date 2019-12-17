@@ -43,7 +43,8 @@
 								solo
 								dense
 								label="Amount"
-								v-model="form.amount"
+								type="number"
+								v-model.number="form.amount"
 							></v-text-field>
 						</v-col>
 						<v-col cols="12" sm="6">
