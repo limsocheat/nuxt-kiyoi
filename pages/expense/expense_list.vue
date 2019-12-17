@@ -106,7 +106,7 @@
 					<tr>
 						<td>{{ item.created_at }}</td>
 						<td>{{ item.category }}</td>
-						<td>USD {{ item.amount }}</td>
+						<td>USD {{ item.amount | formatNumber }}</td>
 						<td>{{ item.expense_for }}</td>
 						<td>{{ item.description }}</td>
 						<td>
@@ -124,10 +124,17 @@
 	</v-app>
 </template>
 
-
 <script>
 
 import moment from 'moment';
+import Vue from 'vue';
+
+var numeral = require('numeral');
+
+Vue.filter("formatNumber", function (value) {
+	return numeral(value).format('0,0.00');
+});
+
 export default {
 	name: 'Expense List',
 	created() {
