@@ -45,8 +45,9 @@
 								outlined
 								solo
 								dense
+								type="number"
 								label="Balance"
-								v-model="form.balance"
+								v-model.number="form.balance"
 							></v-text-field>
 						</v-col>
 						<v-col cols="12">
@@ -155,33 +156,42 @@
 				:items="items" 
 				:items-per-page="itemsPerPage" 
 			>
-				<template v-slot:item.action="{ item }">
-					<v-tooltip bottom>
-						<template v-slot:activator="{ on }">
-							<!-- Edit Item -->
-							<v-btn  
-								@click="editItem(item)" 
-								small color="primary" v-on="on" icon outlined
-							>
-								<v-icon small>
-									mdi-pencil
-								</v-icon>
-							</v-btn>
-						</template>
-						<span>Edit Account</span>
-					</v-tooltip>
-					<v-tooltip bottom>
-						<template v-slot:activator="{ on }">
+				<template v-slot:item="{ item }">
+					<tr>
+						<td>{{ item.code }}</td>
+						<td>{{ item.name }}</td>
+						<td>USD {{ item.balance | formatNumber }}</td>
+						<td></td>
+						<td>{{ item.description }}</td>
+						<td>
+							<v-tooltip bottom>
+								<template v-slot:activator="{ on }">
+									<!-- Edit Item -->
+									<v-btn  
+										@click="editItem(item)" 
+										small color="primary" v-on="on" icon outlined
+									>
+										<v-icon small>
+											mdi-pencil
+										</v-icon>
+									</v-btn>
+								</template>
+								<span>Edit Account</span>
+							</v-tooltip>
+							<v-tooltip bottom>
+								<template v-slot:activator="{ on }">
 
-							<!-- Delete Item -->
-							<v-btn @click="deleteItem(item)" small icon outlined color="red" v-on="on">
-								<v-icon small>
-									mdi-delete
-								</v-icon>
-							</v-btn>
-						</template>
-						<span>Delete Account</span>
-					</v-tooltip>
+									<!-- Delete Item -->
+									<v-btn @click="deleteItem(item)" small icon outlined color="red" v-on="on">
+										<v-icon small>
+											mdi-delete
+										</v-icon>
+									</v-btn>
+								</template>
+								<span>Delete Account</span>
+							</v-tooltip>
+						</td>
+					</tr>
 				</template>
 			</v-data-table>
 		</v-card>
@@ -191,7 +201,14 @@
 
 <script>
 
+import Vue from 'vue';
 import moment from 'moment';	
+
+var numeral = require("numeral");
+
+Vue.filter("formatNumber", function (value) {
+    return numeral(value).format("0,0.00");
+});
 
 export default {
 	
@@ -246,7 +263,7 @@ export default {
 		fetchData() {
 			this.$axios.$get(`api/account`)
 			.then(res => {
-				this.items = res;
+				this.items = res.account;
 				console.log(res);
 			})
 			.catch(err => {
@@ -272,8 +289,7 @@ export default {
 					'code': this.form.code,
 					'name': this.form.name,
 					'balance': this.form.balance,
-					'checkout': this.form.checkout,
-					'status': this.form.status,
+					'description': this.form.description,
 				})
 				.then(res => {
 					this.fetchData();
