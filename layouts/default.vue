@@ -492,27 +492,15 @@
 						permission: "view biller",
 						children: [
 							{
-								name: "User List",
-								icon: "mdi-account",
-								to: "/people/users",
-								permission: "view biller",
-							},
-							{
-								name: "Add User",
-								icon: "mdi-plus-circle",
-								to: "/people/add_user",
-								permission: "view biller",
-							},
-							{
-								name: "Customer List",
+								name: "Member List",
 								icon: "mdi-account-tie",
-								to: "/people/customer",
+								to: "/people/member",
 								permission: "view biller",
 							},
 							{
-								name: "Add Customer",
+								name: "Add Member",
 								icon: "mdi-plus-circle",
-								to: "/people/add_customer",
+								to: "/people/add_member",
 								permission: "view biller",
 							},
 							{
