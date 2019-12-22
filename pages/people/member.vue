@@ -140,14 +140,13 @@
 				:options.sync="options"
 			>
 				<template v-slot:item="{ item }">
-					<tr>
-						<td>{{ item.id }}</td>
-						<td>{{ item.name }}</td>
-						<td>{{ item.company_name }}</td>
-						<td>{{ item.email }}</td>
-						<td>{{ item.phone }}</td>
-						<td>{{ item.address }}</td>
-						<td>USD {{ item.deposit_amount | formatNumber }}</td>
+					<tr class="member--tr">
+						<td @click="gotoMember(item.id)">{{ item.name }}</td>
+						<td @click="gotoMember(item.id)">{{ item.company_name }}</td>
+						<td @click="gotoMember(item.id)">{{ item.email }}</td>
+						<td @click="gotoMember(item.id)">{{ item.phone }}</td>
+						<td @click="gotoMember(item.id)">{{ item.address }}</td>
+						<td @click="gotoMember(item.id)">USD {{ item.deposit_amount | formatNumber }}</td>
 						<td>
 							<v-menu>
 						      <template v-slot:activator="{ on: menu }">
@@ -168,7 +167,7 @@
 						          	v-for="(menu, index) in menus"
 						          	:key="index"
 						          	dense
-						          	@click="menu.action(item)"
+						          	@click="menu.action(item.id)"
 						          	class="cyan darken-3"
 						        >
 						          	<v-list-item-title class="white--text">
@@ -303,10 +302,13 @@ export default {
       	},
 
 
-      	edit(item) {
-	        this.form = Object.assign({}, item);
-      		this.$router.push(`/people/member/${item.id}/edit`);
+      	edit(id) {
+      		this.$router.push(`/people/${id}/`);
       	},	
+
+      	gotoMember(id) {
+      		this.$router.push(`/people/${id}/`);
+      	},
 
       	deleteItem(item) {
 			if(confirm('Are u sure to delete it?')) {
@@ -405,6 +407,10 @@ export default {
 
 .deposit-note {
 	border:  1px solid #25babc;
+}
+
+.member--tr {
+	cursor: pointer;
 }
 
 </style>

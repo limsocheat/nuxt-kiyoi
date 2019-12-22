@@ -192,12 +192,6 @@ export default {
 			this.$router.push(`/people/biller/${id}/edit`)
 		},
 
-		editItem (item) {
-	        this.editedIndex = this.items.indexOf(item);
-	        this.form = Object.assign({}, item);
-	        this.dialog = true
-      	},
-
       	closeDialog() {
       		this.dialog = false;
       		this.editedIndex = -1;
