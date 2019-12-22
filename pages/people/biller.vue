@@ -53,7 +53,7 @@
 			</div>
 		</div>
 		<div class="d-flex justify-space-between pb-5">
-			<input type="text" placeholder="Search" class="biller--search">
+			<input type="text" placeholder="Search" class="biller--search" v-model="search">
 			<div>
 				<v-btn class="red darken-1">PDF</v-btn>
 				<v-btn class="lime lighten-1">CSV</v-btn>
@@ -61,7 +61,7 @@
 			</div>
 		</div>
 		<v-card>
-			<v-data-table :headers="headers" :items="items" :items-per-page="itemsPerPage">
+			<v-data-table :headers="headers" :items="items" :items-per-page="itemsPerPage" :options.sync="options">
 				<template v-slot:item="{item}">
 					<tr @click="editBiller(item.id)" class="biller--tr">
 						<td></td>
@@ -109,6 +109,22 @@
 export default {
 	created() {
 		this.fetchData()
+	},
+
+	watch: {
+		options: {
+			handler() {
+				this.fetchData()
+			}
+		},
+
+		search: {
+			handler() {
+				this.fetchData();
+			}
+		},
+
+		immediate: true,
 	},
 
 	data() {
@@ -162,7 +178,7 @@ export default {
 
 	methods: {
 		fetchData() {
-			this.$axios.$get(`api/biller?itemsPerPage=${this.options.itemsPerPage}&page=${this.options.page}`)
+			this.$axios.$get(`api/biller?itemsPerPage=${this.options.itemsPerPage}&page=${this.options.page}&search=${this.search}`)
 			.then(res => {
 				this.items = res.billers.data;
 				console.log(res);
