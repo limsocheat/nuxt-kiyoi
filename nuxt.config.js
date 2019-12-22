@@ -48,6 +48,7 @@ export default {
     { src: "~/plugins/DateRangePicker.js", ssr: false },
     { src: "~/plugins/vuetify-snackbar"},
     { src: "~/plugins/laravel-permission"},
+    { src: "~/plugins/vee-validate"},
   ],
   /*
    ** Nuxt.js dev-modules
@@ -124,18 +125,15 @@ export default {
    */
   build: {
     /*
-<<<<<<< HEAD
     ** You can extend webpack config here
     */
     extend (config, ctx) {
-    }
+    },
+
+    transpile: [
+      'vee-validate'
+    ]
   },
 
 }
-// =======
-//      ** You can extend webpack config here
-//      */
-//     extend(config, ctx) {}
-//   }
-// };
-// >>>>>>> ea5319d9589ec45ecd68b5f19dff858125a5d97c
+
