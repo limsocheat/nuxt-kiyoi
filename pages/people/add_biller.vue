@@ -1,64 +1,76 @@
 <template>
 	<v-app>
 		<v-card class="mx-5 my-5">
-			<div class="purple lighten-1 py-2 px-5" dark>
-				<h3>
+			<div class="blue lighten-1" dark>
+				<v-card-title class="white--text">
 					ADD BILLER
-				</h3>
+				</v-card-title >
 			</div>
 			<v-divider></v-divider>
 			<v-row class="px-5">
 				<v-col sm="6" cols="12">
 					<label class="font-weight-bold" for="name">Name*</label>
-					<v-text-field 
-						outlined solo dense
-						label="Name"
-					></v-text-field>
+					<ValidationProvider rules="required|alpha" v-slot="{ errors }">
+						<input type="text" class="biller-image" required v-model="form.name">
+				      	<span class="red--text">{{ errors[0] }}</span>
+				    </ValidationProvider>
+				</v-col>
+				<v-col sm="6" cols="12" class="d-flex flex-column">
+					<label class="font-weight-bold" for="image">Image*</label>
+					<input type="file" accept="image/*" @change="uploadImage($event)" class="biller-image">
 				</v-col>
 				<v-col sm="6" cols="12">
-					<label class="font-weight-bold" for="">Company Name</label>
-					<v-text-field 
-						outlined solo dense
-						label="Company Name"
-					></v-text-field>
+					<label class="font-weight-bold" for="">Company Name*</label>
+					<ValidationProvider rules="required|alpha" v-slot="{ errors }">
+						<input type="text" class="biller-image" required v-model="form.company_name">
+						<span class="red--text">{{ errors[0] }}</span>
+					</ValidationProvider>
 				</v-col>
 				<v-col sm="6" cols="12">
-					<label class="font-weight-bold" for="">VAT Number</label>
-					<v-text-field 
-						outlined solo dense
-					></v-text-field>
+					<label class="font-weight-bold" for="">
+						VAT Number <span class="font-weight-light">(Optional)</span>
+					</label>
+					<ValidationProvider rules="required|alpha" v-slot="{ errors }">
+						<input type="text" class="biller-image" required v-model="form.vat_number">
+						<span class="red--text">{{ errors[0] }}</span>
+					</ValidationProvider>
 				</v-col>
 				<v-col sm="6" cols="12">
 					<label class="font-weight-bold" for="">Email</label>
-					<v-text-field outlined solo dense label="email@email.com"></v-text-field>
+					<ValidationProvider rules="required|alpha" v-slot="{ errors }">
+						<input type="text" class="biller-image" required v-model="form.email">
+						<span class="red--text">{{ errors[0] }}</span>
+					</ValidationProvider>
 				</v-col>
 				<v-col sm="6" cols="12">
 					<label class="font-weight-bold" for="">Phone Number</label>
-					<v-text-field outlined solo dense label="Phone Number"></v-text-field>
+					<ValidationProvider rules="required|alpha" v-slot="{ errors }">
+						<input type="text" class="biller-image" required v-model="form.phone">
+						<span class="red--text">{{ errors[0] }}</span>
+					</ValidationProvider>
 				</v-col>
 				<v-col sm="6" cols="12">
 					<label class="font-weight-bold" for="">Address</label>
-					<v-text-field outlined solo dense label="Address"></v-text-field>
+					<ValidationProvider rules="required|alpha" v-slot="{ errors }">
+						<input type="text" class="biller-image" required v-model="form.address">
+						<span class="red--text">{{ errors[0] }}</span>
+					</ValidationProvider>
 				</v-col>
 				<v-col sm="6" cols="12">
-					<label class="font-weight-bold" for="">City</label>
-					<v-text-field outlined solo dense label="City"></v-text-field>
+					<label class="font-weight-bold" for="">
+						City<span class="font-weight-light">(Optional)</span>
+					</label>
+					<input type="text" class="biller-image" required v-model="form.city">
 				</v-col>
 				<v-col sm="6" cols="12">
-					<label class="font-weight-bold" for="">State</label>
-					<v-text-field outlined solo dense label="State"></v-text-field>
-				</v-col>
-				<v-col sm="6" cols="12">
-					<label class="font-weight-bold" for="">Post Code</label>
-					<v-text-field outlined solo dense label="Post Code"></v-text-field>
-				</v-col>
-				<v-col sm="6" cols="12">
-					<label class="font-weight-bold" for="">Country</label>
-					<v-text-field outlined solo dense label="Country"></v-text-field>
+					<label class="font-weight-bold" for="">
+						Country<span class="font-weight-light">(Optional)</span>
+					</label>
+					<input type="text" class="biller-image" required v-model="form.country">
 				</v-col>
 			</v-row>
-			<div class="pb-5 px-5">
-				<v-btn color="primary" v-permission="'add users'">
+			<div class="pb-5 pt-3 px-5">
+				<v-btn color="primary" v-permission="'add users'" @click="createBiller">
 					<v-icon left>mdi-check</v-icon>
 					Submit
 				</v-btn>
@@ -68,33 +80,60 @@
 </template>
 
 <script>
-	import moment from 'moment';
+	import { ValidationProvider } from "vee-validate";
 	export default {
+		components: {
+		    ValidationProvider
+		},
+		name: "AddBiller",	
 		data() {
 			return {
-				product_type: 
-				[
-					'Standard', 'Combo', 'Digital',			
-				],
-				barcodes: ['Code 128', 'Code 39', 'UPC-A', 'UPC-E', 'EAN-8', 'EAN-13'],
-				brands: ['HP', 'Apple', 'Samsung'],
-				categories: ['Fruits', 'Electronics', 'Computer', 'Toy', 'Food', 'Accessories'],
-				product_unit: ['Piece', 'Meter', 'Kilogram'],
-				sale_unit: [],
-				purchase_unit: [],
-				menu1: false,
-				menu2: false,
-				date: new Date().toISOString().substr(0, 10),
-				tax: ['No Tax', 'vat@10', 'vat@15', 'vat@20'],
-				tax_method: ['Exclusive', 'Inclusive'],
-				content1: '<p>ddd</p>',
-				content2: '<p>ddd</p>',
+				form: {},
+				items: [],
 			}
 		},
+
+		methods: {
+			createBiller() {
+				this.$axios.$post(`api/biller`, this.form)
+				.then(res => {
+					this.items = res.data;
+					this.$router.push('/people/biller');
+				})
+				.catch(err => {
+					console.log(err.response.data)
+				})
+			},
+
+			uploadImage(event) { 
+			    let data = new FormData();
+			    data.append('name', 'image');
+			    data.append('file', event.target.files[0]); 
+					    
+			    this.$axios.$post(
+			      `api/biller`, 
+			      	data,
+			    ).then(
+			      response => {
+			        console.log('image upload response > ', response)
+			      }
+		    	)
+ 			}
+		},	
+
 		computed: {
 		   	computedDateFormattedMomentjs () {
 		        return this.date ? moment(this.date).format('dddd, MMMM Do YYYY') : ''
 		    },
     	},
 	}
-</scriptCUSTOMER
+</script>
+
+<style lang="scss">
+	.biller-image {
+		border: 1px solid #46c457;
+		padding: 5px 10px 5px 10px;
+		width: 100%;
+		outline: none;
+	}
+</style>
