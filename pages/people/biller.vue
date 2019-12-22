@@ -52,15 +52,8 @@
 				</v-dialog>
 			</div>
 		</div>
-		<div class="d-flex justify-space-between">
-			<div>
-				<v-text-field
-					label="Search"
-					solo 
-					outlined
-					dense
-				></v-text-field>
-			</div>
+		<div class="d-flex justify-space-between pb-5">
+			<input type="text" placeholder="Search" class="biller--search">
 			<div>
 				<v-btn class="red darken-1">PDF</v-btn>
 				<v-btn class="lime lighten-1">CSV</v-btn>
@@ -70,7 +63,7 @@
 		<v-card>
 			<v-data-table :headers="headers" :items="items" :items-per-page="itemsPerPage">
 				<template v-slot:item="{item}">
-					<tr @click="editBiller(item.id)">
+					<tr @click="editBiller(item.id)" class="biller--tr">
 						<td></td>
 						<td>{{item.name}}</td>
 						<td>{{item.name}}</td>
@@ -78,31 +71,31 @@
 						<td>{{item.email}}</td>
 						<td>{{item.phone}}</td>
 						<td>{{item.address}}</td>
+						<td>
+							<v-tooltip bottom>
+								<template v-slot:activator="{ on }">
+									<!-- Edit Item -->
+									<v-btn small left color="primary" icon outlined v-on="on">
+										<v-icon small>
+											mdi-pencil
+										</v-icon>
+									</v-btn>
+								</template>
+								<span>Edit Biller</span>
+							</v-tooltip>
+							<v-tooltip bottom>
+								<template v-slot:activator="{ on }">
+									<!-- Delete Item -->
+									<v-btn @click="deleteItem(item)" small left color="red" icon outlined v-on="on">
+										<v-icon small>
+											mdi-delete
+										</v-icon>
+									</v-btn>
+								</template>
+								<span>Delete Biller</span>
+							</v-tooltip>
+						</td>
 					</tr>
-				</template>
-				<template v-slot:item.action="{ item }">
-					<v-tooltip bottom>
-						<template v-slot:activator="{ on }">
-							<!-- Edit Item -->
-							<v-btn small left color="primary" icon outlined v-on="on">
-								<v-icon small>
-									mdi-pencil
-								</v-icon>
-							</v-btn>
-						</template>
-						<span>Edit Biller</span>
-					</v-tooltip>
-					<v-tooltip bottom>
-						<template v-slot:activator="{ on }">
-							<!-- Delete Item -->
-							<v-btn @click="deleteItem(item)" small left color="red" icon outlined v-on="on">
-								<v-icon small>
-									mdi-delete
-								</v-icon>
-							</v-btn>
-						</template>
-						<span>Delete Biller</span>
-					</v-tooltip>
 				</template>
 			</v-data-table>
 		</v-card>
@@ -240,6 +233,17 @@ export default {
 .nuxt--link {
 	display: block;
 	text-decoration: none;
+}
+
+.biller--tr {
+	cursor: pointer;
+}
+
+.biller--search {
+	padding: 5px 10px 5px 10px;
+	border: 1px solid #6ab743;
+	width: 40%;
+	outline: none;
 }
 
 </style>

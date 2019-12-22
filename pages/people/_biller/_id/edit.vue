@@ -3,14 +3,14 @@
 		<v-card class="mx-5 my-5">
 			<div class="blue lighten-1" dark>
 				<v-card-title class="white--text">
-					Edit BILLER
+					Edit Biller
 				</v-card-title >
 			</div>
 			<v-divider></v-divider>
 			<v-row class="px-5">
 				<v-col sm="6" cols="12">
 					<label class="font-weight-bold" for="name">Name*</label>
-					<ValidationProvider rules="required|alpha" v-slot="{ errors }">
+					<ValidationProvider rules="min:3" v-slot="{ errors }">
 						<input type="text" class="biller-image" required v-model="form.name">
 				      	<span class="red--text">{{ errors[0] }}</span>
 				    </ValidationProvider>
@@ -34,10 +34,10 @@
 				</v-col>
 				<v-col sm="6" cols="12">
 					<label class="font-weight-bold" for="">Email</label>
-					<ValidationProvider rules="required" v-slot="{ errors }">
+					<validation-provider rules="email" v-slot="{ errors }">
 						<input type="text" class="biller-image" required v-model="form.email">
 						<span class="red--text">{{ errors[0] }}</span>
-					</ValidationProvider>
+					</validation-provider>
 				</v-col>
 				<v-col sm="6" cols="12">
 					<label class="font-weight-bold" for="">Phone Number</label>
@@ -77,11 +77,7 @@
 </template>
 
 <script>
-	import { ValidationProvider } from "vee-validate";
 	export default {
-		components: {
-		    ValidationProvider
-		},
 		name: "EditBiller",	
 		data() {
 			return {
@@ -106,6 +102,7 @@
 					'vat_number': this.form.vat_number,
 					'phone': this.form.phone,
 					'address': this.form.address,
+					'city': this.form.city,
 					'country': this.form.country,
 					_method: 'patch',
 				})
