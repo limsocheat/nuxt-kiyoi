@@ -3,12 +3,12 @@
 		<div class="d-flex">
 			<div class="pr-5 py-5">
 				<nuxt-link 
-					to="/people/add_customer" 
+					to="/people/add_member" 
 					class="nuxt--link grey--text text--lighten-4"
 				>
 					<v-btn class="teal darken-1" dark  v-permission="'add users'">
 						<v-icon left>mdi-plus-circle</v-icon>
-							Add Customer
+							Add Member
 					</v-btn>
 				</nuxt-link>
 			</div>
@@ -17,14 +17,14 @@
 					<template v-slot:activator="{ on }">
 						<v-btn class="purple darken-1" dark v-on="on">
 							<v-icon left>mdi-file</v-icon>
-							Import Customer
+							Import Member
 						</v-btn>
 					</template>
 
 					<!-- Form Modal -->
 					<v-card>
 						<v-card-title class="headline font-weight-light">
-							IMPORT CUSTOMER
+							IMPORT Member
 						</v-card-title>
 						<v-divider></v-divider>
 						<v-col cols="12">
@@ -51,6 +51,72 @@
 					</v-card>
 				</v-dialog>
 			</div>
+			<div class="py-5" v-permission="'add users'">
+				<v-dialog v-model="dialog2" max-width="600px">
+					<!-- Form Modal -->
+					<v-card>
+						<v-card-title class="headline font-weight-light">
+							Add Deposit
+						</v-card-title>
+						<v-divider></v-divider>
+						<v-row class="px-4">
+							<v-col cols="12">
+								<label class="font-weight-bold">Amount</label>
+								<v-text-field
+									solo
+									outlined
+									dense
+									label="Amount"
+									type="number"
+									v-model="form.amount"
+								>
+								</v-text-field>
+							</v-col>
+							<v-col cols="12" class="d-flex flex-column">
+								<label class="font-weight-bold">Note</label>
+								<textarea cols="30" rows="5" class="deposit-note"></textarea>
+							</v-col>
+						</v-row>
+						<v-card-actions>
+							<v-spacer></v-spacer>
+							<v-btn color="blue darken-1" text>Close</v-btn>
+							<v-btn color="primary" @click="createDeposit">Save</v-btn>
+						</v-card-actions>
+					</v-card>
+				</v-dialog>
+			</div>
+
+			<div v-permission="'add users'">
+				<v-dialog v-model="dialog3" max-width="700px">
+					<!-- Form Modal -->
+					<v-card>
+						<v-card-title class="headline font-weight-light">
+							View Deposit
+						</v-card-title>
+						<v-divider></v-divider>
+						<v-data-table :headers="viewDeposits" :items="items" :server-items-length="total">
+							<template v-slot:item="{ item }">
+								<tr>
+									<td>{{ item.created_at }}</td>
+									<template v-for="i in item.deposits">
+										<td>USD {{ i.amount | formatNumber}} </td>
+									</template>
+									<td>{{ item.description }}</td>
+									<td></td>
+									<td>
+										<v-btn icon @click="editItem(item)" color="primary" outlined>
+											<v-icon small>mdi-pencil</v-icon>
+										</v-btn>
+										<v-btn icon @click="deleteItem(item)" color="red" outlined>
+											<v-icon small>mdi-delete</v-icon>
+										</v-btn>
+									</td>
+								</tr>
+							</template>
+						</v-data-table>
+					</v-card>
+				</v-dialog>
+			</div>
 		</div>
 		<div class="d-flex justify-space-between">
 			<div>
@@ -67,42 +133,86 @@
 				<v-btn class="blue lighten-1">Print</v-btn>
 			</div>
 		</div>
+
 		<v-card>
-			<v-data-table :headers="headers" :items="items" :items-per-page="itemsPerPage" :options.sync="options" :server-items-length="total">
-				<template v-slot:item.action="{ item }">
-					<v-tooltip bottom>
-						<template v-slot:activator="{ on }">
-							<!-- Edit Item -->
-							<v-icon left fab color="primary" v-on="on">
-								mdi-pencil
-							</v-icon>
-						</template>
-						<span>Edit Supplier</span>
-					</v-tooltip>
-					<v-tooltip bottom>
-						<template v-slot:activator="{ on }">
-							<!-- Delete Item -->
-							<v-icon left fab color="primary" v-on="on">
-								mdi-delete
-							</v-icon>
-						</template>
-						<span>Delete Supplier</span>
-					</v-tooltip>
+			<v-data-table 
+				:headers="headers" :items="items" :items-per-page="itemsPerPage"
+				:options.sync="options"
+			>
+				<template v-slot:item="{ item }">
+					<tr>
+						<td>{{ item.id }}</td>
+						<td>{{ item.name }}</td>
+						<td>{{ item.company_name }}</td>
+						<td>{{ item.email }}</td>
+						<td>{{ item.phone }}</td>
+						<td>{{ item.address }}</td>
+						<td>USD {{ item.deposit_amount | formatNumber }}</td>
+						<td>
+							<v-menu>
+						      <template v-slot:activator="{ on: menu }">
+						        <v-tooltip bottom>
+						          <template v-slot:activator="{ on: tooltip }">
+						            <v-btn
+						              color="primary"
+						              dark
+						              v-on="{ ...tooltip, ...menu }"
+						              smallF
+						            >Action</v-btn>
+						          </template>
+						          <span>Action</span>
+						        </v-tooltip>
+						      </template>
+						      <v-list>
+						        <v-list-item
+						          	v-for="(menu, index) in menus"
+						          	:key="index"
+						          	dense
+						          	@click="menu.action(item)"
+						          	class="cyan darken-3"
+						        >
+						          	<v-list-item-title class="white--text">
+						          		<v-icon left dark>{{menu.icon}}</v-icon>
+						          		{{ menu.title }}
+						          	</v-list-item-title>
+						        </v-list-item>
+						      </v-list>
+						    </v-menu>	
+						</td>
+					</tr>
 				</template>
 			</v-data-table>
 		</v-card>
+
 	</v-app>
 </template>
 
 
 <script>
+import Vue from 'vue';
+
+var numeral = require("numeral");
+Vue.filter("formatNumber", function (value) {
+    return numeral(value).format("0,0.00");
+});
+
+
 export default {
-	created() {
-		// this.fetchData()
+	name: "Member",
+
+	watch: {
+		options: {
+			handler() {
+				this.fetchData();
+				this.fetchDeposit();
+			}
+		},	
+		immediate: true,
 	},
 
 	data() {
 		return {
+			deposits: [],
 			items: [],
 			search: '',
 			form: {},
@@ -112,39 +222,105 @@ export default {
 			editedIndex: -1,
 			created: true,
 			dialog: false,
-			headers: [{
-					text: 'Customer Group',
-					sortable: false,
-				}, {
+			dialog2: false,
+			dialog3: false,
+			headers: [
+				{
 					text: 'Name',
 					sortable: false,
+					value: 'name',
 				}, {
 					text: 'Company Name',
 					sortable: false,
+					value: 'company_name',
 				}, {
 					text: 'Email',
 					sortable: false,
+					value: 'email',
 				}, {
 					text: 'Phone Number',
 					sortable: false,
-				}, {
-					text: 'Tax Number',
-					sortable: false,
-				}, {
+					value: 'phone',
+				}, 
+				{
 					text: 'Address',
 					sortable: false,
+					value: 'address',
 				}, {
 					text: 'Balance',
 					sortable: false,
+					value: 'balance'
 				},{
 					text: 'Actions',
 					sortable: false,
+					value: 'action',
 				},
+			],
+			menus: [
+				{title: 'Edit', icon: 'mdi-pencil', action: this.edit},
+				{title: 'Delete', icon: 'mdi-delete', action: this.deleteItem},
+				{title: 'Add Deposit', icon: 'mdi-plus-circle', action: this.depositDialog},
+				{title: 'View Deposit', icon: 'mdi-cash', action: this.viewDeposit},
+			],
+
+			viewDeposits: [
+				{ text: 'Date', sortable: false, },
+				{ text: 'Amount', sortable: false, },
+				{ text: 'Note', sortable: false, },
+				{ text: 'Created By', sortable: false, },
+				{ text: 'Actions', sortable: false, },
 			],
 		}
 	},
 
 	methods: {
+		fetchData() {
+			this.$axios.$get(`api/member`)
+			.then(res => {
+				this.items = res.members.data;
+				this.total = res.total;
+				console.log(res);
+			})
+			.catch(err => {
+				console.log(err.response);
+			})
+		},
+
+		depositDialog() {
+			this.dialog2 = true
+		},
+
+		editItem (item) {
+	        this.editedIndex = this.items.indexOf(item);
+	        this.form = Object.assign({}, item);
+	        this.dialog = true
+      	},
+
+      	closeDialog() {
+      		this.dialog = false;
+      		this.editedIndex = -1;
+      		this.form = {};
+      	},
+
+
+      	edit(item) {
+	        this.form = Object.assign({}, item);
+      		this.$router.push(`/people/member/${item.id}/edit`);
+      	},	
+
+      	deleteItem(item) {
+			if(confirm('Are u sure to delete it?')) {
+				this.$axios.$delete(`/api/member/` + item.id)
+				.then(res => {
+					this.fetchData();
+					this.$toast.info('Succeessfully Delete');
+				})
+				.catch(err => {
+					console.log(err.response);
+				})
+			}
+		},
+
 		uploadCsv(image) {
 			const URL = 'http://127.0.0.1:3000/product/category'
 
@@ -167,6 +343,35 @@ export default {
 		        console.log('Csv upload response > ', response)
 		      }
 		    )
+		},
+
+		fetchDeposit() {
+			this.$axios.$get(`api/deposit-account`)
+			.then(res => {
+				this.deposits = res.deposits.data;
+				console.log(res)
+			})
+			.catch(err => {
+				console.log(res.response)
+			})
+		},
+
+		createDeposit() {
+			this.$axios.$post(`api/deposit-account`, this.form)
+			.then(res => {
+				this.items = res.data;
+				this.fetchDeposit()
+				this.fetchData()
+				this.dialog2 = false;
+				this.form  = {}
+			})
+			.catch(err => {
+				console.log(err.response)
+			})
+		},
+
+		viewDeposit() {
+			this.dialog3 = true;
 		}
 	}
 }
@@ -194,5 +399,12 @@ export default {
 	border: 1px solid #616161;
 }
 
+.display {
+	display: none;
+}
+
+.deposit-note {
+	border:  1px solid #25babc;
+}
 
 </style>

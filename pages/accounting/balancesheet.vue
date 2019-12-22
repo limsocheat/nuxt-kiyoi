@@ -15,31 +15,21 @@
 				</div>
 				<div>
 					<v-btn class="red darken-1">PDF</v-btn>
-					<v-btn class="lime lighten-1">CSV</v-btn>
+					<nuxt-link to="/api/v1/transaction/export">
+						<v-btn class="lime lighten-1">CSV</v-btn>
+					</nuxt-link>
 					<v-btn class="blue lighten-1">Print</v-btn>
 				</div>
 			</div>
-			<v-data-table :headers="headers">
-				<template v-slot:item.action="{ item }">
-					<v-tooltip bottom>
-						<template v-slot:activator="{ on }">
-							<!-- Edit Item -->
-							<v-icon left fab color="primary" v-on="on">
-								mdi-pencil
-							</v-icon>
-						</template>
-						<span>Edit Supplier</span>
-					</v-tooltip>
-					<v-tooltip bottom>
-						<template v-slot:activator="{ on }">
-
-							<!-- Delete Item -->
-							<v-icon left fab color="primary" v-on="on">
-								mdi-delete
-							</v-icon>
-						</template>
-						<span>Delete Supplier</span>
-					</v-tooltip>
+			<v-data-table :headers="headers" :items="items">
+				<template v-slot:item="{ item }"> 
+					<tr>
+						<td>{{ item.account.name }}</td>
+						<td>{{ item.account.code }}</td>
+						<td>USD {{ item.credit | formatNumber }}</td>
+						<td>USD {{ item.debit | formatNumber }}</td>
+						<td>USD {{ columnTotal | formatNumber }}</td>
+					</tr>
 				</template>
 			</v-data-table>
 		</v-card>
@@ -47,9 +37,21 @@
 </template>
 
 <script>
+	import Vue from 'vue';
+
+	let numeral = require('numeral')
+	Vue.filter("formatNumber", function(value) {
+		return numeral(value).format("0,0.00");
+	})
+
 	export default {
+		created() {
+			this.fetchData();
+		},
+
 		data() {
 			return {
+				items: [],
 				headers: [
 					{
 						text: 'Name',
@@ -72,6 +74,27 @@
 						sortable: false,
 					},
 				]
+			}
+		},
+
+		computed: {
+			columnTotal() {
+				return this.items.reduce((total, item) => {
+					return total + item.credit;
+				}, 0);
+			}
+		},
+
+		methods: {
+			fetchData() {
+				this.$axios.$get(`api/transaction`)
+				.then(res => {
+					this.items = res.transactions;
+					console.log(res);
+				})
+				.catch(err => {
+					console.log(err.response);
+				})
 			}
 		}
 	}

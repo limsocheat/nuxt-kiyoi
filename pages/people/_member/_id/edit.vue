@@ -3,7 +3,7 @@
 		<v-card class="mx-5 my-5">
 			<div class="blue lighten-1" dark>
 				<v-card-title class="white--text">
-					Add Member
+					Edit Member
 				</v-card-title>
 			</div>
 			<v-divider></v-divider>
@@ -58,9 +58,9 @@
 				</v-col>
 			</v-row>
 			<div class="pb-5 px-5">
-				<v-btn @click="createMember" color="primary">
+				<v-btn @click="editMember" color="primary">
 					<v-icon left>mdi-check</v-icon>
-					Submit
+					Update
 				</v-btn>
 			</div>
 		</v-card>
@@ -68,27 +68,83 @@
 </template>
 
 <script>
+	import Vue from 'vue'
 	export default {
-		name: "AddMember",
 		data() {
 			return {
-				form: {},
+				form: {
+					name: '',
+				},
 				items: []
 			}
 		},
 
+		created() {
+			this.fetchData()
+		},
+
 		methods: {
-			createMember() {
-				this.$axios.$post(`api/member`, this.form)
-				.then(res => {
-					this.items = res.data;
-					console.log(res)
-					this.$router.push('/people/member');
-					this.$toast.info('Succeessfully Created');
-				})
-				.catch(err => {
-					console.log(err.response);
-				})
+			 // async asyncData({ $axios, params }) {
+			 //    try {
+			 //      let form = await $axios.$get(`api/member/${this.$route.params.id}`);
+			 //      return { form };
+			 //    } catch (e) {
+			 //      return { form: [] };
+			 //    }
+			 //  },
+			fetchData() {
+				try {
+					this.$axios.$get(`api/member/${this.$route.params.id}`)
+					.then(res => {
+						this.items = res.members.data;
+						console.log(res)
+					})
+					.catch(err => {
+						console.log(err.response)
+					})
+				}
+				catch(e) {
+					console.log(e)
+				}
+			},
+
+			editMember() {
+				// this.$axios.$put(`api/member`, this.form.id, {
+				// 	'name': this.form.name,
+				// 	'company_name': this.form.company_name,
+				// 	'phone': this.form.phone,
+				// 	'tax': this.form.tax,
+				// 	'address': this.form.address,
+				// 	'city': this.form.city,
+				// 	'post_code': this.form.post_code,
+				// 	'country': this.form.country,
+				// })
+				// .then(res => {
+				// 	console.log(res)
+				// 	this.$toast.info('Successfully Updated');
+				// 	this.$router.push('/people/member');
+				// })
+				// .catch(err => {
+				// 	console.log(err.response);
+				// })
+
+				try {
+			        this.$axios.$patch(`api/member/${this.form.id}/`, {
+			          	'name': this.form.name,
+			          	'email': this.form.email,
+			          	'company_name': this.form.company_name,
+						'phone': this.form.phone,
+						'tax': this.form.tax,
+						'address': this.form.address,
+						'city': this.form.city,
+						'post_code': this.form.post_code,
+						'country': this.form.country,
+			          }
+			        );
+			        	this.$router.push("/people/member");
+			    } catch (e) {
+			        console.log(e);
+			    }
 			}
 		},
 	}
