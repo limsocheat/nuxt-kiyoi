@@ -68,25 +68,29 @@
 			</div>
 		</div>
 		<v-card>
-			<v-data-table :headers="headers" :items="items" :items-per-page="itemsPerPage" :options.sync="options" :server-items-length="total">
+			<v-data-table :headers="headers" :items="items" :items-per-page="itemsPerPage">
 				<template v-slot:item.action="{ item }">
 					<v-tooltip bottom>
 						<template v-slot:activator="{ on }">
 							<!-- Edit Item -->
-							<v-icon left fab color="primary" v-on="on">
-								mdi-pencil
-							</v-icon>
+							<v-btn small left color="primary" icon outlined v-on="on">
+								<v-icon small>
+									mdi-pencil
+								</v-icon>
+							</v-btn>
 						</template>
-						<span>Edit Supplier</span>
+						<span>Edit Biller</span>
 					</v-tooltip>
 					<v-tooltip bottom>
 						<template v-slot:activator="{ on }">
 							<!-- Delete Item -->
-							<v-icon left fab color="primary" v-on="on">
-								mdi-delete
-							</v-icon>
+							<v-btn small left color="red" icon outlined v-on="on">
+								<v-icon small>
+									mdi-delete
+								</v-icon>
+							</v-btn>
 						</template>
-						<span>Delete Supplier</span>
+						<span>Delete Biller</span>
 					</v-tooltip>
 				</template>
 			</v-data-table>
@@ -98,7 +102,7 @@
 <script>
 export default {
 	created() {
-		// this.fetchData()
+		this.fetchData()
 	},
 
 	data() {
@@ -112,36 +116,57 @@ export default {
 			editedIndex: -1,
 			created: true,
 			dialog: false,
-			headers: [{
+			headers: [
+				{
 					text: 'Image',
 					sortable: false,
+					value: 'image',
 				}, {
 					text: 'Name',
 					sortable: false,
+					value: 'name',
 				}, {
 					text: 'Company Name',
 					sortable: false,
+					value: 'company_name'
 				}, {
 					text: 'VAT Number',
 					sortable: false,
+					value: 'vat_number',
 				}, {
 					text: 'Email',
 					sortable: false,
+					value: 'email',
 				}, {
 					text: 'Phone Number',
 					sortable: false,
+					value: 'phone',
 				}, {
 					text: 'Address',
 					sortable: false,
+					value: 'address',
 				},{
 					text: 'Actions',
 					sortable: false,
+					value: 'action',
 				},
 			],
 		}
 	},
 
 	methods: {
+		fetchData() {
+			this.$axios.$get(`api/biller`)
+			.then(res => {
+				this.items = res.billers.data;
+				console.log(res);
+			})
+			.catch(err => {
+				console.log(err.response)
+			})
+		},
+
+
 		uploadCsv(image) {
 			const URL = 'http://127.0.0.1:3000/product/category'
 
