@@ -3,7 +3,7 @@
 		<v-card class="mx-5 my-5">
 			<div class="blue lighten-1" dark>
 				<v-card-title class="white--text">
-					ADD BILLER
+					Edit BILLER
 				</v-card-title >
 			</div>
 			<v-divider></v-divider>
@@ -82,17 +82,33 @@
 		components: {
 		    ValidationProvider
 		},
-		name: "AddBiller",	
+		name: "EditBiller",	
 		data() {
 			return {
 				form: {},
-				items: [],
 			}
+		},
+
+		created() {
+			this.$axios.$get('api/biller/' + this.$route.params.id)
+			.then(res => {
+				this.form = res.biller;
+				console.log(res)
+			})
 		},
 
 		methods: {
 			createBiller() {
-				this.$axios.$post(`api/biller`, this.form)
+				this.$axios.$post(`api/biller/` + this.form.id, {
+					'name': this.form.name,
+					'company_name': this.form.company_name,
+					'email': this.form.email,
+					'vat_number': this.form.vat_number,
+					'phone': this.form.phone,
+					'address': this.form.address,
+					'country': this.form.country,
+					_method: 'patch',
+				})
 				.then(res => {
 					this.items = res.data;
 					this.$router.push('/people/biller');
@@ -117,12 +133,6 @@
 		    	)
  			}
 		},	
-
-		computed: {
-		   	computedDateFormattedMomentjs () {
-		        return this.date ? moment(this.date).format('dddd, MMMM Do YYYY') : ''
-		    },
-    	},
 	}
 </script>
 

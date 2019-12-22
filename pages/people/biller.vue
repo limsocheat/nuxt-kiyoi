@@ -69,6 +69,17 @@
 		</div>
 		<v-card>
 			<v-data-table :headers="headers" :items="items" :items-per-page="itemsPerPage">
+				<template v-slot:item="{item}">
+					<tr @click="editBiller(item.id)">
+						<td></td>
+						<td>{{item.name}}</td>
+						<td>{{item.name}}</td>
+						<td>{{item.vat_number}}</td>
+						<td>{{item.email}}</td>
+						<td>{{item.phone}}</td>
+						<td>{{item.address}}</td>
+					</tr>
+				</template>
 				<template v-slot:item.action="{ item }">
 					<v-tooltip bottom>
 						<template v-slot:activator="{ on }">
@@ -84,7 +95,7 @@
 					<v-tooltip bottom>
 						<template v-slot:activator="{ on }">
 							<!-- Delete Item -->
-							<v-btn small left color="red" icon outlined v-on="on">
+							<v-btn @click="deleteItem(item)" small left color="red" icon outlined v-on="on">
 								<v-icon small>
 									mdi-delete
 								</v-icon>
@@ -100,6 +111,8 @@
 
 
 <script>
+
+
 export default {
 	created() {
 		this.fetchData()
@@ -156,7 +169,7 @@ export default {
 
 	methods: {
 		fetchData() {
-			this.$axios.$get(`api/biller`)
+			this.$axios.$get(`api/biller?itemsPerPage=${this.options.itemsPerPage}&page=${this.options.page}`)
 			.then(res => {
 				this.items = res.billers.data;
 				console.log(res);
@@ -166,6 +179,34 @@ export default {
 			})
 		},
 
+		editBiller(id) {
+			this.$router.push(`/people/biller/${id}/edit`)
+		},
+
+		editItem (item) {
+	        this.editedIndex = this.items.indexOf(item);
+	        this.form = Object.assign({}, item);
+	        this.dialog = true
+      	},
+
+      	closeDialog() {
+      		this.dialog = false;
+      		this.editedIndex = -1;
+      		this.form = {};
+      	},
+
+      	deleteItem(item) {
+			if(confirm('Are u sure to delete it?')) {
+				this.$axios.$delete(`/api/biller/` + item.id)
+				.then(res => {
+					this.fetchData();
+					this.$toast.info('Succeessfully Delete');
+				})
+				.catch(err => {
+					console.log(err.response);
+				})
+			}
+		},
 
 		uploadCsv(image) {
 			const URL = 'http://127.0.0.1:3000/product/category'

@@ -1,12 +1,27 @@
-import { extend } from "vee-validate";
-import { required, alpha } from "vee-validate/dist/rules";
+import { ValidationProvider, extend } from 'vee-validate';
+import { required, alpha, email, min} from 'vee-validate/dist/rules';
 
-extend("required", {
+import Vue from 'vue';
+Vue.component('ValidationProvider', ValidationProvider);
+
+
+extend('required', {
   ...required,
-  message: "This field is required"
+  message: '*This field is required'
 });
 
-extend("alpha", {
+extend('alpha', {
   ...alpha,
-  message: "This field must only contain alphabetic characters"
+  message: "*This field must only contain alphabetic characters"
+});
+
+extend('email', {
+  ...email,
+  message: "*This field must be a valid email"
+});
+
+
+extend('min', {
+	...min,
+	message: "*Name Must be 3 characters at least"
 });
