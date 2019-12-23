@@ -107,7 +107,7 @@
 										<v-btn icon @click="editItem(item)" color="primary" outlined>
 											<v-icon small>mdi-pencil</v-icon>
 										</v-btn>
-										<v-btn icon @click="deleteItem(item)" color="red" outlined>
+										<v-btn icon @click="deleteItem(item.id)" color="red" outlined>
 											<v-icon small>mdi-delete</v-icon>
 										</v-btn>
 									</td>
@@ -310,9 +310,9 @@ export default {
       		this.$router.push(`/people/${id}/`);
       	},
 
-      	deleteItem(item) {
+      	deleteItem(id) {
 			if(confirm('Are u sure to delete it?')) {
-				this.$axios.$delete(`/api/member/` + item.id)
+				this.$axios.$delete(`/api/member/` + id)
 				.then(res => {
 					this.fetchData();
 					this.$toast.info('Succeessfully Delete');
