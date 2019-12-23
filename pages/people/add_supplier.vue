@@ -104,7 +104,6 @@
 			createSupplier() {
 				this.$axios.$post(`api/supplier`, this.form)
 				.then(res => {
-					this.items = res.data;
 					this.$router.push(`/people/supplier`)
 					console.log(res);
 				})

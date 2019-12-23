@@ -178,13 +178,14 @@ export default {
 
 		deleteItem(item) {
 			if(confirm('Are u sure to delete it?')) {
-				this.$axios.$delete(`/api/biller/` + item.id)
+				this.$axios.$delete(`/api/supplier/` + item.id)
 				.then(res => {
 					this.fetchData();
 					this.$toast.info('Succeessfully Delete');
 				})
 				.catch(err => {
 					console.log(err.response);
+					this.$toast.error('Error!! Unable to Delete');
 				})
 			}
 		},
