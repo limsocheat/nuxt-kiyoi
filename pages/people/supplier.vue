@@ -75,23 +75,27 @@
 			</div>
 		</div>
 		<v-card>
-			<v-data-table :headers="headers" :items="items" :items-per-page="itemsPerPage" :options.sync="options" :server-items-length="total">
+			<v-data-table :headers="headers" :items="items" :items-per-page="itemsPerPage">
 				<template v-slot:item.action="{ item }">
 					<v-tooltip bottom>
 						<template v-slot:activator="{ on }">
 							<!-- Edit Item -->
-							<v-icon left fab color="primary" v-on="on">
-								mdi-pencil
-							</v-icon>
+							<v-btn @click="edit(item)" left small outlined icon color="primary" v-on="on">
+								<v-icon small>
+									mdi-pencil
+								</v-icon>
+							</v-btn>
 						</template>
 						<span>Edit Supplier</span>
 					</v-tooltip>
 					<v-tooltip bottom>
 						<template v-slot:activator="{ on }">
 							<!-- Delete Item -->
-							<v-icon left fab color="primary" v-on="on">
-								mdi-delete
-							</v-icon>
+							<v-btn @click="deleteItem(item)" left small outlined icon color="red" v-on="on">
+								<v-icon small>
+									mdi-delete
+								</v-icon>
+							</v-btn>
 						</template>
 						<span>Delete Supplier</span>
 					</v-tooltip>
@@ -105,7 +109,7 @@
 <script>
 export default {
 	created() {
-		// this.fetchData()
+		this.fetchData()
 	},
 
 	data() {
@@ -119,36 +123,72 @@ export default {
 			editedIndex: -1,
 			created: true,
 			dialog: false,
-			headers: [{
+			headers: [
+				{
 					text: 'Image',
 					sortable: false,
 				}, {
 					text: 'Name',
 					sortable: false,
+					value: 'name',
 				}, {
 					text: 'Company Name',
 					sortable: false,
+					value: 'company_name',
 				}, {
 					text: 'VAT Number',
 					sortable: false,
+					value: 'vat_number',
 				}, {
 					text: 'Email',
 					sortable: false,
+					value: 'email',
 				}, {
 					text: 'Phone Number',
 					sortable: false,
+					value: 'phone',
 				}, {
 					text: 'Address',
 					sortable: false,
+					value: 'address',
 				},{
 					text: 'Actions',
 					sortable: false,
+					value: 'action',
 				},
 			],
 		}
 	},
 
 	methods: {
+		fetchData() {
+			this.$axios.$get(`api/supplier`)
+			.then(res => {
+				this.items = res.suppliers.data;
+				console.log(res);
+			})
+			.catch(err => {
+				console.log(err.response)
+			})
+		},
+
+		edit(item) {
+			this.$router.push(`/people/supplier/${item.id}/`);
+		},
+
+		deleteItem(item) {
+			if(confirm('Are u sure to delete it?')) {
+				this.$axios.$delete(`/api/biller/` + item.id)
+				.then(res => {
+					this.fetchData();
+					this.$toast.info('Succeessfully Delete');
+				})
+				.catch(err => {
+					console.log(err.response);
+				})
+			}
+		},
+
 		uploadCsv(image) {
 			const URL = 'http://127.0.0.1:3000/product/category'
 
