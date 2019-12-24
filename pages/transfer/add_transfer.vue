@@ -1,10 +1,10 @@
 <template>
 	<v-app>
 		<v-card class="mx-5 my-5">
-			<div class="py-3 px-5">
-				<h3>
+			<div class="blue ligthen-2">
+				<v-card-title class="white--text px-5">
 					Add Transfer
-				</h3>
+				</v-card-title>
 			</div>
 			<v-divider></v-divider>
 			<div class="px-5">
@@ -12,43 +12,31 @@
 				<v-row>
 					<v-col md="4" cols="12">
 						<label class="font-weight-bold">From Warehouse *</label>
-						<v-select
-							solo
-							outlined
-							dense
-							label="Select Warehouse"
-						>
-						</v-select>
+						<validation-provider rules="required" v-slot="{ errors }">
+							<v-select :options="items" required label="id"></v-select>
+							<span class="transfer--text">{{ errors[0] }}</span>
+						</validation-provider>
 					</v-col>
 					<v-col md="4" cols="12">
 						<label class="font-weight-bold">To Warehouse *</label>
-						<v-select
-							solo
-							outlined
-							dense
-							label="Select Warehouse"
-						>
-						</v-select>
+						<validation-provider rules="required" v-slot="{ errors }">
+							<v-select></v-select>
+							<span class="transfer--text">{{ errors[0] }}</span>
+						</validation-provider>
 					</v-col>
 					<v-col md="4" cols="12">
 						<label class="font-weight-bold">Status</label>
-						<v-select
-							solo
-							outlined
-							dense
-							label="Please Select"
-						>
-						</v-select>
+						<validation-provider rules="required" v-slot="{ errors }">
+							<v-select></v-select>
+							<span class="transfer--text">{{ errors[0] }}</span>
+						</validation-provider>
 					</v-col>
 					<v-col cols="12">
 						<label class="font-weight-bold">Select Product</label>
-						<v-text-field
-							solo
-							outlined
-							dense
-							label="Please type product code and select"
-							append-icon="mdi-barcode"
-						></v-text-field>
+						<validation-provider rules="required" v-slot="{ errors }">
+							<input type="text" class="transfer--input" required v-model="form.email">
+							<span class="transfer--text">{{ errors[0] }}</span>
+						</validation-provider>
 					</v-col>
 				</v-row>
 				<div>
@@ -60,11 +48,10 @@
 				<v-row>
 					<v-col md="4" cols="12">
 						<label for="" class="font-weight-bold">Shipping Cost</label>
-						<v-text-field
-							solo 
-							outlined
-							dense
-						></v-text-field>
+						<validation-provider rules="required" v-slot="{ errors }">
+							<input type="text" class="transfer--input">
+							<span class="transfer--text">{{ errors[0] }}</span>
+						</validation-provider>
 					</v-col>
 					<v-col md="4" cols="12" class="d-flex flex-column">
 						<label for="" class="font-weight-bold pt-1">Attach Document</label>
@@ -73,7 +60,7 @@
 				</v-row>
 				<div class="d-flex flex-column mb-5">
 					<label for="">Note</label>
-					<textarea cols="30" rows="10" class="textarea"></textarea>
+					<textarea cols="30" rows="7" class="textarea"></textarea>
 				</div>
 			</div>
 			<v-btn class="blue mx-5 mb-5 darken-2" dark v-permission="'add transfer'">
@@ -86,8 +73,15 @@
 
 <script>
 	export default {
+		name: "AddTransfer",
+		created() {
+			this.fetchData()
+		},
+
 		data() {
 			return {
+				form: {},
+				items: [],
 				headers: [
 					{
 						text: 'Name',
@@ -118,10 +112,19 @@
 						sortable: false,
 					},
 				],
-				purchase_status: ['Received', 'Partial', 'Pending', 'Ordered'],
 			}
 		},
 		methods: {
+			fetchData() {
+				this.$axios.$get(`api/transfer`)
+				.then(res => {
+					this.items = res.transfer;
+					console.log(res);
+				}).catch(err => {
+					console.log(err.response);
+				})
+			},
+
 			uploadFile(event) {
 				const url = 'http://127.0.0.1:3000/product/add_adjustment';
 				let data = new FormData();
@@ -145,12 +148,25 @@
 
 	.textarea {
 		border: 1px solid rgba(0,0,0,0.125);
-		outline: 1px solid #461577;
+		outline: 1px solid #60e688;
 	}
 	
 	.quotationCsv {
 		border: 1px solid rgba(0,0,0,0.300);
 		padding: 3px 0px 3px 10px;
+		border: 1px solid #60e688;
 	}
 
-</style>
+	.transfer--input {
+		border: 1px solid #60e688;
+		width: 100%;
+		padding: 5px 10px 5px 10px;
+		outline: none;
+		border-radius: 3px;
+	}
+
+	.transfer--text {
+		color: red;
+	}
+
+</style>	

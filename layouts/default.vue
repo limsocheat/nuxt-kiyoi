@@ -412,6 +412,24 @@
 						]
 					},
 					{
+						name: "Location",
+						icon: "mdi-map-marker",
+						children: [
+							{
+								name: "Location List",
+								icon: "mdi-location-enter",
+								to: "/location/",
+								permission: "view transfer",
+							},
+							{
+								name: "Add Transfer",
+								icon: "mdi-plus-circle",
+								to: "/transfer/add_location",
+								permission: "view transfer",
+							},
+						]
+					},
+					{
 						name: "Return",
 						icon: "mdi-package-down",
 						permission: "return purchases",
