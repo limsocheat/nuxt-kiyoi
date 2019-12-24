@@ -49,6 +49,7 @@ export default {
     { src: "~/plugins/vuetify-snackbar"},
     { src: "~/plugins/laravel-permission"},
     { src: "~/plugins/vee-validate"},
+    { src: "~/plugins/vue-select"},
   ],
   /*
    ** Nuxt.js dev-modules

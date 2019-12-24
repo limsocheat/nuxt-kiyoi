@@ -285,8 +285,8 @@ export default {
 			})
 		},
 
-		depositDialog() {
-			this.dialog2 = true
+		depositDialog(id) {
+			this.$router.push(`/people/${id}/add_member`);
 		},
 
 		editItem (item) {

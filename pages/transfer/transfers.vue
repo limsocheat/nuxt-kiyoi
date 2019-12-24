@@ -40,26 +40,45 @@
 			</div>
 		</div>
 		<v-card>
-			<v-data-table :headers="headers" :items="items" :items-per-page="itemsPerPage" :options.sync="options" :server-items-length="total">
-				<template v-slot:item.action="{ item }">
-					<v-tooltip bottom>
-						<template v-slot:activator="{ on }">
-							<!-- Edit Item -->
-							<v-icon left fab color="primary" v-on="on">
-								mdi-pencil
-							</v-icon>
-						</template>
-						<span>Edit Supplier</span>
-					</v-tooltip>
-					<v-tooltip bottom>
-						<template v-slot:activator="{ on }">
-							<!-- Delete Item -->
-							<v-icon left fab color="primary" v-on="on">
-								mdi-delete
-							</v-icon>
-						</template>
-						<span>Delete Supplier</span>
-					</v-tooltip>
+			<v-data-table :headers="headers" :items="items" :items-per-page="itemsPerPage">
+				<template v-slot:item="{ item }">
+					<tr>
+						<td>{{ item.created_at }}</td>
+						<td>{{ item.reference_no }}</td>
+						<td>{{ item.from_location }}</td>
+						<td>{{ item.to_location }}</td>
+						<td></td>
+						<td>{{ item.shipping_charge }}</td>
+						<td>
+							<span :class="item.status === 'Completed' ? 'completed' : 'Sent' ? 'sent' : 'pending' ">
+								{{ item.status }}
+							</span>
+						</td>
+						<td>
+							<v-tooltip bottom>
+								<template v-slot:activator="{ on }">
+									<!-- Edit Item -->
+									<v-btn left small outlined icon color="primary" v-on="on">
+										<v-icon  small>
+											mdi-pencil
+										</v-icon>
+									</v-btn>
+								</template>
+								<span>Edit Transfer</span>
+							</v-tooltip>
+							<v-tooltip bottom>
+								<template v-slot:activator="{ on }">
+									<!-- Delete Item -->
+									<v-btn left small outlined icon color="red" v-on="on">
+										<v-icon  small>
+											mdi-delete
+										</v-icon>
+									</v-btn>
+								</template>
+								<span>Delete Transfer</span>
+							</v-tooltip>
+						</td>
+					</tr>
 				</template>
 			</v-data-table>
 		</v-card>
@@ -70,7 +89,7 @@
 <script>
 export default {
 	created() {
-		// this.fetchData()
+		this.fetchData()
 	},
 
 	data() {
@@ -84,31 +103,34 @@ export default {
 			editedIndex: -1,
 			created: true,
 			dialog: false,
-			headers: [{
+			headers: [
+				{
 					text: 'Date',
 					sortable: false,
-				}, {
+				}, 
+				{
 					text: 'Reference No',
 					sortable: false,
-				}, {
-					text: 'Warehouse(From)',
+				},
+				{
+					text: 'Location(From)',
 					sortable: false,
 				}, {
-					text: 'Warehouse(To)',
+					text: 'Location(To)',
 					sortable: false,
 				}, {
-					text: 'Product Cost',
+					text: 'Shipping Charge',
 					sortable: false,
-				}, {
-					text: 'Product Tax',
-					sortable: false,
-				},{
+				},
+				{
 					text: 'Grand Total',
 					sortable: false,
-				},{
+				},
+				{
 					text: 'Status',
 					sortable: false,
-				},{
+				},
+				{
 					text: 'Actions',
 					sortable: false,
 				},
@@ -117,6 +139,17 @@ export default {
 	},
 
 	methods: {
+		fetchData() {
+			this.$axios.$get(`api/transfer`)
+			.then(res => {
+				this.items = res.transfer;
+			})
+			.catch(err => {
+				console.log(err.response);
+			})
+		},
+
+
 		uploadCsv(image) {
 			const URL = 'http://127.0.0.1:3000/product/category'
 
@@ -149,6 +182,26 @@ export default {
 .nuxt--link {
 	display: block;
 	text-decoration: none;
+}
+
+.completed {
+	background: blue;
+	padding: 5px 10px 5px 10px;
+	color: #fff;
+	border-radius: 3px;
+}
+
+.pending {
+	background: red;
+	padding: 5px 10px 5px 10px;
+	color: #fff;
+	border-radius: 3px;
+}
+
+.sent {
+	background: #f0dd11;
+	padding: 5px 10px 5px 10px;
+	border-radius: 3px;
 }
 
 </style>
