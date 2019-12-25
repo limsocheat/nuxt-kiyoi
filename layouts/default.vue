@@ -422,7 +422,7 @@
 								permission: "view transfer",
 							},
 							{
-								name: "Add Transfer",
+								name: "Add Location",
 								icon: "mdi-plus-circle",
 								to: "/location/create",
 								permission: "view transfer",

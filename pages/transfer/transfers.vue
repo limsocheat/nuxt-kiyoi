@@ -142,7 +142,7 @@ export default {
 		fetchData() {
 			this.$axios.$get(`api/transfer`)
 			.then(res => {
-				this.items = res.transfer;
+				this.items = res.transfer.data;
 			})
 			.catch(err => {
 				console.log(err.response);

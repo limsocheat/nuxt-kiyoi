@@ -89,9 +89,9 @@
 								<td>
 									<input type="number" class="table-quantity" v-model="item.unit">
 								</td>
-								<td>{{ item.order.unit_price }}</td>
-								<td>{{ item.order.discount }}</td>
-								<td>$ {{ item.order.tax }}</td>
+								<!-- <td>{{ item.order.unit_price }}</td> -->
+								<!-- <td>{{ item.order.discount }}</td> -->
+								<!-- <td>$ {{ item.order.tax }}</td> -->
 								<td>$ {{ total }}</td>
 								<td>
 	                              	<v-btn @click="removeItem(index)">

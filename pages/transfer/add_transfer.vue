@@ -11,41 +11,97 @@
 				<p class="caption font-italic pt-5">The field labels marked with * are required input fields.</p>
 				<v-row>
 					<v-col md="4" cols="12">
-						<label class="font-weight-bold">From Warehouse *</label>
+						<label class="font-weight-bold">Location(From)*</label>
 						<validation-provider rules="required" v-slot="{ errors }">
-							<v-select :options="items" required label="id"></v-select>
+							<v-autocomplete 
+								:items="items"
+								solo
+								outlined
+								dense
+								item-text="branch.name"
+								item-value="branch.name"
+							>
+							</v-autocomplete>
 							<span class="transfer--text">{{ errors[0] }}</span>
 						</validation-provider>
 					</v-col>
 					<v-col md="4" cols="12">
-						<label class="font-weight-bold">To Warehouse *</label>
+						<label class="font-weight-bold">Location(To)*</label>
 						<validation-provider rules="required" v-slot="{ errors }">
-							<v-select></v-select>
+							<v-autocomplete 
+								:items="items"
+								solo
+								outlined
+								dense
+								item-text="branch.name"
+								item-value="branch.name"
+							>
+							</v-autocomplete>
 							<span class="transfer--text">{{ errors[0] }}</span>
 						</validation-provider>
 					</v-col>
 					<v-col md="4" cols="12">
 						<label class="font-weight-bold">Status</label>
 						<validation-provider rules="required" v-slot="{ errors }">
-							<v-select></v-select>
+							<v-select 
+								:options="status" required label="status"
+							>
+							</v-select>
 							<span class="transfer--text">{{ errors[0] }}</span>
 						</validation-provider>
 					</v-col>
 					<v-col cols="12">
 						<label class="font-weight-bold">Select Product</label>
 						<validation-provider rules="required" v-slot="{ errors }">
-							<input type="text" class="transfer--input" required v-model="form.email">
+							<v-select 
+								:options="products"
+								label="name"
+								@input="addTocart"
+								:clearable="false"
+								v-model="model"
+							></v-select>
 							<span class="transfer--text">{{ errors[0] }}</span>
 						</validation-provider>
 					</v-col>
 				</v-row>
 				<div>
-					<label class="font-weight-bold">Order Table</label>
-					<v-data-table
-						:headers="headers"
-					></v-data-table>
+					<label class="font-weight-bold mb-3">Order Table</label>
+					<table class="tablePurchase">
+						<thead>
+							<tr  class="tablePurchase--header">
+								<td>Name</td>
+								<td>Code</td>
+								<td>Quantity</td>
+								<td>Unit Price</td>
+								<td>Discount</td>
+								<td>Total</td>
+								<td>Actions</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="transfer--add" v-for="(item, index) in orders">
+								<td>{{item.name}}</td>
+								<td>{{item.code}}</td>
+								<td>
+									<input type="number" class="table-qty" v-model="item.unit">
+								</td>
+								<td>USD {{ item.price | formatNumber }}</td>
+								<td>USD {{ item.discount | formatNumber }}</td>
+								<td>USD {{ item.unit + item.price | formatNumber }}</td>
+								<td>
+	                              	<v-btn icon color="red" outlined @click="removeItem(index)">
+	                              		<v-icon small>mdi-delete</v-icon>
+	                              	</v-btn>
+	                           </td>
+							</tr>
+							<tr>
+								<td class="py-3">Total</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
-				<v-row>
+				</div>
+				<v-row class="px-5">
 					<v-col md="4" cols="12">
 						<label for="" class="font-weight-bold">Shipping Cost</label>
 						<validation-provider rules="required" v-slot="{ errors }">
@@ -58,7 +114,7 @@
 						<input type="file" @change="uploadFile($event)" class="quotationCsv">
 					</v-col>
 				</v-row>
-				<div class="d-flex flex-column mb-5">
+				<div class="d-flex px-5 flex-column mb-5">
 					<label for="">Note</label>
 					<textarea cols="30" rows="7" class="textarea"></textarea>
 				</div>
@@ -72,16 +128,26 @@
 </template>
 
 <script>
+	import Vue from 'vue';
+	var numeral = require("numeral");
+	Vue.filter("formatNumber", function(value) {
+		return numeral(value).format("0,0.00");
+	});
+
 	export default {
 		name: "AddTransfer",
 		created() {
 			this.fetchData()
+			this.fetchProduct()
 		},
 
 		data() {
 			return {
+				orders: [],
 				form: {},
 				items: [],
+				model: '',
+				products: [],
 				headers: [
 					{
 						text: 'Name',
@@ -112,17 +178,50 @@
 						sortable: false,
 					},
 				],
+				status: ['Completed', 'Pending', 'Sent'],
 			}
 		},
+
+		computed: {
+			total() {
+
+			}
+		},
+
 		methods: {
+			fetchProduct() {
+				this.$axios.$get(`api/product`)
+				.then(res => {
+					this.products = res.data;
+					console.log(res);
+				})
+				.catch(err =>  {
+					console.log(err.response);
+				})
+			},
+
 			fetchData() {
 				this.$axios.$get(`api/transfer`)
 				.then(res => {
-					this.items = res.transfer;
-					console.log(res);
+					this.items = res.transfer.data;
+					console.log(res.transfer);
 				}).catch(err => {
 					console.log(err.response);
 				})
+			},
+
+			addTocart(item) {
+				if(this.orders.includes(item)) {
+		          	alert("already there");
+		        }else {
+		          	this.orders.push(item);
+		        }
+
+		        item.unit = 1;
+			},
+
+			removeItem(index) {
+				this.orders.splice(index, 1)
 			},
 
 			uploadFile(event) {
@@ -167,6 +266,34 @@
 
 	.transfer--text {
 		color: red;
+	}
+
+	.tablePurchase {
+		width: 100%;
+		margin-top: 10px;
+		border-collapse: collapse;
+		&--header {
+			font-weight: 500;
+			text-align: left;
+			border-bottom: 1px solid rgba(0,0,0,0.125);
+		}
+		
+		&--td {
+			border-bottom: 1px solid rgba(0,0,0,0.125);
+		}
+	}
+
+	.table-qty {
+		border: 1px solid rgba(0,0,0,0.125);
+		padding: 0 0 0 10px;
+	}
+
+	.transfer--add {
+		width: 100%;
+	}
+	
+	>>> .v-select .dropdown-toggle .clear {
+	    display: none;
 	}
 
 </style>	
