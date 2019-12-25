@@ -424,7 +424,7 @@
 							{
 								name: "Add Transfer",
 								icon: "mdi-plus-circle",
-								to: "/transfer/add_location",
+								to: "/location/create",
 								permission: "view transfer",
 							},
 						]
