@@ -30,6 +30,11 @@
 				</v-dialog>
 			</div>
 			<v-divider></v-divider>
+			<div class="brand--search">
+				<label for="search">Search</label>
+				<v-text-field solo outlined dense v-model="search"></v-text-field>
+			</div>
+			<v-divider></v-divider>
 			<div>
 				<v-data-table :headers="headers" :items="items">
 					<template v-slot:item="{ item }">
@@ -75,6 +80,7 @@
 				items: [],
 				dialog: false,
 				editedIndex: -1,
+				search: '',
 				form: {},
 				headers: [
 					{ text: 'Brand', sortable: false },
@@ -84,9 +90,18 @@
 			}
 		},
 
+		watch: {
+			search: {
+				handler() {
+					this.fetchData();
+				} 
+			},
+			deep: true,
+		},
+
 		methods: {
 			fetchData() {
-				this.$axios.$get(`api/brand`)
+				this.$axios.$get(`api/brand?search=${this.search}`)
 				.then(res => {
 					this.items = res.brands.data;
 					console.log(res);
@@ -152,3 +167,10 @@
 		}
 	}
 </script>
+
+<style>
+	.brand--search {
+		width: 50%;
+		padding: 10px 15px 0 15px
+	}
+</style>
