@@ -249,6 +249,12 @@
 								permission: "view product",
 							},
 							{
+								name: "Product Brand",
+								to: "/product/brand",
+								icon: "mdi-diamond-stone",
+								permission: "view product",
+							},
+							{
 								name: "Print Barcode",
 								to: "/product/print-barcode",
 								icon: "mdi-barcode",
