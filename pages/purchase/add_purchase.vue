@@ -128,6 +128,7 @@
 							solo 
 							outlined
 							dense
+							v-model="form.shipping_charge"
 						></v-text-field>
 					</v-col>
 				</v-row>

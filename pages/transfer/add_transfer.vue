@@ -11,61 +11,69 @@
 				<p class="caption font-italic pt-5">The field labels marked with * are required input fields.</p>
 				<v-row>
 					<v-col md="4" cols="12">
-						<label class="font-weight-bold">Location(From)*</label>
+						<label >Location(From)*</label>
 						<validation-provider rules="required" v-slot="{ errors }">
 							<v-autocomplete 
-								:items="items"
+								:items="locations"
 								solo
 								outlined
 								dense
-								item-text="branch.name"
-								item-value="branch.name"
+								item-text="name"
+								item-value="name"
+								v-model="form.from_location"
 							>
 							</v-autocomplete>
 							<span class="transfer--text">{{ errors[0] }}</span>
 						</validation-provider>
 					</v-col>
 					<v-col md="4" cols="12">
-						<label class="font-weight-bold">Location(To)*</label>
+						<label >Location(To)*</label>
 						<validation-provider rules="required" v-slot="{ errors }">
 							<v-autocomplete 
-								:items="items"
+								:items="locations"
 								solo
 								outlined
 								dense
-								item-text="branch.name"
-								item-value="branch.name"
+								item-text="name"
+								item-value="name"
+								v-model="form.to_location"
 							>
 							</v-autocomplete>
 							<span class="transfer--text">{{ errors[0] }}</span>
 						</validation-provider>
 					</v-col>
 					<v-col md="4" cols="12">
-						<label class="font-weight-bold">Status</label>
+						<label >Status</label>
 						<validation-provider rules="required" v-slot="{ errors }">
 							<v-select 
-								:options="status" required label="status"
+								dense
+								outlined
+								solo
+								:items="status"
+								v-model="form.status"
 							>
 							</v-select>
 							<span class="transfer--text">{{ errors[0] }}</span>
 						</validation-provider>
 					</v-col>
 					<v-col cols="12">
-						<label class="font-weight-bold">Select Product</label>
+						<label >Select Product</label>
 						<validation-provider rules="required" v-slot="{ errors }">
-							<v-select 
-								:options="products"
-								label="name"
-								@input="addTocart"
-								:clearable="false"
-								v-model="model"
-							></v-select>
+							<v-autocomplete 
+								:items="products"
+							    dense
+							    solo
+							    v-model="form.name"
+							    item-text="name"
+							    item-value="name"
+							    return-object
+							    @input="addTocart"
+							></v-autocomplete>
 							<span class="transfer--text">{{ errors[0] }}</span>
 						</validation-provider>
 					</v-col>
 				</v-row>
 				<div>
-					<label class="font-weight-bold mb-3">Order Table</label>
 					<table class="tablePurchase">
 						<thead>
 							<tr  class="tablePurchase--header">
@@ -86,8 +94,8 @@
 									<input type="number" class="table-qty" v-model="item.unit">
 								</td>
 								<td>USD {{ item.price | formatNumber }}</td>
-								<td>USD {{ item.discount | formatNumber }}</td>
-								<td>USD {{ item.unit + item.price | formatNumber }}</td>
+								<td>USD {{ item.order.discount  }}</td>
+								<td>USD {{ item.unit * (item.price - (item.price * item.order.discount)) | formatNumber }}</td>
 								<td>
 	                              	<v-btn icon color="red" outlined @click="removeItem(index)">
 	                              		<v-icon small>mdi-delete</v-icon>
@@ -103,23 +111,23 @@
 				</div>
 				<v-row class="px-5">
 					<v-col md="4" cols="12">
-						<label for="" class="font-weight-bold">Shipping Cost</label>
+						<label for="" >Shipping Cost</label>
 						<validation-provider rules="required" v-slot="{ errors }">
-							<input type="text" class="transfer--input">
+							<input type="text" class="transfer--input" v-model="form.shipping_charge">
 							<span class="transfer--text">{{ errors[0] }}</span>
 						</validation-provider>
 					</v-col>
 					<v-col md="4" cols="12" class="d-flex flex-column">
-						<label for="" class="font-weight-bold pt-1">Attach Document</label>
+						<label for="" class="pt-1">Attach Document</label>
 						<input type="file" @change="uploadFile($event)" class="quotationCsv">
 					</v-col>
 				</v-row>
 				<div class="d-flex px-5 flex-column mb-5">
 					<label for="">Note</label>
-					<textarea cols="30" rows="7" class="textarea"></textarea>
+					<textarea cols="30" rows="7" class="textarea" v-model="form.description"></textarea>
 				</div>
 			</div>
-			<v-btn class="blue mx-5 mb-5 darken-2" dark v-permission="'add transfer'">
+			<v-btn  @click="createTransfer" class="blue mx-5 mb-5 darken-2" dark v-permission="'add transfer'">
 				<v-icon>mdi-check</v-icon>
 				Submit
 			</v-btn>
@@ -139,14 +147,15 @@
 		created() {
 			this.fetchData()
 			this.fetchProduct()
+			this.fetchLocation()
 		},
 
 		data() {
 			return {
 				orders: [],
+				locations: [],
 				form: {},
 				items: [],
-				model: '',
 				products: [],
 				headers: [
 					{
@@ -182,13 +191,18 @@
 			}
 		},
 
-		computed: {
-			total() {
-
-			}
-		},
-
 		methods: {
+			fetchLocation() {
+				this.$axios.$get(`api/location`)
+				.then(res => {
+					this.locations = res.locations.data;
+					console.log(res);
+				})
+				.catch(err => {
+					console.log(err)
+				})
+			},
+
 			fetchProduct() {
 				this.$axios.$get(`api/product`)
 				.then(res => {
@@ -207,6 +221,18 @@
 					console.log(res.transfer);
 				}).catch(err => {
 					console.log(err.response);
+				})
+			},
+
+			createTransfer() {
+				this.$axios.post(`api/transfer`, this.form)
+				.then(res => {
+					this.items = res.data;
+					this.$router.push(`/transfer/transfers`)
+					console.log(res);
+				})
+				.catch(err => {
+					console.log(err.response)
 				})
 			},
 

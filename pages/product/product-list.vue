@@ -155,23 +155,32 @@
 			:options.sync="options"
 			:server-items-length="total"
 		>
-			<template v-slot:item.action="{ item }">
-				<v-tooltip top v-permission="'edit sales'">
-					<template v-slot:activator="{ on }">
-						<v-btn icon @click="editItem(item)" color="primary" outlined v-on="on">
-							<v-icon small>mdi-pencil</v-icon>
-						</v-btn>
-					</template>
-					<span>Edit</span>
-				</v-tooltip>
-				<v-tooltip top v-permission="'delete sales'">
-					<template v-slot:activator="{ on }">
-						<v-btn icon @click="deleteItem(item)" color="red" outlined v-on="on">
-							<v-icon small>mdi-delete</v-icon>
-						</v-btn>
-					</template>
-					<span>Delete</span>
-				</v-tooltip>
+			<template v-slot:item="{ item }">
+				<tr>
+					<td></td>
+					<td>{{ item.name }}</td>
+					<td>{{ item.code }}</td>
+					<td>{{ item.unit }}</td>
+					<td>{{ item.price |formatNumber }}</td>
+					<td>
+						<v-tooltip top v-permission="'edit sales'">
+							<template v-slot:activator="{ on }">
+								<v-btn icon small @click="editItem(item)" color="primary" outlined v-on="on">
+									<v-icon small>mdi-pencil</v-icon>
+								</v-btn>
+							</template>
+							<span>Edit</span>
+						</v-tooltip>
+						<v-tooltip top v-permission="'delete sales'">
+							<template v-slot:activator="{ on }">
+								<v-btn icon small @click="deleteItem(item)" color="red" outlined v-on="on">
+									<v-icon small>mdi-delete</v-icon>
+								</v-btn>
+							</template>
+							<span>Delete</span>
+						</v-tooltip>
+					</td>
+				</tr>
 			</template>
 		</v-data-table>
 	</v-app>
@@ -179,6 +188,13 @@
 
 
 <script>
+import Vue from 'vue';
+var numeral = require("numeral");
+
+Vue.filter("formatNumber", function(value) {
+	return numeral(value).format("0,0.00");
+})
+
 export default {
 	name: 'Product',
 
@@ -210,10 +226,8 @@ export default {
 			created: true,
 			dialog: false,
 			dialog2: false,
-			headers: [{
-					text: "ID",
-					value: "id",
-				},{
+			headers: [
+				{
 					text: "Image",
 					sortable: false,
 				}, {
@@ -282,6 +296,16 @@ export default {
       	close() {
       		this.dialog2 = false;
       		this.form = {};
+      	},
+
+      	deleteItem(item) {
+      		this.$axios.$delete(`api/product/` + item.id)
+      		.then(res => {
+      			this.fetchData()
+      		})
+      		.catch(err => {
+      			console.log(err.response);
+      		})
       	},
 
 		uploadCsv(image) {
