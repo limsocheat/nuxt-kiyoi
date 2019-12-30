@@ -35,11 +35,25 @@
 				<v-col sm="6" cols="12">
 					<label class="font-weight-bold" for="">Product Type*</label>
 					<v-select 
-						outlined solo dense :items="product_type" 
+						outlined solo dense 
+						:items="product_type" 
 						label="Please Select"
 						v-model="form.type"
 					>
 					</v-select>
+				</v-col>
+				<v-col sm="6" cols="12">
+					<label class="font-weight-bold" for="">Brand*</label>
+					<v-autocomplete 
+						outlined 
+						solo dense 
+						:items="items"
+						item-text="brand.name"
+						item-value="brand.name"
+						label="Select Brand"
+						v-model="form.brand"
+					>
+					</v-autocomplete>
 				</v-col>
 				<v-col sm="6" cols="12">
 					<label class="font-weight-bold" for="">Barcode Symbology*</label>
@@ -57,6 +71,7 @@
 						outlined solo dense
 						label="Purchases Unit"
 						v-model="form.unit"
+						type="number"
 					></v-text-field>
 				</v-col>
 				<v-col sm="6" cols="12">
@@ -65,6 +80,7 @@
 						outlined solo dense
 						label="Purchases Price"
 						v-model="form.price"
+						type="number"
 					></v-text-field>
 				</v-col>
 				<v-col sm="6" cols="12">
@@ -170,7 +186,11 @@
 <script>
 	import moment from 'moment';
 	export default {
-		name: "Add Product",
+		name: "AddProduct",
+		created() {
+			this.fetchData()
+		},
+
 		data() {
 			return {
 				form: {
@@ -199,6 +219,14 @@
     	methods: {
 		    randomNumber() {
 		     	return this.form.code = Math.floor(1000000 + Math.random() * 90000000)
+		    },
+
+		    fetchData() {
+		    	this.$axios.$get(`api/product`)
+		    	.then(res => {
+		    		this.items = res.data;
+		    		console.log(res);
+		    	})
 		    },
 
 		    createItem() {
