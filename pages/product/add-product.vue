@@ -1,7 +1,7 @@
 <template>
 	<v-app>
 		<v-card class="mx-5 my-5">
-			<v-card-title class="headline" dark>
+			<v-card-title class="headline teal darken-2 white--text">
 				ADD PRODUCT
 			</v-card-title>
 			<v-divider></v-divider>
@@ -55,7 +55,7 @@
 					>
 					</v-autocomplete>
 				</v-col>
-				<v-col sm="6" cols="12">
+				<v-col sm="12" cols="12">
 					<label class="font-weight-bold" for="">Barcode Symbology*</label>
 					<v-select 
 						outlined solo dense :items="barcodes" 
@@ -83,90 +83,12 @@
 						type="number"
 					></v-text-field>
 				</v-col>
-				<v-col sm="6" cols="12">
-					<div class="d-flex align-center">
-						<label class="font-weight-bold">Add Promotional Price</label>
-						<v-checkbox
-							outlined solo dense
-							v-model="checkbox"
-						></v-checkbox>
-					</div>
-				</v-col>
-				<v-col sm="6" cols="12" v-if="checkbox">
-					<label class="font-weight-bold">Promotional Price</label>
-					<v-text-field
-						outlined solo dense
-						label="Promotion Price"
-					></v-text-field>
-				</v-col>
-				<v-col cols="12" lg="6" v-if="checkbox">
-					<label class="font-weight-bold" for="">Promotion Starts</label>
-			        <v-menu
-			          v-model="menu1"
-			          :close-on-content-click="false"
-			          max-width="290"
-			        >
-			          <template v-slot:activator="{ on }">
-			            <v-text-field
-			              :value="computedDateFormattedMomentjs"
-			              clearable
-			              label="Start of Promotion"
-			              readonly
-			              v-on="on"
-			              solo 
-			              outlined
-			              dense
-			            ></v-text-field>
-			          </template>
-			          <v-date-picker
-			            v-model="date"
-			            @change="menu1 = false"
-			          ></v-date-picker>
-			        </v-menu>
-			    </v-col>
-				<v-col cols="12" lg="6" v-if="checkbox">
-					<label class="font-weight-bold" for="">Promotion Ends</label>
-			        <v-menu
-			          v-model="menu2"
-			          :close-on-content-click="false"
-			          max-width="290"
-			        >
-			          <template v-slot:activator="{ on }">
-			            <v-text-field
-			              :value="computedDateFormattedMomentjs"
-			              clearable
-			              label="End of Promotion"
-			              readonly
-			              v-on="on"
-			              solo 
-			              outlined
-			              dense
-			            ></v-text-field>
-			          </template>
-			          <v-date-picker
-			            v-model="date"
-			            @change="menu2 = false"
-			          ></v-date-picker>
-			        </v-menu>
-			    </v-col>
 				<v-col sm="12" cols="12">
-					<label class="font-weight-bold" for="image">Product Image</label>
-					<client-only>
-						<picture-input 
-					      ref="pictureInput"
-					      width="1200" 
-					      height="200" 
-					      margin="16" 
-					      accept="image/jpeg,image/png" 
-					      size="10" 
-					      button-class="btn"
-					      :custom-strings="{
-					        upload: '<p>Bummer!</p>',
-					        drag: 'Uplode Image Here'
-					      }"
-					     >
-					    </picture-input>
-					</client-only>
+					<label class="font-weight-bold"  for="image">Product Image</label>
+					<div v-if="url" class="preview--image">
+						<img :src="form.image" class="img-responsive" height="300">
+					</div>
+					<input type="file" @change="uploadImage($event)" class="product--image">
 				</v-col>
 				<v-col md="12" sm="12" cols="12">
 					<label class="font-weight-bold" for="">Product Details</label>
@@ -197,15 +119,13 @@
 					code: '',
 				},
 				items: [],
+				url: null,
 				itemsPerPage: 5,
-				checkbox: false,
 				product_type: 
 				[
 					'Standard', 'Combo', 'Digital',			
 				],
 				barcodes: ['Code 128', 'Code 39', 'UPC-A', 'UPC-E', 'EAN-8', 'EAN-13'],
-				menu2: false,
-				date: new Date().toISOString().substr(0, 10),
 				tax: ['No Tax', 'vat@10', 'vat@15', 'vat@20'],
 				tax_method: ['Exclusive', 'Inclusive'],
 			}
@@ -232,14 +152,39 @@
 		    createItem() {
 		    	this.$axios.$post(`api/product`, this.form)
 		    	.then(res => {
-		    		this.items = res;
+		    		this.items = res.data;
 		    		this.$toast.info('Succeessfully created');
 		    		this.$router.push('/product/product-list');
 		    	})
 		    	.catch(err => {
 		    		console.log(err.response);
 		    	})
-		    }
+		    },
+
+		    uploadImage(e) {
+                const images = e.target.files[0];
+                const reader = new FileReader();
+
+                reader.readAsDataURL(images);
+                reader.onload = e =>  {
+                    this.form.image = e.target.result;
+                    console.log(this.form);
+                }
+
+                this.url = URL.createObjectURL(images)
+            },
     	}
 	}
 </script>
+
+<style lang="scss">
+	.product--image {
+		border: 1px solid rgba(0,0,0,0.125);
+		padding: 5px 5px 5px 5px;
+		width: 100%;
+	}
+
+	.preview--image {
+		text-align: center;
+	}
+</style> 

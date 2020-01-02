@@ -106,6 +106,7 @@
 				<template v-slot:item="{ item }">
 					<tr>
 						<td>{{ item.created_at }}</td>
+						<td>{{ item.reference_no }}</td>
 						<td>{{ item.category }}</td>
 						<td>USD {{ item.amount | formatNumber }}</td>
 						<td>{{ item.expense_for }}</td>
@@ -137,7 +138,7 @@ Vue.filter("formatNumber", function (value) {
 });
 
 export default {
-	name: 'Expense List',
+	name: 'ExpenseList',
 	created() {
 		this.fetchData()
 		this.fetchCategory()
@@ -162,6 +163,10 @@ export default {
 			headers: [
 				{
 					text: 'Date',
+					sortable: false,
+				},
+				{
+					text: 'Reference No',
 					sortable: false,
 				},
 				{

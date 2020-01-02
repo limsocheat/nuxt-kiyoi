@@ -157,11 +157,16 @@
 		>
 			<template v-slot:item="{ item }">
 				<tr>
-					<td></td>
+					<td v-if="item.image">
+						<img :src="'http://127.0.0.1:8000/' + item.image" width="100">
+					</td>
+					<td v-else>
+						<span>No Image</span>
+					</td>
 					<td>{{ item.name }}</td>
 					<td>{{ item.code }}</td>
 					<td>{{ item.unit }}</td>
-					<td>{{ item.price |formatNumber }}</td>
+					<td>USD {{ item.price |formatNumber }}</td>
 					<td>
 						<v-tooltip top v-permission="'edit sales'">
 							<template v-slot:activator="{ on }">
@@ -259,7 +264,7 @@ export default {
 			let vm = this;
 			this.$axios.$get(`/api/product?temsPerPage=${this.options.itemsPerPage}&page=${this.options.page}`)
 			.then(res => {
-				vm.items = res.data;
+				vm.items = res.products.data;
 				vm.total = res.total;
 				console.log(res)
 			})

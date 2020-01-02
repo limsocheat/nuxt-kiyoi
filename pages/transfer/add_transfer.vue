@@ -81,7 +81,6 @@
 								<td>Code</td>
 								<td>Quantity</td>
 								<td>Unit Price</td>
-								<td>Discount</td>
 								<td>Total</td>
 								<td>Actions</td>
 							</tr>
@@ -94,8 +93,7 @@
 									<input type="number" class="table-qty" v-model="item.unit">
 								</td>
 								<td>USD {{ item.price | formatNumber }}</td>
-								<td>USD {{ item.order.discount  }}</td>
-								<td>USD {{ item.unit * (item.price - (item.price * item.order.discount)) | formatNumber }}</td>
+								<td>USD {{ item.unit * item.price | formatNumber }}</td>
 								<td>
 	                              	<v-btn icon color="red" outlined @click="removeItem(index)">
 	                              		<v-icon small>mdi-delete</v-icon>

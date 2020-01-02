@@ -30,46 +30,63 @@
 				</v-col>
 				<v-col cols="12" class="px-10">
 					<table class="tableSale">
-						<thead>
-							<tr>
-								<th class="tableSale--header">#</th>
-								<th class="tableSale--header">Product</th>
-								<th class="tableSale--header">Qty</th>
-								<th class="tableSale--header">Unit Price</th>
-								<th class="tableSale--header">Tax</th>
-								<th class="tableSale--header">Discount</th>
-								<th class="tableSale--header">Sub Total</th>
+						<tr>
+							<th class="tableSale--header">#</th>
+							<th class="tableSale--header">Product</th>
+							<th class="tableSale--header">Qty</th>
+							<th class="tableSale--header">Unit Price</th>
+							<th class="tableSale--header">Tax</th>
+							<th class="tableSale--header">Discount</th>
+							<th class="tableSale--header">Sub Total</th>
+						</tr>
+						
+						<template v-if="items.products && items.products.length > 0">
+							<tr v-for="i in items.products">
+								<td class="tableSale--tr">{{ i.id }}</td>
+								<td class="tableSale--tr">{{ i.name }}</td>
+								<td class="tableSale--tr">{{ i.unit  }}</td>
+								<td class="tableSale--tr">USD {{ i.order.unit_price  | formatMoney }}</td>
+								<td class="tableSale--tr">USD {{ i.order.tax | formatMoney }}</td>
+								<td class="tableSale--tr">USD {{ i.order.discount | formatMoney }}</td>
+								<td class="tableSale--tr">USD {{ i.price - (i.order.unit_price * i.price * i.order.discount / 100) | formatMoney }} </td>
 							</tr>
-						</thead>
-						<tbody class="tableSale--body">
-							<template v-if="items.products && items.products.length > 0">
-								<tr v-for="i in items.products">
-									<td class="tableSale--tr">{{ i.id }}</td>
-									<td class="tableSale--tr">{{ i.name }}</td>
-									<td class="tableSale--tr">{{ i.unit  }}</td>
-									<td class="tableSale--tr">USD {{ i.order.unit_price  | formatMoney }}</td>
-									<td class="tableSale--tr">USD {{ i.order.tax | formatMoney }}</td>
-									<td class="tableSale--tr">USD {{ i.order.discount | formatMoney }}</td>
-									<td class="tableSale--tr">USD {{ i.price - (i.order.unit_price * i.price * i.order.discount / 100) | formatMoney }} </td>
-								</tr>
-							</template>
-							<div v-else>
-								<td>
-									<span class="tableSale--noData">No Product Found</span>
-								</td>
-							</div>
-						</tbody>
-						<thead>
-							<tr class="d-flex flex-column">
-								<th class="tableSale--tr">Total</th>
-								<th class="tableSale--tr">Order Tax:</th>
-								<th class="tableSale--tr">order Discount:</th>
-								<th class="tableSale--tr">Shipping Cost:</th>
-								<th class="tableSale--tr">Grand Total:</th>
-								<th class="tableSale--tr">Paid Amount:</th>
-								<th class="tableSale--tr">Due:</th>
-							</tr>
-						</thead>
+						</template>
+						<div v-else>
+							<td>
+								<span class="tableSale--noData">No Product Found</span>
+							</td>
+						</div>
+						
+						<tr>
+							<th class="tableSale--tr" colspan="4">Total</th>
+							<td class="tableSale--tr">333</td>
+							<td class="tableSale--tr">0</td>
+							<td class="tableSale--tr">0</td>
+						</tr>
+						<tr>
+							<th class="tableSale--tr" colspan="6">Order Tax:</th>
+							<td class="tableSale--tr">0</td>
+						</tr>
+						<tr>
+							<th class="tableSale--tr" colspan="6">order Discount:</th>
+							<td class="tableSale--tr"></td>
+						</tr>
+						<tr>
+							<th class="tableSale--tr" colspan="6">Shipping Cost:</th>
+							<td class="tableSale--tr">0</td>
+						</tr>
+						<tr>
+							<th class="tableSale--tr" colspan="6">Grand Total:</th>
+							<td class="tableSale--tr">5</td>
+						</tr>
+						<tr>
+							<th class="tableSale--tr" colspan="6">Paid Amount:</th>
+							<td class="tableSale--tr">6</td>
+						</tr>
+						<tr>
+							<th class="tableSale--tr" colspan="6">Due:</th>
+							<td class="tableSale--tr">6</td>
+						</tr>
 					</table>
 				</v-col>
 			</v-row>

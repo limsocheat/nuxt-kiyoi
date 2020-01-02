@@ -48,7 +48,7 @@
 						<td>{{ item.from_location }}</td>
 						<td>{{ item.to_location  }}</td>
 						<td>USD {{ item.shipping_charge | formatNumber }}</td>
-						<td>{{  }}</td>
+						<td>{{ item | formatNumber }}</td>
 						<td>
 							<span 
 								:class="item.status === 'Completed' ? 'completed' : (item.status === 'Pending' ? 'pending' : 'sent')"
