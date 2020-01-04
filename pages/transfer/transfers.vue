@@ -46,11 +46,13 @@
 						<td>{{ item.created_at }}</td>
 						<td>{{ item.reference_no }}</td>
 						<td>{{ item.from_location }}</td>
-						<td>{{ item.to_location }}</td>
-						<td></td>
-						<td>{{ item.shipping_charge }}</td>
+						<td>{{ item.to_location  }}</td>
+						<td>USD {{ item.shipping_charge | formatNumber }}</td>
+						<td>{{ item | formatNumber }}</td>
 						<td>
-							<span :class="item.status === 'Completed' ? 'completed' : 'Sent' ? 'sent' : 'pending' ">
+							<span 
+								:class="item.status === 'Completed' ? 'completed' : (item.status === 'Pending' ? 'pending' : 'sent')"
+							>
 								{{ item.status }}
 							</span>
 						</td>
@@ -69,7 +71,7 @@
 							<v-tooltip bottom>
 								<template v-slot:activator="{ on }">
 									<!-- Delete Item -->
-									<v-btn left small outlined icon color="red" v-on="on">
+									<v-btn @click="deleteTransfer(item.id)" left small outlined icon color="red" v-on="on">
 										<v-icon  small>
 											mdi-delete
 										</v-icon>
@@ -87,6 +89,14 @@
 
 
 <script>
+import Vue from 'vue';
+
+var numeral = require("numeral");
+
+Vue.filter("formatNumber", function (value) {
+	return numeral(value).format("0,0.00"); // displaying other groupings/separators is possible, look at the docs
+});
+
 export default {
 	created() {
 		this.fetchData()
@@ -142,13 +152,23 @@ export default {
 		fetchData() {
 			this.$axios.$get(`api/transfer`)
 			.then(res => {
-				this.items = res.transfer;
+				this.items = res.transfer.data;
 			})
 			.catch(err => {
 				console.log(err.response);
 			})
 		},
 
+		deleteTransfer(id) {
+			this.$axios.$delete(`api/transfer/` + id)
+			.then(res => {
+				this.fetchData()
+				console.log(res);
+			})
+			.catch(err => {
+				console.log(err.response);
+			})
+		},
 
 		uploadCsv(image) {
 			const URL = 'http://127.0.0.1:3000/product/category'

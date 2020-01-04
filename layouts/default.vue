@@ -249,6 +249,12 @@
 								permission: "view product",
 							},
 							{
+								name: "Product Brand",
+								to: "/product/brand",
+								icon: "mdi-diamond-stone",
+								permission: "view product",
+							},
+							{
 								name: "Print Barcode",
 								to: "/product/print-barcode",
 								icon: "mdi-barcode",
@@ -422,9 +428,9 @@
 								permission: "view transfer",
 							},
 							{
-								name: "Add Transfer",
+								name: "Add Location",
 								icon: "mdi-plus-circle",
-								to: "/transfer/add_location",
+								to: "/location/create",
 								permission: "view transfer",
 							},
 						]

@@ -37,11 +37,11 @@
 			<v-data-table :headers="headers" :items="items" :items-per-page="itemsPerPage">
 			    <template v-slot:item="{ item }">
 			    	<tr class="sale-tr" @click="viewInfo(item.id)">
-						<td>{{ item.date }}</td>
-						<td></td>
-						<td>{{ item.customer.name }}</td>
+						<td>{{ item.created_at }}</td>
+						<td>{{ item.reference_no }}</td>
+						 <td>{{ item.member.name }}</td>
 						<td>
-							<span :class="item.sale_status === 'completed' ? 'paid' : 'due'">
+							<span :class="item.sale_status === 'completed' ? 'completed' : (item.sale_status === 'Paid' ? 'paid' : 'due')">
 								{{ item.sale_status }}
 							</span>
 						</td>
@@ -50,9 +50,9 @@
 							{{ item.payment_status }}
 							</span>
 						</td>
-						<td>{{ item.total }}</td>
-						<td>{{ item.paid }}</td>
-						<td>{{ item.due }}</td>
+						<td>USD {{ item.total | formatNumber }}</td>
+						<td>USD {{ item.paid | formatNumber }}</td>
+						<td>USD {{ item.due | formatNumber }}</td>
 						<td>
 							<v-icon small outlined text>mdi-pencil</v-icon>
 						</td>
@@ -65,6 +65,13 @@
 
 
 <script>
+import Vue from 'vue';
+var numeral = require("numeral");
+
+Vue.filter("formatNumber", function(value) {
+	return numeral(value).format("0,0.00");
+});
+
 export default {
 	created() {
 		this.fetchData()
@@ -117,31 +124,15 @@ export default {
 					value: 'action',
 				},
 			],
-			selects: 
-			[
-				'Fruits', 'Electronics', 'Computer', 'Toy', 'Food', 'Accessories'			
-			],
 		}
 	},
 
 	methods: {
-		getColor (status) {
-	        if (status === "Paid") return 'purple'
-	        else {
-	        	return 'red';
-	        }
-	    },
-		getColorSale (status) {
-	        if (status === "completed") return 'blue'
-	        else {
-	        	return 'red';
-	        }
-	    },
 		fetchData() {
 			this.$axios.$get(`api/sale`)
 			.then(res => {
-				this.items = res.data;
-				console.log(res.data);
+				this.items = res.sales.data;
+				console.log(res);
 			})
 			.catch(err => {
 				console.log(err.response);
@@ -204,14 +195,20 @@ export default {
 }
 
 .paid {
-	background-color: #433ac1;
+	background-color: #36d160;
+	padding: 5px 7px 5px 7px;
+	border-radius: 5px;
+}
+
+.due {
+	background-color: #e0355a;	
 	padding: 5px 7px 5px 7px;
 	border-radius: 5px;
 	color: #fff;
 }
 
-.due {
-	background-color: #e0355a;	
+.completed {
+	background-color: #433ac1;
 	padding: 5px 7px 5px 7px;
 	border-radius: 5px;
 	color: #fff;
