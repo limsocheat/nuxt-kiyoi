@@ -26,27 +26,59 @@
 			</div>
 		</div>
 		<v-card>
-			<v-data-table :headers="headers" :items="items" :items-per-page="itemsPerPage" :options.sync="options" :server-items-length="total">
-				<template v-slot:item.action="{ item }">
-					<v-tooltip bottom>
-						<template v-slot:activator="{ on }">
-							<!-- Edit Item -->
-							<v-icon left fab color="primary" v-on="on">
-								mdi-pencil
-							</v-icon>
-						</template>
-						<span>Edit Supplier</span>
-					</v-tooltip>
-					<v-tooltip bottom>
-						<template v-slot:activator="{ on }">
-
-							<!-- Delete Item -->
-							<v-icon left fab color="primary" v-on="on">
-								mdi-delete
-							</v-icon>
-						</template>
-						<span>Delete Supplier</span>
-					</v-tooltip>
+			<v-data-table
+				:headers="headers"
+				:items="items"
+				:items-per-page="itemsPerPage"
+				:options.sync="options"
+				:server-items-length="total"
+			>
+				<template v-slot:item="{ item }">
+					<tr class="member--tr">
+						<!-- <td @click="gotoMember(item.id)">{{ item.date }}</td>
+						<td @click="gotoMember(item.id)">{{ item.reference }}</td>
+						<td @click="gotoMember(item.id)">{{ item.biller }}</td>
+						<td @click="gotoMember(item.id)">{{ item.members }}</td>
+						<td @click="gotoMember(item.id)">USD  {{ item.total | formatNumber}}</td> -->
+						<td >{{ item.date }}</td>
+						<td >{{ item.reference }}</td>
+						<td >{{ item.biller_name }}</td>
+						<td >{{ item.member_name }}</td>
+						<td >{{ item.branch_name }}</td>
+						<td >USD  {{ item.total | formatNumber}}</td>
+						
+						<td>
+							<v-menu>
+								<template v-slot:activator="{ on: menu }">
+									<v-tooltip bottom>
+										<template v-slot:activator="{ on: tooltip }">
+											<v-btn
+											color="primary"
+											dark
+											v-on="{ ...tooltip, ...menu }"
+											smallF
+											>Action</v-btn>
+										</template>
+										<span>Action</span>
+									</v-tooltip>
+								</template>
+								<v-list>
+									<v-list-item
+										v-for="(menu, index) in menus"
+										:key="index"
+										dense
+										@click="menu.action(item.id)"
+										class="cyan darken-3"
+									>
+										<v-list-item-title class="white--text">
+											<v-icon left dark>{{menu.icon}}</v-icon>
+											{{ menu.title }}
+										</v-list-item-title>
+									</v-list-item>
+								</v-list>
+						    </v-menu>	
+						</td>
+					</tr>
 				</template>
 			</v-data-table>
 		</v-card>
@@ -55,55 +87,102 @@
 
 
 <script>
+
+	import Vue from 'vue';
+
+	var numeral = require("numeral");
+	Vue.filter("formatNumber", function (value) {
+		return numeral(value).format("0,0.00");
+	});
+	
+
 export default {
 
 	created() {
-		// this.fetchData()
+		this.getItems();
 	},
 
 	data() {
 		return {
 			items: [],
-			search: '',
+			search: "",
 			form: {},
 			total: 0,
 			options: {},
 			itemsPerPage: 5,
 			editedIndex: -1,
 			created: true,
-			dialog1: false,
-			dialog2: false,
+			dialog: false,
 			headers: [{
 					text: 'Date',
 					sortable: false,
+					value:"created_at"
 				}, {
 					text: 'Reference',
 					sortable: false,
+					value: "reference"
 				}, {
 					text: 'Biller',
 					sortable: false,
+					value: "biller_name"
 				}, {
 					text: 'Customer',
 					sortable: false,
+					value: "member_name"
 				}, {
 					text: 'Warehouse',
 					sortable: false,
+					value: "branch_name"
 				},{
 					text: 'Grand Total',
 					sortable: false,
+					value: "total"
 				},{
-					text: 'Actions',
+					text: 'Action',
 					sortable: false,
+					value: "active"
 				},
 			],
-			selects: 
-			[
-				'Fruits', 'Electronics', 'Computer', 'Toy', 'Food', 'Accessories'			
+			// selects: 
+			// [
+			// 	'Fruits', 'Electronics', 'Computer', 'Toy', 'Food', 'Accessories'			
+			// ],
+			menus: [
+				{title: 'View', icon: 'mdi-eye', action: this.view},
+				{title: 'Edit', icon: 'mdi-square-edit-outline', action: this.edit},
+				{title: 'Delete', icon: 'mdi-trash-can-outline', action: this.deleteItem},
 			],
 		}
 	},
 
 	methods: {
+
+		getItems() {
+			this.$axios.$get("/api/return-sale")
+			.then(response => {
+				this.items = response.data;
+				this.total = response.total;
+				console.log(response);
+			});
+		},
+
+		edit(id) {
+			this.$router.push(`/return/return-sale/${id}/edit_returnsale`);
+		},
+
+		deleteItem(id) {
+			if(confirm('Are u sure to delete it?')) {
+				this.$axios.$delete('/api/return-sale/' + id)
+				.then(res => {
+					this.getItems();
+					this.$toast.info('Succeessfully Delete');
+				})
+				.catch(err => {
+					console.log(err.response);
+				})
+			}
+		},
+
 		uploadCsv(image) {
 			const URL = 'http://127.0.0.1:3000/product/category'
 
