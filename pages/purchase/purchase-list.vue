@@ -143,23 +143,42 @@
 				:items-per-page="itemsPerPage" 
 				:options.sync="options" :server-items-length="total"
 			>
-				<template v-slot:item.action="{ item }">
-					<v-tooltip top v-permission="'edit sales'">
-					<template v-slot:activator="{ on }">
-						<v-btn icon @click="editItem(item)" color="primary" outlined v-on="on">
-							<v-icon small>mdi-pencil</v-icon>
-						</v-btn>
-					</template>
-					<span>Edit</span>
-				</v-tooltip>
-				<v-tooltip top v-permission="'delete sales'">
-					<template v-slot:activator="{ on }">
-						<v-btn icon @click="deleteItem(item)" color="red" outlined v-on="on">
-							<v-icon small>mdi-delete</v-icon>
-						</v-btn>
-					</template>
-					<span>Delete</span>
-				</v-tooltip>
+				<template v-slot:item="{ item }">
+					<tr>
+						<td>{{ item.created_at }}</td>
+						<td>{{ item.reference_no }}</td>
+						<td>{{ item.name }}</td>
+						<td>{{ item.product.supplier.name }}</td>
+						<td>USD {{ item.paid  | formatNumber }}</td>
+						<td>
+							<span :class="item.purchase_status === 'Received' ? 'received' : 'ordered'">
+								{{ item.purchase_status }}
+							</span>
+						</td>
+						<td>
+							<span :class="item.payment_status === 'Paid' ? 'Paid' : 'due'">
+								{{ item.payment_status }}
+							</span>
+						</td>
+						<td>
+							<v-tooltip top v-permission="'edit sales'">
+								<template v-slot:activator="{ on }">
+									<v-btn icon @click="editItem(item)" color="primary" outlined v-on="on">
+										<v-icon small>mdi-pencil</v-icon>
+									</v-btn>
+								</template>
+								<span>Edit</span>
+							</v-tooltip>
+							<v-tooltip top v-permission="'delete sales'">
+								<template v-slot:activator="{ on }">
+									<v-btn icon @click="deleteItem(item)" color="red" outlined v-on="on">
+										<v-icon small>mdi-delete</v-icon>
+									</v-btn>
+								</template>
+								<span>Delete</span>
+							</v-tooltip>
+						</td>
+					</tr>
 				</template>
 			</v-data-table>
 		</v-card>
@@ -169,6 +188,14 @@
 
 <script>
 import moment from 'moment'
+import Vue from 'vue';
+
+var numeral = require('numeral');
+
+Vue.filter('formatNumber', function(value) {
+	return numeral(value).format("0,0.00");
+});
+
 export default {
 
 	created() {
@@ -202,6 +229,11 @@ export default {
 					text: 'Date',
 					sortable: false,
 					value: 'date',
+				},
+				{
+					text: 'Reference No',
+					sortable: false,
+					value: 'date',
 				}, {
 					text: 'Name',
 					sortable: false,
@@ -210,10 +242,6 @@ export default {
 					text: 'Supplier',
 					sortable: false,
 					value: 'supplier',
-				}, {
-					text: 'total',
-					sortable: false,
-					value: 'total',
 				}, {
 					text: 'Paid',
 					sortable: false,
@@ -233,12 +261,6 @@ export default {
 				},
 			],
 		}
-	},
-
-	computed: {
-		computedDateFormattedMomentjs () {
-	        return this.date ? moment(this.date).format('dddd, MMMM Do YYYY') : ''
-      	},
 	},
 
 	methods: {
@@ -334,7 +356,7 @@ export default {
 }
 
 .form-control {
-	width: 100%;
+	width: 100%; 
 	padding-bottom: 5px; 
 	padding-top: 5px; 
 	padding-right: 10px; 
@@ -342,6 +364,31 @@ export default {
 	outline: none;
 	border-radius: 5px;
 	border: 1px solid #616161;
+}
+
+.received {
+	background: blue;
+	padding: 7px 7px 7px 7px;
+	color: #ffffff;
+	border-radius: 3px;
+}
+
+.due {
+	background: #d4e157;
+	padding: 7px 7px 7px 7px;
+	border-radius: 3px;
+}
+
+.Paid {
+	background: #3c8dbc;
+	padding: 7px 7px 7px 7px;
+	color: #fff;
+	border-radius: 3px;
+}
+
+.ordered {
+	background: #00c0ef;
+	padding: 10px 10px 10px 10px;
 }
 
 </style>

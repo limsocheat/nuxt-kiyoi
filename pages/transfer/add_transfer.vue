@@ -204,7 +204,7 @@
 			fetchProduct() {
 				this.$axios.$get(`api/product`)
 				.then(res => {
-					this.products = res.data;
+					this.products = res.products.data;
 					console.log(res);
 				})
 				.catch(err =>  {

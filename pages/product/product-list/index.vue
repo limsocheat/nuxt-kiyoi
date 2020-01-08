@@ -170,6 +170,14 @@
 					<td>
 						<v-tooltip top v-permission="'edit sales'">
 							<template v-slot:activator="{ on }">
+								<v-btn icon small @click="viewItem(item.id)" color="cyan" outlined v-on="on">
+									<v-icon small>mdi-eye</v-icon>
+								</v-btn>
+							</template>
+							<span>View</span>
+						</v-tooltip>
+						<v-tooltip top v-permission="'edit sales'">
+							<template v-slot:activator="{ on }">
 								<v-btn icon small @click="editItem(item)" color="primary" outlined v-on="on">
 									<v-icon small>mdi-pencil</v-icon>
 								</v-btn>
@@ -271,6 +279,10 @@ export default {
 			.catch(err => {
 				console.log(err);
 			})
+		},
+
+		viewItem(id) {
+			this.$router.push(`/product/product-list/${id}`)
 		},
 
 		editItem (item) {
