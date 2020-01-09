@@ -31,8 +31,6 @@
 				<v-btn class="blue lighten-1">Print</v-btn>
 			</div>
 		</div>
-		<div>
-		</div>
 		<v-card>
 			<v-data-table :headers="headers" :items="items" :items-per-page="itemsPerPage">
 			    <template v-slot:item="{ item }">
@@ -93,7 +91,7 @@ export default {
 					sortable: false,
 					value: 'date',
 				}, {
-					text: 'Reference No',
+					text: 'Invoice No',
 					sortable: false,
 				}, , {
 					text: 'Customer',

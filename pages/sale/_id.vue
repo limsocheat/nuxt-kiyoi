@@ -7,7 +7,7 @@
 			<v-divider></v-divider>
 			<v-row>
 				<v-col md="6" cols="12">
-					<div class="d-flex flex-column px-10 py-5">
+					<div class="d-flex flex-column px-10 pt-5">
 						<span class="font-weight-medium">Date: 
 							<span class="font-weight-regular">{{ items.created_at }}</span>
 						</span>
@@ -51,11 +51,11 @@
 								<td class="tableSale--tr">USD {{ i.price - (i.order.unit_price * i.price * i.order.discount / 100) | formatMoney }} </td>
 							</tr>
 						</template>
-						<div v-else>
-							<td>
-								<span class="tableSale--noData">No Product Found</span>
-							</td>
-						</div>
+						<template v-else>
+							<tr>
+								<td colspan="7" class="tableSale--noData">No Available in table</td>
+							</tr>
+						</template>
 						
 						<tr>
 							<th class="tableSale--tr" colspan="4">Total</th>
@@ -155,6 +155,12 @@
 		&--tr {
 			padding: 10px 10px 10px 10px;
 			border: 1px solid rgba(0,0,0,0.125);
+		}
+
+		&--noData {
+			text-align: center;
+			padding: 10px;
+			border: 2px solid #34ef95;
 		}
 	}
 </style>
