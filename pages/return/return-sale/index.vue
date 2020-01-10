@@ -37,14 +37,15 @@
 					<tr class="member--tr">
 						<!-- <td @click="gotoMember(item.id)">{{ item.date }}</td>
 						<td @click="gotoMember(item.id)">{{ item.reference }}</td>
-						<td @click="gotoMember(item.id)">{{ item.biller }}</td>
-						<td @click="gotoMember(item.id)">{{ item.members }}</td>
+						<td @click="gotoMember(item.id)">{{ item.biller.name }}</td>
+						<td @click="gotoMember(item.id)">{{ item.member.name }}</td>
+						<td @click="gotoMember(item.id)">{{ item.branch.address }}</td>
 						<td @click="gotoMember(item.id)">USD  {{ item.total | formatNumber}}</td> -->
 						<td >{{ item.date }}</td>
 						<td >{{ item.reference }}</td>
-						<td >{{ item.biller_name }}</td>
-						<td >{{ item.member_name }}</td>
-						<td >{{ item.branch_name }}</td>
+						<td >{{ item.biller.name }}</td>
+						<td >{{ item.member.name }}</td>
+						<td >{{ item.branch.address }}</td>
 						<td >USD  {{ item.total | formatNumber}}</td>
 						
 						<td>
@@ -99,7 +100,15 @@
 export default {
 
 	created() {
-		this.getItems();
+		this.fetchData();
+	},
+
+	watch: {
+		options: {
+			handler() {
+				this.fetchData();
+			}
+		}
 	},
 
 	data() {
@@ -124,7 +133,7 @@ export default {
 				}, {
 					text: 'Biller',
 					sortable: false,
-					value: "biller_name"
+					value: "biller_address"
 				}, {
 					text: 'Customer',
 					sortable: false,
@@ -143,12 +152,8 @@ export default {
 					value: "active"
 				},
 			],
-			// selects: 
-			// [
-			// 	'Fruits', 'Electronics', 'Computer', 'Toy', 'Food', 'Accessories'			
-			// ],
 			menus: [
-				{title: 'View', icon: 'mdi-eye', action: this.view},
+				// {title: 'View', icon: 'mdi-eye', action: this.view},
 				{title: 'Edit', icon: 'mdi-square-edit-outline', action: this.edit},
 				{title: 'Delete', icon: 'mdi-trash-can-outline', action: this.deleteItem},
 			],
@@ -157,13 +162,16 @@ export default {
 
 	methods: {
 
-		getItems() {
-			this.$axios.$get("/api/return-sale")
-			.then(response => {
-				this.items = response.data;
-				this.total = response.total;
-				console.log(response);
-			});
+		fetchData() {
+			this.$axios.$get(`/api/return-sale?temsPerPage=${this.options.itemsPerPage}&page=${this.options.page}`)
+			.then(res => {
+				this.items = res.returnsale.data;
+				this.total = res.total;
+				console.log(res)
+			})
+			.catch(err => {
+				console.log(err);
+			})
 		},
 
 		edit(id) {
@@ -172,16 +180,16 @@ export default {
 
 		deleteItem(id) {
 			if(confirm('Are u sure to delete it?')) {
-				this.$axios.$delete('/api/return-sale/' + id)
+				this.$axios.$delete(`api/return-sale/` +id)
 				.then(res => {
-					this.getItems();
+					this.fetchData();
 					this.$toast.info('Succeessfully Delete');
 				})
 				.catch(err => {
 					console.log(err.response);
 				})
 			}
-		},
+      	},
 
 		uploadCsv(image) {
 			const URL = 'http://127.0.0.1:3000/product/category'

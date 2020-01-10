@@ -9,16 +9,34 @@
 				<p class="caption font-italic pt-5">The field labels marked with * are required input fields.</p>
 				<v-row>
 					<v-col md="4" cols="12">
-						<label class="font-weight-bold">Warehouse *</label>
-						<v-select solo outlined dense label="Please type, product code and select..."></v-select>
+						<label class="font-weight-bold" for="name">Warehouse *</label>
+						<v-autocomplete 
+							item-value="name" 
+							item-text="name"  
+							dense solo outlined 
+							:items="location"
+							label="Please type, product code and select..."
+						></v-autocomplete >
 					</v-col>
 					<v-col md="4" cols="12">
-						<label class="font-weight-bold">Supplier</label>
-						<v-select solo outlined dense label="Please type, product code and select..."></v-select>
+						<label class="font-weight-bold" for="name">Supplier</label>
+						<v-autocomplete 
+							item-value="name" 
+							item-text="name"  
+							dense solo outlined 
+							:items="suppliers"
+							label="Please type, product code and select..."
+
+						></v-autocomplete >
 					</v-col>
 					<v-col md="4" cols="12">
 						<label class="font-weight-bold">Account</label>
-						<v-select solo outlined dense label="Received" :items="purchase_status"></v-select>
+						<v-select 
+							solo outlined dense 
+							label="Received" 
+							:items="purchase_status"
+						></v-select>
+						
 					</v-col>
 					<v-col md="12" col="12">
 						<label for>Select Product</label>
@@ -67,8 +85,17 @@
 
 <script>
 	export default {
+
+		create(){
+			this.fetchReturnSale()
+			
+		},
+
 		data() {
 			return {
+				location:[],
+				suppliers:[],
+
 				headers: [
 					{
 						text: "Name",
@@ -107,6 +134,17 @@
 			};
 		},
 		methods: {
+
+			fetchReturnSale(){
+				this.$axios.$get(`api/return-sale`)
+				.then(res =>{
+					this.location = res.location.data;
+					this.suppliers= res.suppliers.data;
+					console.log(res)
+				})
+			},
+			
+
 			uploadFile(event) {
 				const url = "http://127.0.0.1:3000/product/add_adjustment";
 				let data = new FormData();
