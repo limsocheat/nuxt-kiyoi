@@ -69,17 +69,17 @@
 					<label class="font-weight-bold">Product Unit*</label>
 					<v-text-field 
 						outlined solo dense
-						label="Purchases Unit"
-						v-model="form.unit"
+						label="Product Unit"
+						v-model="form.quantity"
 						type="number"
 					></v-text-field>
 				</v-col>
 				<v-col sm="6" cols="12">
-					<label class="font-weight-bold">Purchases Price*</label>
+					<label class="font-weight-bold">Product Price*</label>
 					<v-text-field 
 						outlined solo dense
-						label="Purchases Price"
-						v-model="form.price"
+						label="Purchase Price"
+						v-model="form.unit_price"
 						type="number"
 					></v-text-field>
 				</v-col>

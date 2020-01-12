@@ -132,7 +132,9 @@
 				></v-text-field>
 			</div>
 			<div>
-				<v-btn class="red darken-1">PDF</v-btn>
+				<v-btn class="red darken-1">
+					<a href="/purchase/export">PDF</a>
+				</v-btn>
 				<v-btn class="lime lighten-1">CSV</v-btn>
 				<v-btn class="blue lighten-1">Print</v-btn>
 			</div>
@@ -144,12 +146,12 @@
 				:options.sync="options" :server-items-length="total"
 			>
 				<template v-slot:item="{ item }">
-					<tr>
-						<td>{{ item.created_at }}</td>
-						<td>{{ item.reference_no }}</td>
-						<td>{{ item.name }}</td>
-						<td>{{ item.product.supplier.name }}</td>
-						<td>USD {{ item.paid  | formatNumber }}</td>
+					<tr  class="viewPurchase">
+						<td @click="viewPurchase(item.id)">{{ item.created_at }}</td>
+						<td @click="viewPurchase(item.id)">{{ item.reference_no }}</td>
+						<td v-if="item.products.supplier" @click="viewPurchase(item.id)">{{ item.products.supplier.name }}</td>
+						<td v-else>N/A</td>
+						<td @click="viewPurchase(item.id)">USD {{ item.paid  | formatNumber }}</td>
 						<td>
 							<span :class="item.purchase_status === 'Received' ? 'received' : 'ordered'">
 								{{ item.purchase_status }}
@@ -163,7 +165,15 @@
 						<td>
 							<v-tooltip top v-permission="'edit sales'">
 								<template v-slot:activator="{ on }">
-									<v-btn icon @click="editItem(item)" color="primary" outlined v-on="on">
+									<v-btn small icon @click="viewPurchase(item.id)" color="teal" outlined v-on="on">
+										<v-icon small>mdi-eye</v-icon>
+									</v-btn>
+								</template>
+								<span>View Purchase</span>
+							</v-tooltip>
+							<v-tooltip top v-permission="'edit sales'">
+								<template v-slot:activator="{ on }">
+									<v-btn small icon @click="editItem(item)" color="primary" outlined v-on="on">
 										<v-icon small>mdi-pencil</v-icon>
 									</v-btn>
 								</template>
@@ -171,7 +181,7 @@
 							</v-tooltip>
 							<v-tooltip top v-permission="'delete sales'">
 								<template v-slot:activator="{ on }">
-									<v-btn icon @click="deleteItem(item)" color="red" outlined v-on="on">
+									<v-btn small icon @click="deleteItem(item)" color="red" outlined v-on="on">
 										<v-icon small>mdi-delete</v-icon>
 									</v-btn>
 								</template>
@@ -234,10 +244,6 @@ export default {
 					text: 'Reference No',
 					sortable: false,
 					value: 'date',
-				}, {
-					text: 'Name',
-					sortable: false,
-					value: 'name',
 				}, {
 					text: 'Supplier',
 					sortable: false,
@@ -321,6 +327,10 @@ export default {
       		}
       	},
 
+      	viewPurchase(id) {
+      		this.$router.push(`/purchase/${id}`);
+      	},
+
 		uploadCsv(image) {
 			const URL = 'http://127.0.0.1:3000/product/category'
 
@@ -338,7 +348,7 @@ export default {
 		      URL, 
 		      data,
 		      config
-		    ).then(
+			    ).then(
 		      response => {
 		        console.log('Csv upload response > ', response)
 		      }
@@ -389,6 +399,10 @@ export default {
 .ordered {
 	background: #00c0ef;
 	padding: 10px 10px 10px 10px;
+}
+
+.viewPurchase {
+	cursor: pointer;
 }
 
 </style>
