@@ -36,7 +36,7 @@
 							label="Please select Supplier"
 						></v-autocomplete>
 					</v-col>
-					<v-col md="6" cols="12">
+					<v-col md="4" cols="12">
 						<label class="font-weight-bold">Purchase Status</label>
 						<v-select
 							solo
@@ -47,7 +47,7 @@
 							v-model="form.purchase_status"
 						></v-select>
 					</v-col>
-					<v-col md="6" cols="12">
+					<v-col md="4" cols="12">
 						<label for class="font-weight-bold">Shipping Cost</label>
 						<v-text-field
 							solo
@@ -58,7 +58,7 @@
 							placeholder="0.00"
 						></v-text-field>
 					</v-col>
-					<v-col md="6" cols="12">
+					<v-col md="4" cols="12">
 						<label for class="font-weight-bold">Payment Status</label>
 						<v-select solo outlined dense v-model="form.payment_status" :items="payment_status" required></v-select>
 					</v-col>
@@ -87,6 +87,7 @@
 								<td>Quantity</td>
 								<td>Unit Price</td>
 								<td>Discount</td>
+								<td>Total</td>
 								<td>Actions</td>
 							</tr>
 						</thead>
@@ -95,12 +96,12 @@
 								<td>{{item.name}}</td>
 								<td>{{item.code}}</td>
 								<td>
-									<validation-provider  rules="required" v-slot="{ errors }">
+									<validation-provider rules="required" v-slot="{ errors }">
 										<input
 											type="number"
 											class="table-quantity"
 											name="form.items[index].quantity"
-											v-model="form.items[index].quantity"
+											v-model.number="form.items[index].quantity"
 										/>
 										<span>{{ errors[0] }}</span>
 									</validation-provider>
@@ -110,7 +111,7 @@
 										type="number"
 										class="table-quantity"
 										name="form.items[index].unit_price"
-										v-model="form.items[index].unit_price"
+										v-model.number="form.items[index].unit_price"
 										placeholder="0.00"
 									/>
 								</td>
@@ -123,6 +124,7 @@
 										placeholder="0.00"
 									/>
 								</td>
+								<td>USD {{ discountedPrice(item) | formatMoney }}</td>
 								<td>
 									<v-btn small color="red" outlined @click="removeItem(index)">
 										<v-icon>mdi-delete</v-icon>
@@ -130,8 +132,9 @@
 								</td>
 							</tr>
 							<tr>
-								<td class="py-3" colspan="3">Total</td>
-								<td></td>
+								<td class="py-3" colspan="2">Total</td>
+								<td colspan="3">{{ calculateQty }}</td>
+								<td>USD {{ calculateTotal | formatMoney }}</td>
 							</tr>
 						</tbody>
 					</table>
@@ -152,11 +155,19 @@
 </template>
 
 <script>
+	import Vue from "vue";
+
+	var numeral = require("numeral");
+
+	Vue.filter("formatMoney", function(value) {
+		return numeral(value).format("0,0.00");
+	});
+
 	export default {
 		name: "AddPurchase",
 		created() {
 			this.fetchData();
-			this.fetchPurchase();
+			// this.fetchPurchase();
 			this.fetchSupplier();
 			this.fetchLocation();
 		},
@@ -168,14 +179,40 @@
 				},
 				products: [],
 				purchases: [],
-				purchase_status: ["Received", "Partial", "Pending", "Ordered"],
+				purchase_status: ["Received", "Pending", "Ordered"],
 				payment_status: ["Paid", "Due"],
 				suppliers: [],
 				locations: []
 			};
 		},
 
+		computed: {
+			calculateQty() {
+				return this.form.items.reduce((total, item) => {
+					return total + item.quantity;
+				}, 0);
+			},
+
+			calculateTotal() {
+				return this.form.items.reduce((total, item) => {
+					let s =
+						(item.unit_price -
+							(item.unit_price * item.discount) / 100) *
+						item.quantity;
+					return total + s;
+				}, 0);
+			}
+		},
+
 		methods: {
+			discountedPrice(product) {
+				return (
+					(product.unit_price -
+						(product.unit_price * product.discount) / 100) *
+					product.quantity
+				);
+			},
+
 			fetchData() {
 				this.$axios
 					.$get(`/api/product`)
@@ -212,23 +249,25 @@
 					});
 			},
 
-			fetchPurchase() {
-				this.$axios
-					.$get(`api/purchase`)
-					.then(res => {
-						this.purchases = res.data;
-						console.log(res);
-					})
-					.catch(err => {
-						console.log(res.response);
-					});
-			},
+			// fetchPurchase() {
+			// 	this.$axios
+			// 		.$get(`api/purchase`)
+			// 		.then(res => {
+			// 			// this.purchases = res.data;
+			// 			console.log(res);
+			// 		})
+			// 		.catch(err => {
+			// 			console.log(res.response);
+			// 		});
+			// },
 
 			createPurchase() {
 				this.$axios
 					.$post(`api/purchase`, this.form)
 					.then(res => {
-						this.purchases = res.data;
+						// this.purchases = res.data;
+						this.$set(this.$data, "purchases", res.data);
+						this.$router.push(`/purchase/purchase-list`);
 						console.log(res);
 					})
 					.catch(err => {
@@ -250,7 +289,7 @@
 			},
 
 			removeItem(index) {
-				this.items.splice(index, 1);
+				this.form.items.splice(index, 1);
 			}
 		}
 	};
