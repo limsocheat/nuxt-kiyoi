@@ -2,12 +2,16 @@
 	<v-app>
 		<v-card class="mx-5 my-5">
 			<div class="purple lighten-1">
-				<v-card-title class="white--text">Add Purchase</v-card-title>
+				<v-card-title class="white--text">Edit Purchase</v-card-title>
 			</div>
 			<v-divider></v-divider>
 			<div class="px-5">
 				<p class="caption font-italic pt-5">The field labels marked with * are required input fields.</p>
 				<v-row>
+					<v-col md="6" cols="12">
+						<label for="reference_no" class="font-weight-bold">Reference No</label>
+						<v-text-field solo outlined dense v-model="form.reference_no"></v-text-field>
+					</v-col>
 					<v-col md="6" cols="12">
 						<label class="font-weight-bold">Location*</label>
 						<v-autocomplete
@@ -18,9 +22,10 @@
 							dense
 							label="Business Location"
 							return-object
-							v-model="form.location"
+							v-model="form.branch"
 							:items="locations"
-						></v-autocomplete>
+						>
+						</v-autocomplete>
 					</v-col>
 					<v-col md="6" cols="12">
 						<label class="font-weight-bold">Supplier</label>
@@ -78,7 +83,7 @@
 					</v-col>
 				</v-row>
 				<div>
-					<label class="font-weight-bold mb-3">Order Table</label>
+					<label class="font-weight-bold mb-3">Product Table</label>
 					<table class="tablePurchase">
 						<thead>
 							<tr class="tablePurchase--header">
@@ -91,38 +96,33 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr class="tablePurchase--td" v-for="(item, index) in form.items" :key="index">
+							<tr class="tablePurchase--td"  v-for="(item, index) in form.products" :key="index">
 								<td>{{item.name}}</td>
 								<td>{{item.code}}</td>
 								<td>
-									<validation-provider  rules="required" v-slot="{ errors }">
-										<input
-											type="number"
-											class="table-quantity"
-											name="form.items[index].quantity"
-											v-model="form.items[index].quantity"
-										/>
-										<span>{{ errors[0] }}</span>
-									</validation-provider>
-								</td>
-								<td>
 									<input
 										type="number"
 										class="table-quantity"
-										name="form.items[index].unit_price"
-										v-model="form.items[index].unit_price"
-										placeholder="0.00"
+										v-model="form.products[index].pivot.quantity"
 									/>
 								</td>
 								<td>
 									<input
 										type="number"
 										class="table-quantity"
-										name="form.items[index].discount"
-										v-model.number="form.items[index].discount"
+										v-model="form.products[index].pivot.unit_price"
 										placeholder="0.00"
 									/>
 								</td>
+								<!-- <td>
+									<input
+										type="number"
+										class="table-quantity"
+										name="form.products[index].pivot.discount"
+										v-model="form.products[index].pivot.discount"
+										placeholder="0.00"
+									/>
+								</td> -->
 								<td>
 									<v-btn small color="red" outlined @click="removeItem(index)">
 										<v-icon>mdi-delete</v-icon>
@@ -152,10 +152,11 @@
 </template>
 
 <script>
+	import Vue from 'vue';
 	export default {
-		name: "AddPurchase",
+		name: "EditPurchase",
 		created() {
-			this.fetchData();
+			this.fetchProduct();
 			this.fetchPurchase();
 			this.fetchSupplier();
 			this.fetchLocation();
@@ -163,40 +164,28 @@
 
 		data() {
 			return {
-				form: {
-					items: []
-				},
+				form: {},
 				products: [],
 				purchases: [],
 				purchase_status: ["Received", "Partial", "Pending", "Ordered"],
 				payment_status: ["Paid", "Due"],
 				suppliers: [],
-				locations: []
+				locations: [],
+				selectProduct: false,
 			};
 		},
 
 		methods: {
-			fetchData() {
-				this.$axios
-					.$get(`/api/product`)
-					.then(res => {
-						this.products = res.products.data;
-						console.log(res);
-					})
-					.catch(err => {
-						console.log(err);
-					});
-			},
 
-			fetchSupplier() {
+			fetchPurchase() {
 				this.$axios
-					.$get(`api/supplier`)
+					.$get(`api/purchase/` + this.$route.params.id)
 					.then(res => {
+						this.form = res[1];
 						console.log(res);
-						this.suppliers = res.suppliers.data;
 					})
 					.catch(err => {
-						console.log(err.response);
+						console.log(res.response);
 					});
 			},
 
@@ -212,21 +201,34 @@
 					});
 			},
 
-			fetchPurchase() {
+			fetchSupplier() {
+				this.$axios.$get(`api/supplier`)
+				.then(res => {
+					this.suppliers = res.suppliers.data;
+					console.log(res);
+				})
+				.catch(err => {
+					console.log(err.response);
+				})
+			},
+
+			fetchProduct() {
 				this.$axios
-					.$get(`api/purchase`)
+					.$get(`/api/product`)
 					.then(res => {
-						this.purchases = res.data;
+						this.products = res.products.data;
 						console.log(res);
 					})
 					.catch(err => {
-						console.log(res.response);
+						console.log(err);
 					});
 			},
 
 			createPurchase() {
 				this.$axios
-					.$post(`api/purchase`, this.form)
+					.$post(`api/purchase`, {
+
+					})
 					.then(res => {
 						this.purchases = res.data;
 						console.log(res);
@@ -238,19 +240,19 @@
 			},
 
 			addTocart(item) {
-				if (this.form.items.includes(item)) {
+				if (this.form.products.includes(item)) {
 					alert("already there");
 				} else {
-					this.form.items.push(item);
-					console.log(item);
+					item.pivot.quantity = item.quantity;
+					this.form.products.push(item);
+		   			// this.form.products[i].quantity = this.form.products[i].pivot.quantity; 
 				}
-
 				item.quantity = 1;
 				item.discount = 0;
 			},
 
 			removeItem(index) {
-				this.items.splice(index, 1);
+				this.form.products.splice(index, 1);
 			}
 		}
 	};

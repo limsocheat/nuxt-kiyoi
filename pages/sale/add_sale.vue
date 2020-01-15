@@ -1,10 +1,8 @@
 <template>
 	<v-app>
 		<v-card class="mx-5 my-5">
-			<div class="py-3 px-5">
-				<h3>
-					Print Barcode
-				</h3>
+			<div class="indigo lighten-1 white--text">
+				<v-card-title>Add Sale</v-card-title>
 			</div>
 			<v-divider></v-divider>
 			<div class="px-5">
@@ -12,187 +10,319 @@
 				<v-row>
 					<v-col md="4" cols="12">
 						<label class="font-weight-bold">Customer*</label>
-						<v-select
+						<v-autocomplete
 							solo
 							outlined
 							dense
 							label="Select Customer"
-						>
-						</v-select>
+							:items="members"
+							item-value="name"
+							item-text="name"
+							return-object
+							v-model="form.member"
+						></v-autocomplete>
 					</v-col>
 					<v-col md="4" cols="12">
 						<label class="font-weight-bold">Warehouse*</label>
-						<v-select
+						<v-autocomplete
 							solo
 							outlined
 							dense
 							label="Select Warehouse"
-						>
-						</v-select>
+							:items="locations"
+							item-value="name"
+							item-text="name"
+							return-object
+							v-model="form.location"
+						></v-autocomplete>
 					</v-col>
 					<v-col md="4" cols="12">
-						<label class="font-weight-bold">Biller*</label>
+						<label class="font-weight-bold">Payment Status*</label>
 						<v-select
 							solo
 							outlined
 							dense
-							label="Select Biller"
-						>
-						</v-select>
+							:items="payment_status"
+							label="Please Select"
+							v-model="form.payment_status"
+						></v-select>
+					</v-col>
+					<v-col md="4" cols="12">
+						<label class="font-weight-bold">Payment Method*</label>
+						<v-select
+							solo
+							outlined
+							dense
+							:items="payment_method"
+							label="Please Select"
+							v-model="form.payment_method"
+						></v-select>
+					</v-col>
+					<v-col md="4" sm="6" cols="12">
+						<label for class="font-weight-bold">Shipping Cost</label>
+						<v-text-field
+							solo
+							outlined
+							dense
+							type="number"
+							placeholder="0.0"
+							v-model="form.shipping_cost"
+						></v-text-field>
+					</v-col>
+					<v-col md="4" sm="6" cols="12">
+						<label for class="font-weight-bold">Paid</label>
+						<v-text-field solo outlined dense type="number" placeholder="0.0" v-model="form.paid"></v-text-field>
 					</v-col>
 					<v-col md="12" cols="12">
 						<label class="font-weight-bold">Select Product</label>
-						<v-text-field
+						<v-autocomplete
 							solo
 							outlined
 							dense
 							append-icon="mdi-barcode"
-						></v-text-field>
+							:items="products"
+							item-value="name"
+							item-text="name"
+							return-object
+							@input="addTocart"
+						></v-autocomplete>
 					</v-col>
 				</v-row>
-				<v-data-table
-					:headers="headers"
-				></v-data-table>
-				<v-row>
-					<v-col md="4" sm="6" cols="12">
-						<label for="">Order Tax</label>
-						<v-select
-							solo
-							outlined
-							dense
-						></v-select>
-					</v-col>
-					<v-col md="4" sm="6" cols="12">
-						<label for="">Order Discount</label>
-						<v-text-field
-							solo
-							outlined
-							dense
-						></v-text-field>
-					</v-col>
-					<v-col md="4" sm="6" cols="12">
-						<label for="">Shipping Cost</label>
-						<v-text-field
-							solo
-							outlined
-							dense
-						></v-text-field>
-					</v-col>
-					<v-col md="4" sm="6" cols="12">
-						<label for="">Attach Document</label>
-						<input type="file" @change="uploadImage($event)">
-					</v-col>
-					<v-col md="4" sm="6" cols="12">
-						<label for="">Sale Status*</label>
-						<v-select
-							solo
-							outlined
-							dense
-							:items="sale_status"
-							item-value="status"
-							menu-props="auto"
-						></v-select>
-					</v-col>
-					<v-col md="4" sm="6" cols="12">
-						<label for="">Payment Status*</label>
-						<v-select
-							solo
-							outlined
-							dense
-						></v-select>
-					</v-col>
-					<v-col md="6" cols="12">
-						<div class="d-flex flex-column">
-							<label for="">Sale Note</label>
-							<textarea cols="30" rows="10" class="textarea"></textarea>
-						</div>
-					</v-col>
-					<v-col md="6" cols="12">
-						<div class="d-flex flex-column">
-							<label for="">Staff Note</label>
-							<textarea cols="30" rows="10" class="textarea"></textarea>
-						</div>
-					</v-col>
-				</v-row>
+				<div>
+					<table class="saleTable">
+						<thead>
+							<tr>
+								<th class="saleTable--th">Name</th>
+								<th class="saleTable--th">Code</th>
+								<th class="saleTable--th">Quantity</th>
+								<th class="saleTable--th">Product Price</th>
+								<th class="saleTable--th">Discount</th>
+								<th class="saleTable--th">Total</th>
+								<th class="saleTable--th">Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="saleTable--td" v-for="(item, index) in form.items" :key="index">
+								<td>{{item.name}}</td>
+								<td>{{item.code}}</td>
+								<td>
+									<input type="number" class="saleTable--input" v-model.number="form.items[index].quantity" />
+								</td>
+								<td>
+									<input
+										type="number"
+										class="saleTable--input"
+										v-model.number="form.items[index].unit_price"
+										placeholder="0.00"
+									/>
+								</td>
+								<td>
+									<input
+										type="number"
+										class="saleTable--input"
+										name="form.items[index].discount"
+										v-model.number="form.items[index].discount"
+										placeholder="0.00"
+									/>
+								</td>
+								<td>USD {{ discountedPrice(item) | formatMoney }}</td>
+								<td>
+									<v-btn small color="red" outlined @click="removeItem(index)">
+										<v-icon>mdi-delete</v-icon>
+									</v-btn>
+								</td>
+							</tr>
+							<tr class="saleTable--total">
+								<th colspan="2">Total</th>
+								<td colspan="3">{{ calculateTotal }}</td>
+								<td>USD {{ GrandTotal | formatMoney }}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="d-flex flex-column pt-5">
+					<label for="note">Note</label>
+					<textarea cols="30" rows="6" class="sale--textarea" v-model="form.description"></textarea>
+				</div>
 			</div>
-			<v-btn 
-				class="blue mx-5 lighten-2 mb-5 grey--text text--lighten-4"
-				v-permission="'add sales'"
-			>
-				<v-icon>mdi-check</v-icon>
-				Submit
+			<v-btn class="blue mx-5 lighten-2 my-5" v-permission="'add sales'" @click="createSale">
+				<v-icon>mdi-check</v-icon>Submit
 			</v-btn>
 		</v-card>
 	</v-app>
 </template>
 
 <script>
+	import Vue from "vue";
+
+	var numeral = require("numeral");
+
+	Vue.filter("formatMoney", function(value) {
+		return numeral(value).format("0,0.00");
+	});
+
 	export default {
+		name: "AddSale",
+		created() {
+			this.fetchProduct();
+			this.fetchSale();
+			this.fetchMember();
+			this.fetchLocation();
+		},
+
 		data() {
 			return {
-				headers: [
-					{
-						text: 'Name',
-						sortable: false,
-					},
-					{
-						text: 'Code',
-						sortable: false,
-					},
-					{
-						text: 'Quantity',
-						sortable: false,
-					},
-					{
-						text: 'Net Unit Price',
-						sortable: false,
-					},
-					{
-						text: 'Discount',
-						sortable: false,
-					},
-					{
-						text: 'Tax',
-						sortable: false,
-					},
-					{
-						text: 'SubTotal',
-						sortable: false,
-					},
-					{
-						text: 'Action',
-						sortable: false,
-					},
-				],
+				form: {
+					items: []
+				},
+				payment_status: ["Paid", "Due"],
+				payment_method: ["Cash", "Cheque"],
+				sale_status: ["Completed", "Pending"],
 
-				sale_status: [
-					'Completed',
-					'Pending',
-				],
+				members: [],
+				locations: [],
+				products: [],
+				sales: []
+			};
+		},
+
+		computed: {
+			calculateTotal() {
+				return this.form.items.reduce((total, item) => {
+					return total + item.quantity;
+				}, 0);
+			},
+
+			GrandTotal() {
+				return this.form.items.reduce((total, item) => {
+					let s =
+						(item.unit_price -
+							(item.unit_price * item.discount) / 100) *
+						item.quantity;
+					return total + s;
+				}, 0);
 			}
 		},
-		methods: {
-			uploadImage(event) {
-				const url = 'http://127.0.0.1:3000/product/add_adjustment';
-				let data = new FormData();
-				data.append('file', event.target.files[0]);
-				let config = {
-					header: {
-						'content-Type' : 'image/*, application/pdf'
-					}
-				}
 
-				this.$axios.$post(url,data,config)
-				.then(res => {
-					console.log(res);
-				})
+		methods: {
+			fetchSale() {
+				this.$axios
+					.$get(`api/sale`)
+					.then(res => {
+						// this.sales = res.sales.data;
+						this.$set(this.$data, "sales", res.sales.data);
+						console.log(res);
+					})
+					.catch(err => {
+						console.log(err.response);
+					});
 			},
+
+			fetchLocation() {
+				this.$axios
+					.$get(`api/location`)
+					.then(res => {
+						this.locations = res.locations.data;
+						console.log(res);
+					})
+					.catch(err => {
+						console.log(err.response);
+					});
+			},
+
+			fetchMember() {
+				this.$axios
+					.$get(`api/member`)
+					.then(res => {
+						this.members = res.members.data;
+						console.log(res);
+					})
+					.catch(err => {
+						console.log(err.response);
+					});
+			},
+
+			fetchProduct() {
+				this.$axios
+					.$get(`api/product`)
+					.then(res => {
+						this.$set(this.$data, "products", res.products.data);
+						console.log(res);
+					})
+					.catch(err => {
+						console.log(err.response);
+					});
+			},
+
+			createSale() {
+				this.$axios
+					.$post(`api/sale`, this.form)
+					.then(res => {
+						this.sales = res.data;
+						console.log(res);
+						// this.$router.push(`/sale/sale-list`)
+					})
+					.catch(err => {
+						console.log(err.response);
+					});
+			},
+
+			addTocart(item) {
+				if (this.form.items.includes(item)) {
+					alert("Item already there");
+				} else {
+					this.form.items.push(item);
+				}
+				item.quantity = 1;
+				item.discount = 0;
+			},
+
+			removeItem(index) {
+				this.form.items.splice(index);
+			},
+
+			discountedPrice(product) {
+				return (
+					(product.unit_price -
+						(product.unit_price * product.discount) / 100) *
+					product.quantity
+				);
+			}
 		}
-	}
+	};
 </script>
 
 <style lang="scss">
-	.textarea {
-		border: 1px solid rgba(0,0,0,0.125);
+	.sale--textarea {
+		border: 1px solid #349feb;
+		outline: none;
+	}
+
+	.saleTable {
+		border-collapse: collapse;
+		width: 100%;
+
+		&--th {
+			border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+			text-align: left;
+			padding-bottom: 2px;
+		}
+
+		&--input {
+			border: 1px solid rgba(0, 0, 0, 0.125);
+			padding: 5px 5px 5px 5px;
+			margin: 10px auto;
+			outline: none;
+		}
+
+		&--total {
+			font-weight: 400;
+			text-align: left;
+			padding-top: 10px;
+		}
+
+		&--td {
+			border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+		}
 	}
 </style>
