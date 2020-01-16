@@ -41,8 +41,8 @@
 						<td @click="gotoMember(item.id)">{{ item.member.name }}</td>
 						<td @click="gotoMember(item.id)">{{ item.branch.address }}</td>
 						<td @click="gotoMember(item.id)">USD  {{ item.total | formatNumber}}</td> -->
-						<td >{{ item.date }}</td>
-						<td >{{ item.reference }}</td>
+						<td >{{ item.created_at }}</td>
+						<td >{{ item.reference_no }}</td>
 						<td >{{ item.biller.name }}</td>
 						<td >{{ item.member.name }}</td>
 						<td >{{ item.branch.address }}</td>
@@ -113,6 +113,7 @@ export default {
 
 	data() {
 		return {
+			date: new Date().toISOString().substr(0, 10),
 			items: [],
 			search: "",
 			form: {},
@@ -125,7 +126,7 @@ export default {
 			headers: [{
 					text: 'Date',
 					sortable: false,
-					value:"created_at"
+					value:"date"
 				}, {
 					text: 'Reference',
 					sortable: false,
