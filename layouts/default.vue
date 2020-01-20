@@ -1,13 +1,13 @@
 <template>
 	<v-app>
-		<v-app-bar color="blue darken-3" app fixed clipped dense>
+		<v-app-bar color="green darken-3" app fixed clipped dense dark>
 			<v-app-bar-nav-icon @click.stop="toggle = !toggle"></v-app-bar-nav-icon>
 			<v-toolbar-title>KIYOI</v-toolbar-title>
 			<v-spacer></v-spacer>
 			<v-toolbar-items>
 				<v-btn text dark>
 					<v-icon left>mdi-cart</v-icon>
-					<nuxt-link  style="color: #fff" class="pos--link" to="/pos">POS</nuxt-link>
+					<nuxt-link style="color: #fff" class="pos--link" to="/pos">POS</nuxt-link>
 				</v-btn>
 				<v-btn text dark>{{ user.user ? user.user.name : null }}</v-btn>
 				<v-btn text dark @click="logout()">
@@ -22,7 +22,7 @@
 					<!-- <v-img 
 						:src="require('@/assets/img/final.png')" 
 						height="65"
-					/> -->
+					/>-->
 				</v-list-item-content>
 			</v-list-item>
 
@@ -90,146 +90,146 @@
 						to: "/",
 						permission: "view users|add users"
 					},
-					{
-						name: "Website Control",
-						icon: "mdi-desktop-mac",
-						permission: "view users|add users",
-						children: [
-							{
-								name: "General Settings",
-								icon: "mdi-settings",
-								to: "/webcontrol/generalsettings",
-								permission: "delete users"
-							},
-							{
-								name: "Policy/Term",
-								icon: "mdi-note",
-								to: "/webcontrol/terms",
-								permission: "delete users"
-							},
-							{
-								name: "Email Template",
-								icon: "mdi-email-open",
-								to: "/webcontrol/template",
-								permission: "delete users"
-							},
-							{
-								name: "SMS Api",
-								icon: "mdi-message-text",
-								to: "/webcontrol/sms-api",
-								permission: "delete users"
-							}
-						]
-					},
-					{
-						name: "Charge/Commision",
-						icon: "mdi-cash",
-						to: "/charge",
-						permission: "charge commission",
-					},
-					{
-						name: "Website Interface",
-						icon: "mdi-internet-explorer",
-						permission: "view website",
-						children: [
-							{
-								name: "menu",
-								icon: "mdi-menu",
-								to: "/webinterface/menu",
-								permission: "view website",
-							},
-							{
-								name: "Slide Image",
-								icon: "mdi-folder-multiple-image",
-								to: "/webinterface/slide",
-								permission: "view website",
-							},
-							{
-								name: "Logo",
-								icon: "mdi-file-image",
-								to: "/webinterface/logo",
-								permission: "view website",
-							},
-							{
-								name: "Team",
-								icon: "mdi-sitemap",
-								to: "/webinterface/team",
-								permission: "view website",
-							},
-							{
-								name: "Contact",
-								icon: "mdi-account-badge-horizontal-outline",
-								to: "/webinterface/contact",
-								permission: "view website",
-							},
-							{
-								name: "About",
-								icon: "mdi-information",
-								to: "/webinterface/about",
-								permission: "view website",
-							},
-							{
-								name: "Social",
-								icon: "mdi-facebook-box",
-								to: "/webinterface/social",
-								permission: "view website",
-							},
-							{
-								name: "Footer",
-								icon: "mdi-content-save-all-outline",
-								to: "/webinterface/footer",
-								permission: "view website",
-							},
-							{
-								name: "Testimonial",
-								icon: "mdi-message-reply-text",
-								to: "/webinterface/testimonial",
-								permission: "view website",
-							},
-							{
-								name: "User Tree Image",
-								icon: "mdi-account-circle",
-								to: "/webinterface/tree-image",
-								permission: "view website",
-							}
-						]
-					},
-					{
-						name: "Withdraw System",
-						icon: "mdi-account-cash",
-						permission: "view withdraw method",
-						children: [
-							{
-								name: "Withdraw Methods",
-								icon: "mdi-paypal",
-								to: "/withdraw/method/",
-								permission: "view withdraw method",
-							},
-							{
-								name: "Withdraw Requests",
-								icon: "mdi-loading",
-								to: "/withdraw/requests/",
-								permission: "view withdraw method",
-							},
-							{
-								name: "View Log",
-								icon: "mdi-eye-outline",
-								to: "/withdraw/log/",
-								permission: "view withdraw method",
-							}
-						]
-					},
-					{
-						name: "Payment Log",
-						icon: "mdi-google-cardboard",
-						to: "/payment-log/",
-						permission: "payment log",
-					},
+					// {
+					// 	name: "Website Control",
+					// 	icon: "mdi-desktop-mac",
+					// 	permission: "view users|add users",
+					// 	children: [
+					// 		{
+					// 			name: "General Settings",
+					// 			icon: "mdi-settings",
+					// 			to: "/webcontrol/generalsettings",
+					// 			permission: "delete users"
+					// 		},
+					// 		{
+					// 			name: "Policy/Term",
+					// 			icon: "mdi-note",
+					// 			to: "/webcontrol/terms",
+					// 			permission: "delete users"
+					// 		},
+					// 		{
+					// 			name: "Email Template",
+					// 			icon: "mdi-email-open",
+					// 			to: "/webcontrol/template",
+					// 			permission: "delete users"
+					// 		},
+					// 		{
+					// 			name: "SMS Api",
+					// 			icon: "mdi-message-text",
+					// 			to: "/webcontrol/sms-api",
+					// 			permission: "delete users"
+					// 		}
+					// 	]
+					// },
+					// {
+					// 	name: "Charge/Commision",
+					// 	icon: "mdi-cash",
+					// 	to: "/charge",
+					// 	permission: "charge commission",
+					// },
+					// {
+					// 	name: "Website Interface",
+					// 	icon: "mdi-internet-explorer",
+					// 	permission: "view website",
+					// 	children: [
+					// 		{
+					// 			name: "menu",
+					// 			icon: "mdi-menu",
+					// 			to: "/webinterface/menu",
+					// 			permission: "view website"
+					// 		},
+					// 		{
+					// 			name: "Slide Image",
+					// 			icon: "mdi-folder-multiple-image",
+					// 			to: "/webinterface/slide",
+					// 			permission: "view website"
+					// 		},
+					// 		{
+					// 			name: "Logo",
+					// 			icon: "mdi-file-image",
+					// 			to: "/webinterface/logo",
+					// 			permission: "view website"
+					// 		},
+					// 		{
+					// 			name: "Team",
+					// 			icon: "mdi-sitemap",
+					// 			to: "/webinterface/team",
+					// 			permission: "view website"
+					// 		},
+					// 		{
+					// 			name: "Contact",
+					// 			icon: "mdi-account-badge-horizontal-outline",
+					// 			to: "/webinterface/contact",
+					// 			permission: "view website"
+					// 		},
+					// 		{
+					// 			name: "About",
+					// 			icon: "mdi-information",
+					// 			to: "/webinterface/about",
+					// 			permission: "view website"
+					// 		},
+					// 		{
+					// 			name: "Social",
+					// 			icon: "mdi-facebook-box",
+					// 			to: "/webinterface/social",
+					// 			permission: "view website"
+					// 		},
+					// 		{
+					// 			name: "Footer",
+					// 			icon: "mdi-content-save-all-outline",
+					// 			to: "/webinterface/footer",
+					// 			permission: "view website"
+					// 		},
+					// 		{
+					// 			name: "Testimonial",
+					// 			icon: "mdi-message-reply-text",
+					// 			to: "/webinterface/testimonial",
+					// 			permission: "view website"
+					// 		},
+					// 		{
+					// 			name: "User Tree Image",
+					// 			icon: "mdi-account-circle",
+					// 			to: "/webinterface/tree-image",
+					// 			permission: "view website"
+					// 		}
+					// 	]
+					// },
+					// {
+					// 	name: "Withdraw System",
+					// 	icon: "mdi-account-cash",
+					// 	permission: "view withdraw method",
+					// 	children: [
+					// 		{
+					// 			name: "Withdraw Methods",
+					// 			icon: "mdi-paypal",
+					// 			to: "/withdraw/method/",
+					// 			permission: "view withdraw method"
+					// 		},
+					// 		{
+					// 			name: "Withdraw Requests",
+					// 			icon: "mdi-loading",
+					// 			to: "/withdraw/requests/",
+					// 			permission: "view withdraw method"
+					// 		},
+					// 		{
+					// 			name: "View Log",
+					// 			icon: "mdi-eye-outline",
+					// 			to: "/withdraw/log/",
+					// 			permission: "view withdraw method"
+					// 		}
+					// 	]
+					// },
+					// {
+					// 	name: "Payment Log",
+					// 	icon: "mdi-google-cardboard",
+					// 	to: "/payment-log/",
+					// 	permission: "payment log"
+					// },
 					{
 						name: "Users Management",
 						icon: "mdi-account-group",
 						to: "/users",
-						permission: "view users",
+						permission: "view users"
 					},
 					{
 						name: "Product",
@@ -240,43 +240,43 @@
 								name: "Product List",
 								to: "/product/product-list",
 								icon: "mdi-view-list",
-								permission: "view product",
+								permission: "view product"
 							},
 							{
 								name: "Add Product",
 								to: "/product/add-product",
 								icon: "mdi-plus-circle",
-								permission: "view product",
+								permission: "view product"
 							},
 							{
 								name: "Product Brand",
 								to: "/product/brand",
 								icon: "mdi-diamond-stone",
-								permission: "view product",
+								permission: "view product"
 							},
 							{
 								name: "Print Barcode",
 								to: "/product/print-barcode",
 								icon: "mdi-barcode",
-								permission: "view product",
+								permission: "view product"
 							},
 							{
 								name: "Adjustment List",
 								to: "/product/qty_adjustment",
 								icon: "mdi-format-list-bulleted-square",
-								permission: "view product",
+								permission: "view product"
 							},
 							{
 								name: "Add Adjustment",
 								to: "/product/add_adjustment",
 								icon: "mdi-playlist-edit",
-								permission: "view product",
+								permission: "view product"
 							},
 							{
 								name: "Stock Count",
 								to: "/product/stock-count",
 								icon: "mdi-shield-check",
-								permission: "view product",
+								permission: "view product"
 							}
 						]
 					},
@@ -289,19 +289,19 @@
 								name: "Purchase List",
 								to: "/purchase/purchase-list",
 								icon: "mdi-view-list",
-								permission: "view purchase",
+								permission: "view purchase"
 							},
 							{
 								name: "Add Purchase",
 								to: "/purchase/add_purchase",
 								icon: "mdi-plus-circle",
-								permission: "view purchase",
+								permission: "view purchase"
 							},
 							{
 								name: "Import Purchase By CSV",
 								to: "/purchase/import_purchase",
 								icon: "mdi-file-import",
-								permission: "view purchase",
+								permission: "view purchase"
 							}
 						]
 					},
@@ -309,7 +309,7 @@
 						name: "POS",
 						icon: "mdi-wallet-giftcard",
 						to: "/pos/",
-						permission: "pos",
+						permission: "pos"
 					},
 					{
 						name: "Sale",
@@ -320,37 +320,37 @@
 								name: "Sale List",
 								to: "/sale/sale-list",
 								icon: "mdi-view-list",
-								permission: "view sales",
+								permission: "view sales"
 							},
 							{
 								name: "Add Sale",
 								to: "/sale/add_sale",
 								icon: "mdi-plus-circle",
-								permission: "view sales",
+								permission: "view sales"
 							},
 							{
 								name: "Import Sale By CSV",
 								to: "/sale/import_sale",
 								icon: "mdi-file-import",
-								permission: "view sales",
+								permission: "view sales"
 							},
 							{
 								name: "Gift Card List",
 								to: "/sale/gift_card",
 								icon: "mdi-id-card",
-								permission: "view sales",
+								permission: "view sales"
 							},
 							{
 								name: "Coupon List",
 								to: "/sale/coupons",
 								icon: "mdi-ticket-percent",
-								permission: "view sales",
+								permission: "view sales"
 							},
 							{
 								name: "Delivery List",
 								to: "/sale/delivery",
 								icon: "mdi-truck-delivery",
-								permission: "view sales",
+								permission: "view sales"
 							}
 						]
 					},
@@ -363,14 +363,14 @@
 								name: "Expense Category",
 								icon: "mdi-tag-multiple",
 								to: "/expense/expense_categories",
-								permission: "view expense",
+								permission: "view expense"
 							},
 							{
 								name: "Expense List",
 								icon: "mdi-view-list",
 								to: "/expense/expense_list",
-								permission: "view expense",
-							},
+								permission: "view expense"
+							}
 						]
 					},
 					{
@@ -382,13 +382,13 @@
 								name: "Quotation List",
 								icon: "mdi-view-list",
 								to: "/quotation/quotations",
-								permission: "view quotation",
+								permission: "view quotation"
 							},
 							{
 								name: "Add Quotation",
 								icon: "mdi-plus-circle",
 								to: "/quotation/add_quotation",
-								permission: "view quotation",
+								permission: "view quotation"
 							}
 						]
 					},
@@ -401,19 +401,19 @@
 								name: "Transfer List",
 								icon: "mdi-view-list",
 								to: "/transfer/transfers",
-								permission: "view transfer",
+								permission: "view transfer"
 							},
 							{
 								name: "Add Transfer",
 								icon: "mdi-plus-circle",
 								to: "/transfer/add_transfer",
-								permission: "view transfer",
+								permission: "view transfer"
 							},
 							{
 								name: "Import Transfer By CSV",
 								icon: "mdi-file-import",
 								to: "/transfer/import_transfer",
-								permission: "view transfer",
+								permission: "view transfer"
 							}
 						]
 					},
@@ -425,14 +425,14 @@
 								name: "Location List",
 								icon: "mdi-location-enter",
 								to: "/location/",
-								permission: "view transfer",
+								permission: "view transfer"
 							},
 							{
 								name: "Add Location",
 								icon: "mdi-plus-circle",
 								to: "/location/create",
-								permission: "view transfer",
-							},
+								permission: "view transfer"
+							}
 						]
 					},
 					{
@@ -463,31 +463,31 @@
 								name: "Department",
 								icon: "mdi-bank-plus",
 								to: "/hrm/department",
-								permission: "view employee",
+								permission: "view employee"
 							},
 							{
 								name: "Employee",
 								icon: "mdi-account-tie",
 								to: "/hrm/employee",
-								permission: "view employee",
+								permission: "view employee"
 							},
 							{
 								name: "Attendance",
 								icon: "mdi-map-clock",
 								to: "/hrm/attendance",
-								permission: "view employee",
+								permission: "view employee"
 							},
 							{
 								name: "PayRoll",
 								icon: "mdi-credit-card-outline",
 								to: "/hrm/payroll",
-								permission: "view employee",
+								permission: "view employee"
 							},
 							{
 								name: "Holiday",
 								icon: "mdi-beach",
 								to: "/hrm/holiday",
-								permission: "view employee",
+								permission: "view employee"
 							}
 						]
 					},
@@ -500,13 +500,13 @@
 								name: "Account List",
 								icon: "mdi-view-list",
 								to: "/accounting/account",
-								permission: "view account",
+								permission: "view account"
 							},
 							{
 								name: "Balance Sheet",
 								icon: "mdi-google-spreadsheet",
 								to: "/accounting/balancesheet",
-								permission: "view account",
+								permission: "view account"
 							}
 						]
 					},
@@ -519,37 +519,37 @@
 								name: "Member List",
 								icon: "mdi-account-tie",
 								to: "/people/member",
-								permission: "view biller",
+								permission: "view biller"
 							},
 							{
 								name: "Add Member",
 								icon: "mdi-plus-circle",
 								to: "/people/add_member",
-								permission: "view biller",
+								permission: "view biller"
 							},
 							{
 								name: "Biller List",
 								icon: "mdi-credit-card-outline",
 								to: "/people/biller",
-								permission: "view biller",
+								permission: "view biller"
 							},
 							{
 								name: "Add Biller",
 								icon: "mdi-plus-circle",
 								to: "/people/add_biller",
-								permission: "view biller",
+								permission: "view biller"
 							},
 							{
 								name: "Supplier List",
 								icon: "mdi-shield-star",
 								to: "/people/supplier",
-								permission: "view biller",
+								permission: "view biller"
 							},
 							{
 								name: "Add Supplier",
 								icon: "mdi-plus-circle",
 								to: "/people/add_supplier",
-								permission: "view biller",
+								permission: "view biller"
 							}
 						]
 					},
@@ -562,98 +562,98 @@
 								name: "Summary Report",
 								icon: "mdi-book-open",
 								to: "/report/summary_report",
-								permission: "summary report",
+								permission: "summary report"
 							},
 							{
 								name: "Best Seller",
 								icon: "mdi-account-tie",
 								permission: "summary report",
-								to: "/report/best_seller",
+								to: "/report/best_seller"
 							},
 							{
 								name: "Product Report",
 								icon: "mdi-newspaper-variant",
 								to: "/report/product_report",
-								permission: "summary report",
+								permission: "summary report"
 							},
 							{
 								name: "Daily Sale",
 								icon: "mdi-alpha-s-circle-outline",
-								permission: "summary report",
+								permission: "summary report"
 							},
 							{
 								name: "Monthly Sale",
 								icon: "mdi-alpha-s-circle",
-								permission: "summary report",
+								permission: "summary report"
 							},
 							{
 								name: "Daily Purchase",
 								icon: "mdi-alpha-p-circle-outline",
-								permission: "summary report",
+								permission: "summary report"
 							},
 							{
 								name: "Monthly Purchase",
 								icon: "mdi-alpha-p-circle",
-								permission: "summary report",
+								permission: "summary report"
 							},
 							{
 								name: "Sale Report",
 								icon: "mdi-card-text",
 								to: "/report/sale_report",
-								permission: "summary report",
+								permission: "summary report"
 							},
 							{
 								name: "Payment Report",
 								icon: "mdi-card-text-outline",
 								to: "/report/payment_report",
-								permission: "summary report",
+								permission: "summary report"
 							},
 							{
 								name: "Purchase Report",
 								icon: "mdi-credit-card-multiple",
 								to: "/report/purchase_report",
-								permission: "summary report",
+								permission: "summary report"
 							},
 							{
 								name: "Warehouse Report",
 								icon: "mdi-bank-outline",
 								to: "/report/warehouse_report",
-								permission: "summary report",
+								permission: "summary report"
 							},
 							{
 								name: "Warehouse Stock Chart",
 								icon: "mdi-chart-bar",
-								permission: "summary report",
+								permission: "summary report"
 							},
 							{
 								name: "Product Quantity Alert",
 								icon: "mdi-bell-alert",
 								to: "/report/product_quantity_alert",
-								permission: "summary report",
+								permission: "summary report"
 							},
 							{
 								name: "User Report",
 								icon: "mdi-account-badge-horizontal-outline",
 								to: "/report/user_report",
-								permission: "summary report",
+								permission: "summary report"
 							},
 							{
 								name: "Customer Report",
 								icon: "mdi-account-card-details",
 								to: "/report/customer_report",
-								permission: "summary report",
+								permission: "summary report"
 							},
 							{
 								name: "Supplier Report",
 								icon: "mdi-shield-star",
 								to: "/report/supplier_report",
-								permission: "summary report",
+								permission: "summary report"
 							},
 							{
 								name: "Due Report",
 								icon: "mdi-map-clock-outline",
 								to: "/report/due_report",
-								permission: "summary report",
+								permission: "summary report"
 							}
 						]
 					},
@@ -661,7 +661,7 @@
 						name: "Support",
 						icon: "mdi-face-agent",
 						to: "/supports/",
-						permission: "support",
+						permission: "support"
 					}
 				]
 			};
@@ -686,7 +686,7 @@
 	.color {
 		background: #34495e;
 		&--item {
-			background: #455A64;
+			background: #455a64;
 		}
 	}
 

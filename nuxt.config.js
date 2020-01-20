@@ -48,7 +48,7 @@ export default {
     { src: "~/plugins/DateRangePicker.js", ssr: false },
     { src: "~/plugins/vuetify-snackbar"},
     { src: "~/plugins/laravel-permission"},
-    { src: "~/plugins/vee-validate"},
+    // { src: "~/plugins/vee-validate", ssr: false},
     { src: "~/plugins/vue-printer"},
   ],
   /*
@@ -64,7 +64,8 @@ export default {
     "@nuxtjs/dotenv",
     '@nuxtjs/pwa',
     '@nuxtjs/vuetify',
-    '@nuxtjs/auth'
+    '@nuxtjs/auth',
+    "nuxt-validate",
   ],
   /*
    ** Axios module configuration
@@ -130,10 +131,6 @@ export default {
     */
     extend (config, ctx) {
     },
-
-    transpile: [
-      'vee-validate'
-    ]
   },
 
 }
