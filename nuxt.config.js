@@ -65,7 +65,6 @@ export default {
     '@nuxtjs/pwa',
     '@nuxtjs/vuetify',
     '@nuxtjs/auth',
-    "nuxt-validate",
   ],
   /*
    ** Axios module configuration
