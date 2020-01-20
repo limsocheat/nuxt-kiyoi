@@ -20,7 +20,7 @@
 			</div>
 			<div>
 				<v-btn class="red darken-1">
-					<a href="/purchase/export">PDF</a>
+					<a href="/api/purchase/export">PDF</a>
 				</v-btn>
 				<v-btn class="lime lighten-1">CSV</v-btn>
 				<v-btn class="blue lighten-1">Print</v-btn>

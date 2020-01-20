@@ -187,6 +187,11 @@
 							this.getItems();
 							this.closeDialog();
 							this.$toast.info("Succeessfully Updated");
+						})
+						.catch(err => {
+							this.$refs.nameOfObserver.validate(
+								err.response.data.errors
+							);
 						});
 				} else {
 					this.$axios
