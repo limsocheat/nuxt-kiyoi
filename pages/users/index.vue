@@ -40,27 +40,44 @@
 							<v-card-title>Add User</v-card-title>
 							<v-divider></v-divider>
 							<v-card-text>
-								<div>
-									<label class="font-weight-bold" for="name">Name</label>
-									<v-text-field solo outlined dense label="Enter Name" v-model="form.name"></v-text-field>
-								</div>
-								<div>
-									<label class="font-weight-bold" for="email">Email</label>
-									<v-text-field solo outlined dense label="Enter Email" v-model="form.email"></v-text-field>
-								</div>
-								<div>
-									<label class="font-weight-bold" for="password">Password</label>
-									<v-text-field
-										solo
-										outlined
-										dense
-										type="password"
-										label="Enter Password"
-										v-model="form.password"
-									></v-text-field>
-								</div>
+								<ValidationObserver ref="nameOfObserver">
+									<div class="AddUserForm">
+										<label class="font-weight-bold" for="name">Name</label>
+										<validation-provider name="Name" rules="required" v-slot="{ errors }">
+											<!-- <v-text-field solo outlined dense label="Enter Name" v-model="form.name"></v-text-field> -->
+											<input type="text" class="AddUserForm--input" v-model="form.name" />
+											<span class="red--text">{{ errors[0] }}</span>
+										</validation-provider>
+									</div>
+									<div class="AddUserForm">
+										<validation-provider name="Email" rules="required|email" v-slot="{ errors }">
+											<label class="font-weight-bold" for="email">Email</label>
+											<!-- <v-text-field solo outlined dense label="Enter Email" v-model="form.email"></v-text-field> -->
+											<input type="text" class="AddUserForm--input" v-model="form.email" />
+											<span class="red--text">{{ errors[0] }}</span>
+										</validation-provider>
+									</div>
+									<div class="AddUserForm">
+										<label class="font-weight-bold" for="password">Password</label>
+										<validation-provider name="Password" rules="required" v-slot="{ errors }">
+											<!-- <v-text-field
+												solo
+												outlined
+												dense
+												type="password"
+												label="Enter Password"
+												v-model="form.password"
+											></v-text-field>-->
+											<input type="text" class="AddUserForm--input" v-model="form.password" />
+											<span class="red--text">{{ errors[0] }}</span>
+										</validation-provider>
+									</div>
+								</ValidationObserver>
 							</v-card-text>
 							<v-divider></v-divider>
+
+							<!-- <div v-show="errors.has('form')" class="help-block">{{ errors.first('form') }}</div> -->
+
 							<v-card-actions class="text-center">
 								<v-spacer>
 									<v-btn color="primary" @click="closeDialog" text>
@@ -101,7 +118,12 @@
 </template>
 
 <script>
+	import { ValidationProvider, ValidationObserver } from "vee-validate";
 	export default {
+		components: {
+			ValidationProvider, ValidationObserver
+		},
+
 		data() {
 			return {
 				dialog: false,
@@ -176,10 +198,10 @@
 							this.closeDialog();
 						})
 						.catch(err => {
-							console.log(err.response);
-							this.$setLaravelValidationErrorsFromResponse(
-								err.response
+							this.$refs.nameOfObserver.validate(
+								err.response.data.errors
 							);
+							console.log(err.response.data.errors);
 						});
 				}
 			},
@@ -209,3 +231,16 @@
 		}
 	};
 </script>
+
+<style lang="scss">
+	.AddUserForm {
+		padding-top: 10px;
+		&--input {
+			border: 1px solid #1232dd;
+			padding: 5px 10px 5px 10px;
+			width: 100%;
+			outline: none;
+			border-radius: 3px;
+		}
+	}
+</style>
