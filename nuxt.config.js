@@ -48,7 +48,7 @@ export default {
     { src: "~/plugins/DateRangePicker.js", ssr: false },
     { src: "~/plugins/vuetify-snackbar"},
     { src: "~/plugins/laravel-permission"},
-    // { src: "~/plugins/vee-validate", ssr: false},
+    { src: "~/plugins/vee-validate"},
     { src: "~/plugins/vue-printer"},
   ],
   /*

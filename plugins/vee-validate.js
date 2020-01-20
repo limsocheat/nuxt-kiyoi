@@ -8,7 +8,7 @@ Vue.component('ValidationObserver', ValidationObserver);
 
 extend('required', {
   ...required,
-  message: '*This field is required'
+  message: '*This {_field_} field is required'
 });
 
 extend('alpha', {

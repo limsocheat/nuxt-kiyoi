@@ -44,7 +44,6 @@
 									<div class="AddUserForm">
 										<label class="font-weight-bold" for="name">Name</label>
 										<validation-provider name="Name" rules="required" v-slot="{ errors }">
-											<!-- <v-text-field solo outlined dense label="Enter Name" v-model="form.name"></v-text-field> -->
 											<input type="text" class="AddUserForm--input" v-model="form.name" />
 											<span class="red--text">{{ errors[0] }}</span>
 										</validation-provider>
@@ -52,23 +51,14 @@
 									<div class="AddUserForm">
 										<validation-provider name="Email" rules="required|email" v-slot="{ errors }">
 											<label class="font-weight-bold" for="email">Email</label>
-											<!-- <v-text-field solo outlined dense label="Enter Email" v-model="form.email"></v-text-field> -->
-											<input type="text" class="AddUserForm--input" v-model="form.email" />
+											<input type="email" class="AddUserForm--input" v-model="form.email" />
 											<span class="red--text">{{ errors[0] }}</span>
 										</validation-provider>
 									</div>
 									<div class="AddUserForm">
 										<label class="font-weight-bold" for="password">Password</label>
 										<validation-provider name="Password" rules="required" v-slot="{ errors }">
-											<!-- <v-text-field
-												solo
-												outlined
-												dense
-												type="password"
-												label="Enter Password"
-												v-model="form.password"
-											></v-text-field>-->
-											<input type="text" class="AddUserForm--input" v-model="form.password" />
+											<input type="password" class="AddUserForm--input" v-model="form.password" />
 											<span class="red--text">{{ errors[0] }}</span>
 										</validation-provider>
 									</div>

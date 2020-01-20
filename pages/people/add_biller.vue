@@ -9,10 +9,10 @@
 				<v-row class="px-5">
 					<v-col sm="6" cols="12">
 						<label class="font-weight-bold" for="name">Name*</label>
-						<ValidationProvider name="Name" rules="required|alpha" v-slot="{ errors }">
+						<validation-provider name="Name" rules="required|alpha" v-slot="{ errors }">
 							<input type="text" class="biller-image" required v-model="form.name" />
 							<span class="red--text">{{ errors[0] }}</span>
-						</ValidationProvider>
+						</validation-provider>
 					</v-col>
 					<v-col sm="6" cols="12" class="d-flex flex-column">
 						<label class="font-weight-bold" for="image">Image*</label>
@@ -20,10 +20,10 @@
 					</v-col>
 					<v-col sm="6" cols="12">
 						<label class="font-weight-bold" for>Company Name*</label>
-						<ValidationProvider name="Company Name" rules="required|alpha" v-slot="{ errors }">
+						<validation-provider name="Company Name" rules="required|alpha" v-slot="{ errors }">
 							<input type="text" class="biller-image" required v-model="form.company_name" />
 							<span class="red--text">{{ errors[0] }}</span>
-						</ValidationProvider>
+						</validation-provider>
 					</v-col>
 					<v-col sm="6" cols="12">
 						<label class="font-weight-bold" for>
@@ -34,24 +34,24 @@
 					</v-col>
 					<v-col sm="6" cols="12">
 						<label class="font-weight-bold" for>Email</label>
-						<ValidationProvider name="Email" rules="required|email" v-slot="{ errors }">
+						<validation-provider name="Email" rules="required|email" v-slot="{ errors }">
 							<input type="text" class="biller-image" required v-model="form.email" />
 							<span class="red--text">{{ errors[0] }}</span>
-						</ValidationProvider>
+						</validation-provider>
 					</v-col>
 					<v-col sm="6" cols="12">
 						<label class="font-weight-bold" for>Phone Number</label>
-						<ValidationProvider name="Phone Number" rules="required" v-slot="{ errors }">
+						<validation-provider name="Phone Number" rules="required" v-slot="{ errors }">
 							<input type="text" class="biller-image" required v-model="form.phone" />
 							<span class="red--text">{{ errors[0] }}</span>
-						</ValidationProvider>
+						</validation-provider>
 					</v-col>
 					<v-col sm="6" cols="12">
 						<label class="font-weight-bold" for>Address</label>
-						<ValidationProvider name="Address" rules="required|alpha" v-slot="{ errors }">
+						<validation-provider name="Address" rules="required|alpha" v-slot="{ errors }">
 							<input type="text" class="biller-image" required v-model="form.address" />
 							<span class="red--text">{{ errors[0] }}</span>
-						</ValidationProvider>
+						</validation-provider>
 					</v-col>
 					<v-col sm="6" cols="12">
 						<label class="font-weight-bold" for>
