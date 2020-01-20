@@ -54,7 +54,7 @@
 							outlined
 							dense
 							type="number"
-							v-model="form.shipping_charge"
+							v-model="form.shipping_cost"
 							placeholder="0.00"
 						></v-text-field>
 					</v-col>
