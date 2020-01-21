@@ -16,9 +16,9 @@
 							dense 
 							solo 
 							outlined 
-							:items="locations"
 							return-object
 							v-model="form.location"
+							:items="locations"
 							label="Please type, product code and select..."
 						></v-autocomplete >
 					</v-col>
@@ -32,8 +32,8 @@
 							outlined 
 							return-object
 							:items="suppliers"
-							label="Please type, product code and select..."
 							v-model="form.supplier"
+							label="Please type, product code and select..."
 						></v-autocomplete >
 					</v-col>
 					<v-col md="4" cols="12">
@@ -122,7 +122,7 @@
 								</td>
 							</tr>
 							<tr>
-								<td class="py-5" colspan="3" >Total</td>
+								<td class="py-5" colspan="2" >Total</td>
 								<td colspan="3">{{ calculateQty }}</td>
 								<td>USD {{ calculateTotal | formatMoney }}</td>
 								<td></td>
@@ -131,20 +131,20 @@
 					</table>
 				</div>
 				<v-row>
-					<v-col md="12" cols="12" class="d-flex flex-column mb-5">
+					<!-- <v-col md="12" cols="12" class="d-flex flex-column mb-5">
 						<label for="" class="font-weight-bold pt-1">Attach Document</label>
 						<input type="file" @change="uploadFile($event)" class="attachDoc">
-					</v-col>
+					</v-col> -->
 					<v-col md="6" cols="12">
 						<div class="d-flex flex-column mb-5">
 							<label for class="font-weight-bold">Return Note</label>
-							<textarea cols="30" rows="7" class="textarea"></textarea>
+							<textarea cols="30" rows="7" class="textarea" v-model="form.return_des"></textarea>
 						</div>
 					</v-col>
 					<v-col md="6" cols="12">
 						<div class="d-flex flex-column mb-5">
 							<label for class="font-weight-bold">Staff Note</label>
-							<textarea cols="30" rows="7" class="textarea"></textarea>
+							<textarea cols="30" rows="7" class="textarea" v-model="form.staff_des"></textarea>
 						</div>
 					</v-col>
 				</v-row>
