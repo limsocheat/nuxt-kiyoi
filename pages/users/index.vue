@@ -12,10 +12,10 @@
 				<v-expansion-panel-content>
 					<v-row>
 						<v-col md="6" cols="12">
-							<v-text-field outlined dense solo label="Search By Username"></v-text-field>
+							<v-text-field outlined dense solo v-model="name" label="Search By Username"></v-text-field>
 						</v-col>
 						<v-col md="6" cols="12">
-							<v-text-field outlined dense solo label="Search By Email"></v-text-field>
+							<v-text-field outlined dense solo v-model="email" label="Search By Email"></v-text-field>
 						</v-col>
 					</v-row>
 				</v-expansion-panel-content>
@@ -66,8 +66,6 @@
 							</v-card-text>
 							<v-divider></v-divider>
 
-							<!-- <div v-show="errors.has('form')" class="help-block">{{ errors.first('form') }}</div> -->
-
 							<v-card-actions class="text-center">
 								<v-spacer>
 									<v-btn color="primary" @click="closeDialog" text>
@@ -114,11 +112,29 @@
 			ValidationProvider, ValidationObserver
 		},
 
+		watch: {
+			name: {
+				handler() {
+					this.getItems();					
+				}
+			},
+			
+			email: {
+				handler() {
+					this.getItems();					
+				}
+			},
+
+			immediate: true,
+		},
+
 		data() {
 			return {
 				dialog: false,
 				items: [],
 				form: {},
+				name: '',
+				email: '',
 				headers: [
 					{
 						text: "ID",
@@ -154,8 +170,13 @@
 
 		methods: {
 			getItems() {
-				this.$axios.$get("/api/user").then(response => {
-					this.items = response;
+				this.$axios.$get(`/api/user?name=${this.name}&email=${this.email}`)
+				.then(res => {
+					this.items = res.users.data;
+					console.log(res);
+				})
+				.catch(err => {
+					console.log(err.response);
 				});
 			},
 
