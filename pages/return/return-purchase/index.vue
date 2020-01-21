@@ -1,11 +1,11 @@
 <template>
 	<v-app class="mx-5 my-5">
 		<div class="d-flex">
-			<div class="pb-5 pr-3" v-permission="'return purchases'">
+			<div class="pb-5 pr-3" v-permission="'return sales'">
 				<nuxt-link class="nuxt--link" to="/return/return-purchase/create">
 					<v-btn class="teal darken-1" dark>
 						<v-icon left>mdi-plus-circle</v-icon>
-						Add Return
+						Add Return Purchase
 					</v-btn>
 				</nuxt-link>
 			</div>
@@ -26,27 +26,57 @@
 			</div>
 		</div>
 		<v-card>
-			<v-data-table :headers="headers" :items="items" :items-per-page="itemsPerPage" :options.sync="options" :server-items-length="total">
-				<template v-slot:item.action="{ item }">
-					<v-tooltip bottom>
-						<template v-slot:activator="{ on }">
-							<!-- Edit Item -->
-							<v-icon left fab color="primary" v-on="on">
-								mdi-pencil
-							</v-icon>
-						</template>
-						<span>Edit Supplier</span>
-					</v-tooltip>
-					<v-tooltip bottom>
-						<template v-slot:activator="{ on }">
-
-							<!-- Delete Item -->
-							<v-icon left fab color="primary" v-on="on">
-								mdi-delete
-							</v-icon>
-						</template>
-						<span>Delete Supplier</span>
-					</v-tooltip>
+			<v-data-table
+				:headers="headers"
+				:items="items"
+				:items-per-page="itemsPerPage"
+				:options.sync="options"
+				:server-items-length="total"
+			>
+				<template v-slot:item="{ item }">
+					<tr class="viewReturnPurchase">
+						<td @click="viewReturnPurchase(item.id)">{{ item.created_at }}</td>
+						<td @click="viewReturnPurchase(item.id)">{{ item.reference_no }}</td>
+						<td @click="viewReturnPurchase(item.id)">{{ item.branch.address }}</td>
+						<td @click="viewReturnPurchase(item.id)">{{ item.supplier.name }}</td>
+						<td @click="viewReturnPurchase(item.id)">{{ item.account.name }}</td>
+						<td @click="viewReturnPurchase(item.id)">USD  {{ item.total | formatNumber}}</td>
+						<!-- <td >{{ item.created_at }}</td>
+						<td >{{ item.reference_no }}</td>
+						<td >{{ item.branch.address }}</td>
+						<td >{{ item.supplier.name }}</td>
+						<td >{{ item.account.name }}</td>
+						<td >USD  {{ item.total | formatNumber}}</td> -->
+						
+						<td class="text-center">
+							<div class="row"> 
+								<v-tooltip top v-permission="'view sales'">
+									<template v-slot:activator="{ on }">
+										<v-btn small icon @click="viewReturnPurchase(item.id)" color="teal" outlined v-on="on">
+											<v-icon small>mdi-eye</v-icon>
+										</v-btn>
+									</template>
+									<span>View</span>
+								</v-tooltip>
+								<v-tooltip top v-permission="'edit sales'">
+									<template v-slot:activator="{ on }">
+										<v-btn small icon @click="editItem(item.id)" color="primary" outlined v-on="on">
+											<v-icon small>mdi-pencil</v-icon>
+										</v-btn>
+									</template>
+									<span>Edit</span>
+								</v-tooltip>
+								<v-tooltip top v-permission="'delete sales'">
+									<template v-slot:activator="{ on }">
+										<v-btn small icon @click="deleteItem(item.id)" color="red" outlined v-on="on">
+											<v-icon small>mdi-delete</v-icon>
+										</v-btn>
+									</template>
+									<span>Delete</span>
+								</v-tooltip>
+							</div>
+						</td>
+					</tr>
 				</template>
 			</v-data-table>
 		</v-card>
@@ -55,55 +85,116 @@
 
 
 <script>
+
+	import Vue from 'vue';
+
+	var numeral = require("numeral");
+	Vue.filter("formatNumber", function (value) {
+		return numeral(value).format("0,0.00");
+	});
+	
+
 export default {
 
 	created() {
-		// this.fetchData()
+		this.fetchData();
+	},
+
+	watch: {
+		options: {
+			handler() {
+				this.fetchData();
+			}
+		}
 	},
 
 	data() {
 		return {
+			date: new Date().toISOString().substr(0, 10),
 			items: [],
-			search: '',
+			search: "",
 			form: {},
 			total: 0,
 			options: {},
 			itemsPerPage: 5,
 			editedIndex: -1,
 			created: true,
-			dialog1: false,
-			dialog2: false,
+			dialog: false,
 			headers: [{
 					text: 'Date',
 					sortable: false,
+					value:"date"
 				}, {
 					text: 'Reference',
 					sortable: false,
+					value: "reference"
 				}, {
 					text: 'Warehouse',
 					sortable: false,
+					value: "branch_name"
 				}, {
 					text: 'Supplier',
 					sortable: false,
+					value: "supplier_name"
 				}, {
 					text: 'Account',
 					sortable: false,
+					value: "Account_name"
 				},{
 					text: 'Grand Total',
 					sortable: false,
+					value: "total"
 				},{
-					text: 'Actions',
+					text: 'Action',
 					sortable: false,
+					value: "active"
 				},
 			],
-			selects: 
-			[
-				'Fruits', 'Electronics', 'Computer', 'Toy', 'Food', 'Accessories'			
-			],
+			// menus: [
+			// 	{title: 'View', icon: 'mdi-eye', action: this.view},
+			// 	{title: 'Edit', icon: 'mdi-square-edit-outline', action: this.edit},
+			// 	{title: 'Delete', icon: 'mdi-trash-can-outline', action: this.deleteItem},
+			// ],
 		}
 	},
 
 	methods: {
+
+		fetchData() {
+			this.$axios.$get(`/api/return-purchase?temsPerPage=${this.options.itemsPerPage}&page=${this.options.page}`)
+			.then(res => {
+				this.items = res.returnpurchase.data;
+				this.total = res.total;
+				console.log(res)
+			})
+			.catch(err => {
+				console.log(err);
+			})
+		},
+
+		viewReturnPurchase(id) {
+      		this.$router.push(`/return/return-purchase/${id}/view`);
+      	},
+
+		editItem(id) {
+			this.$router.push(`/return/return-purchase/${id}/edit`);
+		},
+
+		deleteItem(id) {
+      		if(confirm('Are u sure to Delete it?')) {
+      			this.$axios.$delete(`api/return-purchase/` + id)
+      			.then(res => {
+      				this.fetchData();
+						  	console.log(res);
+						   	this.$toast("Deleted Successfully");
+      			})
+      			.catch(err => {
+					console.log(err.response);
+      			})
+      		}
+      	},
+		
+
 		uploadCsv(image) {
 			const URL = 'http://127.0.0.1:3000/product/category'
 
@@ -148,5 +239,7 @@ export default {
 	border-radius: 5px;
 	border: 1px solid #616161;
 }
-
+.viewReturnPurchase{
+	cursor: pointer;
+}
 </style>

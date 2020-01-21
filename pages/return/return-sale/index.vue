@@ -5,7 +5,7 @@
 				<nuxt-link class="nuxt--link" to="/return/return-sale/create">
 					<v-btn class="teal darken-1" dark>
 						<v-icon left>mdi-plus-circle</v-icon>
-						Add Return
+						Add Return Sale
 					</v-btn>
 				</nuxt-link>
 			</div>
