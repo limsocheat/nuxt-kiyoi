@@ -106,13 +106,17 @@
 								<td>{{item.name}}</td>
 								<td>{{item.code}}</td>
 								<td>
-									<input type="number" class="saleTable--input" v-model.number="form.products[index].pivot.quantity" />
+									<input
+										type="number"
+										class="saleTable--input"
+										v-model.number="form.products[index].quantity"
+									/>
 								</td>
 								<td>
 									<input
 										type="number"
 										class="saleTable--input"
-										v-model.number="form.products[index].pivot.unit_price"
+										v-model.number="form.products[index].unit_price"
 										placeholder="0.00"
 									/>
 								</td>
@@ -120,7 +124,7 @@
 									<input
 										type="number"
 										class="saleTable--input"
-										v-model.number="form.products[index].pivot.discount"
+										v-model.number="form.products[index].discount"
 										placeholder="0.00"
 									/>
 								</td>
@@ -133,7 +137,7 @@
 							</tr>
 							<tr class="saleTable--total">
 								<th colspan="2">Total</th>
-								<td colspan="3">{{ calculateTotal }}</td>
+								<td colspan="3">{{ calculateQty }}</td>
 								<td>USD {{ GrandTotal | formatMoney }}</td>
 							</tr>
 						</tbody>
@@ -167,11 +171,6 @@
 			this.fetchSale();
 			this.fetchMember();
 			this.fetchLocation();
-
-			for (let i in this.form.products) {
-			    this.$set(this.form.products[i], 'quantity', this.form.products[i].pivot.quantity) 
-			    console.log(this.form.products);
-			}
 		},
 
 		data() {
@@ -192,14 +191,14 @@
 		},
 
 		computed: {
-			calculateTotal() {
-				return this.items.reduce((total, item) => {
+			calculateQty() {
+				return this.form.products.reduce((total, item) => {
 					return total + item.quantity;
 				}, 0);
 			},
 
 			GrandTotal() {
-				return this.items.reduce((total, item) => {
+				return this.form.products.reduce((total, item) => {
 					let s =
 						(item.unit_price -
 							(item.unit_price * item.discount) / 100) *
@@ -214,11 +213,12 @@
 				this.$axios
 					.$get(`api/sale/` + this.$route.params.id)
 					.then(res => {
-						// this.sales = res.sales.data;
 						this.$set(this.$data, "form", res.sales);
-						for (let i = 0; i < this.form.products; i++) {
-						    this.$set(this.form.products[i], 'quantity', this.form.products[i].pivot.quantity) 
-						    console.log(this.form.products);
+							
+						for(let i in this.form.products) {
+							Vue.set(this.form.products[i], 'quantity', this.form.products[i].pivot.quantity);
+							Vue.set(this.form.products[i], 'unit_price', this.form.products[i].pivot.unit_price);
+							Vue.set(this.form.products[i], 'discount', this.form.products[i].pivot.discount);
 						}
 
 						console.log(res);
@@ -266,16 +266,19 @@
 
 			updateSale() {
 				this.$axios
-					.$post(`api/sale/` + this.form.id, {
+					.$patch(`api/sale/` + this.form.id, {
 						'paid': this.form.paid,
 						'payment_status': this.form.payment_status,
 						'payment_method': this.form.payment_method,
-						_method: 'patch',
+						'branch': this.form.branch,
+						'member': this.form.member,
+						products: this.form.products,
 					})
 					.then(res => {
-						this.sales = res.data;
+						// this.sales = res.data;
+						this.$set(this.$data, 'sales', res.data);
 						console.log(res);
-						// this.$router.push(`/sale/sale-list`)
+						this.$router.push(`/sale/sale-list`)
 					})
 					.catch(err => {
 						console.log(err.response);
@@ -289,8 +292,8 @@
 					this.form.products.push(item);
 				}
 
-				item.quantity = 1;
-				item.discount = 0;
+				Vue.set(item, 'quantity', 1);
+				Vue.set(item, 'discount', 0);
 			},
 
 			removeItem(index) {
