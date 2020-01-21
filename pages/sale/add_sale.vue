@@ -7,87 +7,100 @@
 			<v-divider></v-divider>
 			<div class="px-5">
 				<p class="caption font-italic pt-5">The field labels marked with * are required input fields.</p>
-				<v-row>
-					<v-col md="4" cols="12">
-						<label class="font-weight-bold">Customer*</label>
-						<v-autocomplete
-							solo
-							outlined
-							dense
-							label="Select Customer"
-							:items="members"
-							item-value="name"
-							item-text="name"
-							return-object
-							v-model="form.member"
-						></v-autocomplete>
-					</v-col>
-					<v-col md="4" cols="12">
-						<label class="font-weight-bold">Warehouse*</label>
-						<v-autocomplete
-							solo
-							outlined
-							dense
-							label="Select Warehouse"
-							:items="locations"
-							item-value="name"
-							item-text="name"
-							return-object
-							v-model="form.location"
-						></v-autocomplete>
-					</v-col>
-					<v-col md="4" cols="12">
-						<label class="font-weight-bold">Payment Status*</label>
-						<v-select
-							solo
-							outlined
-							dense
-							:items="payment_status"
-							label="Please Select"
-							v-model="form.payment_status"
-						></v-select>
-					</v-col>
-					<v-col md="4" cols="12">
-						<label class="font-weight-bold">Payment Method*</label>
-						<v-select
-							solo
-							outlined
-							dense
-							:items="payment_method"
-							label="Please Select"
-							v-model="form.payment_method"
-						></v-select>
-					</v-col>
-					<v-col md="4" sm="6" cols="12">
-						<label for class="font-weight-bold">Shipping Cost</label>
-						<v-text-field
-							solo
-							outlined
-							dense
-							type="number"
-							placeholder="0.0"
-							v-model="form.shipping_cost"
-						></v-text-field>
-					</v-col>
-					<v-col md="4" sm="6" cols="12">
-						<label for class="font-weight-bold">Paid</label>
-						<v-text-field solo outlined dense type="number" placeholder="0.0" v-model="form.paid"></v-text-field>
-					</v-col>
-					<v-col md="12" cols="12">
-						<label class="font-weight-bold">Select Product</label>
-						<v-autocomplete
-							solo
-							outlined
-							dense
-							append-icon="mdi-barcode"
-							:items="products"
-							item-value="name"
-							item-text="name"
-							return-object
-							@input="addTocart"
-						></v-autocomplete>
-					</v-col>
-				</v-row>
+				<ValidationObserver ref="form">
+					<v-row>
+						<v-col md="4" cols="12">
+							<label class="font-weight-bold">Customer*</label>
+							<v-autocomplete
+								solo
+								outlined
+								dense
+								label="Select Customer"
+								:items="members"
+								item-value="name"
+								item-text="name"
+								return-object
+								v-model="form.member"
+							></v-autocomplete>
+						</v-col>
+						<v-col md="4" cols="12">
+							<label class="font-weight-bold">Warehouse*</label>
+							<v-autocomplete
+								solo
+								outlined
+								dense
+								label="Select Warehouse"
+								:items="locations"
+								item-value="name"
+								item-text="name"
+								return-object
+								v-model="form.location"
+							></v-autocomplete>
+						</v-col>
+						<v-col md="4" cols="12">
+							<label class="font-weight-bold">Payment Status*</label>
+							<v-select
+								solo
+								outlined
+								dense
+								:items="payment_status"
+								label="Please Select"
+								v-model="form.payment_status"
+							></v-select>
+						</v-col>
+						<v-col md="4" cols="12">
+							<label class="font-weight-bold">Payment Method*</label>
+							<v-select
+								solo
+								outlined
+								dense
+								:items="payment_method"
+								label="Please Select"
+								v-model="form.payment_method"
+							></v-select>
+						</v-col>
+						<v-col md="4" sm="6" cols="12">
+							<label for class="font-weight-bold">Shipping Cost</label>
+							<v-text-field
+								solo
+								outlined
+								dense
+								type="number"
+								placeholder="0.0"
+								v-model="form.shipping_cost"
+							></v-text-field>
+						</v-col>
+						<v-col md="4" sm="6" cols="12">
+							<label for class="font-weight-bold">Paid</label>
+							<validation-provider name="Paid" rules="required" v-slot="{ errors }">
+								<v-text-field
+									solo
+									outlined
+									dense
+									type="number"
+									placeholder="0.0"
+									v-model="form.paid"
+									class="ma-0 pa-0"
+								></v-text-field>
+								<span class="red--text">{{ errors[0] }}</span>
+							</validation-provider>
+						</v-col>
+						<v-col md="12" cols="12">
+							<label class="font-weight-bold">Select Product</label>
+							<v-autocomplete
+								solo
+								outlined
+								dense
+								append-icon="mdi-barcode"
+								:items="products"
+								item-value="name"
+								item-text="name"
+								return-object
+								@input="addTocart"
+							></v-autocomplete>
+						</v-col>
+					</v-row>
+				</ValidationObserver>
 				<div>
 					<table class="saleTable">
 						<thead>
@@ -260,10 +273,13 @@
 					.then(res => {
 						this.sales = res.data;
 						console.log(res);
-						// this.$router.push(`/sale/sale-list`)
+						this.$router.push(`/sale/sale-list`)
 					})
 					.catch(err => {
 						console.log(err.response);
+						this.$refs.form.validate(
+							err.response.data.errors
+						)
 					});
 			},
 
@@ -273,8 +289,8 @@
 				} else {
 					this.form.items.push(item);
 				}
-				item.quantity = 1;
-				item.discount = 0;
+				Vue.set(item, 'quantity', 1);
+				Vue.set(item, 'discount', 0);
 			},
 
 			removeItem(index) {
