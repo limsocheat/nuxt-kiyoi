@@ -54,7 +54,7 @@
 							outlined
 							dense
 							type="number"
-							v-model="form.shipping_charge"
+							v-model="form.shipping_cost"
 							placeholder="0.00"
 						></v-text-field>
 					</v-col>
@@ -217,7 +217,7 @@
 				this.$axios
 					.$get(`/api/product`)
 					.then(res => {
-						this.products = res.products.data;
+						Vue.set(this.$data, 'products', res.products.data);
 						console.log(res);
 					})
 					.catch(err => {
@@ -249,17 +249,6 @@
 					});
 			},
 
-			// fetchPurchase() {
-			// 	this.$axios
-			// 		.$get(`api/purchase`)
-			// 		.then(res => {
-			// 			// this.purchases = res.data;
-			// 			console.log(res);
-			// 		})
-			// 		.catch(err => {
-			// 			console.log(res.response);
-			// 		});
-			// },
 
 			createPurchase() {
 				this.$axios
@@ -272,7 +261,6 @@
 					})
 					.catch(err => {
 						console.log(err.response);
-						this.$toast.error("Pleases fill required field");
 					});
 			},
 
@@ -283,9 +271,8 @@
 					this.form.items.push(item);
 					console.log(item);
 				}
-
-				item.quantity = 1;
-				item.discount = 0;
+				Vue.set(item, 'quantity', 1);
+				Vue.set(item, 'discount', 0);
 			},
 
 			removeItem(index) {

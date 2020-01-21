@@ -1,85 +1,87 @@
 <template>
-	<v-app>
-		<h2 class="mx-5 mt-5">User's List</h2>
-		<v-card class="mx-5 mt-3 mb-5">
-			<div class="grey darken-3">
-				<div class="d-flex">
-					<v-icon class="pl-5 grey--text text--lighten-4">mdi-magnify</v-icon>
-					<h3 class="px-2 py-2 grey--text text--lighten-3">SEARCH USER</h3>
-				</div>
-			</div>
-			<v-divider></v-divider>
-			<v-row class="px-7">
-				<v-col md="6">
-					<v-text-field outlined dense solo label="Search By Username"></v-text-field>
-				</v-col>
-				<v-col md="6">
-					<v-text-field outlined dense solo label="Search By Email"></v-text-field>
-				</v-col>
-			</v-row>
-		</v-card>
-
-		<v-card class="mx-5 mt-3 mb-5">
-			<v-card-title class="pa-0">
-				<v-toolbar color="black" dense>
+	<v-container fluid grid-list-xl>
+		<h2 class="mb-4 text-uppercase">User's List</h2>
+		<v-expansion-panels>
+			<v-expansion-panel>
+				<v-expansion-panel-header class="green darken-2 py-0" dark>
 					<div class="d-flex">
-						<v-icon class="pl-5 grey--text text--lighten-4">mdi-account</v-icon>
-						<h3 class="px-2 py-2 grey--text text--lighten-3">USER LIST</h3>
+						<v-icon class="pl-5 yellow--text text--lighten-4">mdi-magnify</v-icon>
+						<h3 class="px-2 py-2 yellow--text text--lighten-3">SEARCH USER</h3>
+					</div>
+				</v-expansion-panel-header>
+				<v-expansion-panel-content>
+					<v-row>
+						<v-col md="6" cols="12">
+							<v-text-field outlined dense solo v-model="name" label="Search By Username"></v-text-field>
+						</v-col>
+						<v-col md="6" cols="12">
+							<v-text-field outlined dense solo v-model="email" label="Search By Email"></v-text-field>
+						</v-col>
+					</v-row>
+				</v-expansion-panel-content>
+			</v-expansion-panel>
+		</v-expansion-panels>
+
+		<p>&nbsp;</p>
+
+		<v-card>
+			<v-card-title class="pa-0">
+				<v-toolbar color="green darken-2 py-0" dense>
+					<div class="d-flex">
+						<v-icon class="pl-5 yellow--text text--lighten-4">mdi-account</v-icon>
+						<h3 class="px-2 py-2 yellow--text text--lighten-3">USER LIST</h3>
 					</div>
 					<v-spacer></v-spacer>
 					<v-dialog v-model="dialog" max-width="600px">
 						<template v-slot:activator="{ on }">
-							<v-btn v-permission="'add users'" v-on="on" >New</v-btn>
-						</template>	
+							<v-btn v-permission="'add users'" v-on="on">New</v-btn>
+						</template>
 						<v-card>
 							<v-card-title>Add User</v-card-title>
 							<v-divider></v-divider>
 							<v-card-text>
-								<div>
-									<label class="font-weight-bold" for="name">Name</label>
-									<v-text-field	
-										solo
-										outlined
-										dense
-										label="Enter Name"
-										v-model="form.name"
-									></v-text-field>
-								</div>
-								<div>
-									<label class="font-weight-bold" for="email">Email</label>
-									<v-text-field	
-										solo
-										outlined
-										dense
-										label="Enter Email"
-										v-model="form.email"
-									></v-text-field>
-								</div>
-								<div>
-									<label class="font-weight-bold" for="password">Password</label>
-									<v-text-field	
-										solo
-										outlined
-										dense
-										type="password"
-										label="Enter Password"
-										v-model="form.password"
-									></v-text-field>
-								</div>
+								<ValidationObserver ref="nameOfObserver">
+									<div class="AddUserForm">
+										<label class="font-weight-bold" for="name">Name</label>
+										<validation-provider name="Name" rules="required" v-slot="{ errors }">
+											<input type="text" class="AddUserForm--input" v-model="form.name" />
+											<span class="red--text">{{ errors[0] }}</span>
+										</validation-provider>
+									</div>
+									<div class="AddUserForm">
+										<validation-provider name="Email" rules="required|email" v-slot="{ errors }">
+											<label class="font-weight-bold" for="email">Email</label>
+											<input type="email" class="AddUserForm--input" v-model="form.email" />
+											<span class="red--text">{{ errors[0] }}</span>
+										</validation-provider>
+									</div>
+									<div class="AddUserForm">
+										<label class="font-weight-bold" for="password">Password</label>
+										<validation-provider name="Password" rules="required" v-slot="{ errors }">
+											<input type="password" class="AddUserForm--input" v-model="form.password" />
+											<span class="red--text">{{ errors[0] }}</span>
+										</validation-provider>
+									</div>
+								</ValidationObserver>
 							</v-card-text>
-							<v-card-actions class="px-5">
-								<v-btn color="primary" @click.prevent="addUser">Save</v-btn>
-								<v-btn color="primary" @click="closeDialog" text>Close</v-btn>
+							<v-divider></v-divider>
+
+							<v-card-actions class="text-center">
+								<v-spacer>
+									<v-btn color="primary" @click="closeDialog" text>
+										<v-icon left>mdi-close</v-icon>Close
+									</v-btn>
+									<v-btn color="green" dark @click.prevent="addUser">
+										<v-icon left>mdi-content-save</v-icon>Save
+									</v-btn>
+								</v-spacer>
 							</v-card-actions>
 						</v-card>
 					</v-dialog>
 				</v-toolbar>
 			</v-card-title>
 			<v-divider></v-divider>
-			<v-data-table  
-				:headers="headers" :items="items"
-				v-permission="'view users'"
-			>
+			<v-data-table :headers="headers" :items="items" v-permission="'view users'">
 				<template v-slot:item.action="{item}">
 					<v-tooltip top v-permission="'edit users'">
 						<template v-slot:activator="{ on }">
@@ -100,16 +102,39 @@
 				</template>
 			</v-data-table>
 		</v-card>
-	</v-app>
+	</v-container>
 </template>
 
 <script>
+	import { ValidationProvider, ValidationObserver } from "vee-validate";
 	export default {
+		components: {
+			ValidationProvider, ValidationObserver
+		},
+
+		watch: {
+			name: {
+				handler() {
+					this.getItems();					
+				}
+			},
+			
+			email: {
+				handler() {
+					this.getItems();					
+				}
+			},
+
+			immediate: true,
+		},
+
 		data() {
 			return {
 				dialog: false,
 				items: [],
 				form: {},
+				name: '',
+				email: '',
 				headers: [
 					{
 						text: "ID",
@@ -145,41 +170,55 @@
 
 		methods: {
 			getItems() {
-				this.$axios.$get("/api/user").then(response => {
-					this.items = response;
+				this.$axios.$get(`/api/user?name=${this.name}&email=${this.email}`)
+				.then(res => {
+					this.items = res.users.data;
+					console.log(res);
+				})
+				.catch(err => {
+					console.log(err.response);
 				});
 			},
 
-			editItem (item) {
-		        this.editedIndex = this.items.indexOf(item);
-		        this.form = Object.assign({}, item);
-		        this.dialog = true
-	      	},
+			editItem(item) {
+				this.editedIndex = this.items.indexOf(item);
+				this.form = Object.assign({}, item);
+				this.dialog = true;
+			},
 
 			addUser() {
-				if(this.editedIndex > -1) {
-					this.$axios.$patch(`/api/user/` + this.form.id, {
-						'name': this.form.name,
-						'email': this.form.email,
-						'password': this.form.password,
-					})
-					.then(res => {
-						this.getItems();
-						this.closeDialog();
-						this.$toast.info('Succeessfully Updated');
-					})
-				}
-				else {
-					this.$axios.$post(`/api/user`, this.form)
-					.then(res => {
-						this.form = res;
-						this.getItems();
-						this.$toast.info('Succeessfully Created');
-						this.closeDialog();
-					})
-					.catch(err => {
-						console.log(err.response);
-					})
+				if (this.editedIndex > -1) {
+					this.$axios
+						.$patch(`/api/user/` + this.form.id, {
+							name: this.form.name,
+							email: this.form.email,
+							password: this.form.password
+						})
+						.then(res => {
+							this.getItems();
+							this.closeDialog();
+							this.$toast.info("Succeessfully Updated");
+						})
+						.catch(err => {
+							this.$refs.nameOfObserver.validate(
+								err.response.data.errors
+							);
+						});
+				} else {
+					this.$axios
+						.$post(`/api/user`, this.form)
+						.then(res => {
+							this.form = res;
+							this.getItems();
+							this.$toast.info("Succeessfully Created");
+							this.closeDialog();
+						})
+						.catch(err => {
+							this.$refs.nameOfObserver.validate(
+								err.response.data.errors
+							);
+							console.log(err.response.data.errors);
+						});
 				}
 			},
 
@@ -190,14 +229,15 @@
 			},
 
 			deleteItem(item) {
-				if(confirm('Are u sure to delete it?')) {
-					this.$axios.$delete(`/api/user/` + item.id)
-					.then(res => {
-						this.getItems();
-					})
-					.catch(err => {
-						console.log(err.response);
-					})
+				if (confirm("Are u sure to delete it?")) {
+					this.$axios
+						.$delete(`/api/user/` + item.id)
+						.then(res => {
+							this.getItems();
+						})
+						.catch(err => {
+							console.log(err.response);
+						});
 				}
 			}
 		},
@@ -207,3 +247,16 @@
 		}
 	};
 </script>
+
+<style lang="scss">
+	.AddUserForm {
+		padding-top: 10px;
+		&--input {
+			border: 1px solid #1232dd;
+			padding: 5px 10px 5px 10px;
+			width: 100%;
+			outline: none;
+			border-radius: 3px;
+		}
+	}
+</style>
