@@ -11,53 +11,65 @@
 					<v-row>
 						<v-col md="4" cols="12">
 							<label class="font-weight-bold">Customer*</label>
-							<v-autocomplete
-								solo
-								outlined
-								dense
-								label="Select Customer"
-								:items="members"
-								item-value="name"
-								item-text="name"
-								return-object
-								v-model="form.member"
-							></v-autocomplete>
+							<validation-provider rules="required" name="Customer" v-slot="{ errors }">
+								<v-autocomplete
+									solo
+									outlined
+									dense
+									label="Select Customer"
+									:items="members"
+									item-value="name"
+									item-text="name"
+									return-object
+									v-model="form.member"
+								></v-autocomplete>
+								<span class="red--text">{{ errors[0] }}</span>
+							</validation-provider>
 						</v-col>
 						<v-col md="4" cols="12">
 							<label class="font-weight-bold">Warehouse*</label>
-							<v-autocomplete
-								solo
-								outlined
-								dense
-								label="Select Warehouse"
-								:items="locations"
-								item-value="name"
-								item-text="name"
-								return-object
-								v-model="form.location"
-							></v-autocomplete>
+							<validation-provider rules="required" name="Location" v-slot="{ errors }">
+								<v-autocomplete
+									solo
+									outlined
+									dense
+									label="Select Warehouse"
+									:items="locations"
+									item-value="name"
+									item-text="name"
+									return-object
+									v-model="form.location"
+								></v-autocomplete>
+								<span class="red--text">{{errors[0]}}</span>
+							</validation-provider>
 						</v-col>
 						<v-col md="4" cols="12">
 							<label class="font-weight-bold">Payment Status*</label>
-							<v-select
-								solo
-								outlined
-								dense
-								:items="payment_status"
-								label="Please Select"
-								v-model="form.payment_status"
-							></v-select>
+							<validation-provider rules="required" name="Payment Status" v-slot="{ errors }">
+								<v-select
+									solo
+									outlined
+									dense
+									:items="payment_status"
+									label="Please Select"
+									v-model="form.payment_status"
+								></v-select>
+								<span class="red--text">{{ errors[0] }}</span>
+							</validation-provider>
 						</v-col>
 						<v-col md="4" cols="12">
 							<label class="font-weight-bold">Payment Method*</label>
-							<v-select
-								solo
-								outlined
-								dense
-								:items="payment_method"
-								label="Please Select"
-								v-model="form.payment_method"
-							></v-select>
+							<validation-provider rules="required" name="Payment Method" v-slot="{errors}">
+								<v-select
+									solo
+									outlined
+									dense
+									:items="payment_method"
+									label="Please Select"
+									v-model="form.payment_method"
+								></v-select>
+								<span class="red--text">{{ errors[0] }}</span>
+							</validation-provider>
 						</v-col>
 						<v-col md="4" sm="6" cols="12">
 							<label for class="font-weight-bold">Shipping Cost</label>
