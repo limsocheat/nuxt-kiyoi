@@ -118,7 +118,7 @@
 										placeholder="0.00"
 									/>
 								</td>
-								<td>USD {{ form.sub_total | formatMoney }}</td>
+								<td>USD {{ discountedPrice(item) | formatMoney }}</td>
 								<td>
 									<v-btn small color="red" outlined @click="removeItem(index)">
 										<v-icon>mdi-delete</v-icon>
@@ -127,7 +127,8 @@
 							</tr>
 							<tr>
 								<td class="py-3" colspan="2">Total</td>
-								<td>{{ form.total_qty }}</td>
+								<td colspan="3">{{ calculateQty }}</td>
+								<td>USD {{ GrandTotal | formatMoney }}</td>
 							</tr>
 						</tbody>
 					</table>
@@ -168,7 +169,9 @@
 
 		data() {
 			return {
-				form: {},
+				form: {
+					products: []
+				},
 				products: [],
 				purchases: [],
 				purchase_status: ["Received", "Partial", "Pending", "Ordered"],
@@ -178,7 +181,32 @@
 			};
 		},
 
+		computed: {
+
+			calculateQty() {
+				return this.form.products.reduce((total, item) => {
+					return total + Number(item.quantity);
+				}, 0);
+			},
+
+			GrandTotal() {
+				return this.form.products.reduce((total,item) => {
+					let s = (item.unit_price - (item.unit_price * item.discount) / 100) * item.quantity
+					return total + s;
+					// console.log(total + s);
+				}, 0)
+			}	
+		},
+
 		methods: {
+			discountedPrice(product) {
+				return (
+					(product.unit_price -
+						(product.unit_price * product.discount) / 100) *
+					product.quantity
+				);
+			},
+
 			fetchPurchase() {
 				this.$axios
 					.$get(`api/purchase/` + this.$route.params.id)
@@ -263,11 +291,11 @@
 				if (this.form.products.includes(item)) {
 					alert("already there");
 				} else {
-					
+					// Vue.set(item, 'quantity', 1);
 					this.form.products.push(item);
 				}
-				item.quantity = 1;
-				item.discount = 0;
+				Vue.set(item, 'quantity', 1);
+				Vue.set(item, 'discount', 1);
 			},
 
 			removeItem(index) {
