@@ -158,7 +158,7 @@
 			<template v-slot:item="{ item }">
 				<tr>
 					<td v-if="item.image">
-						<img :src="'http://127.0.0.1:8000/' + item.image" width="100">
+						<img :src="'http://127.0.0.1:8000/image/' + item.image" class="product-img"/>
 					</td>
 					<td v-else>
 						<span>No Image</span>
@@ -324,30 +324,6 @@ export default {
       			console.log(err.response);
       		})
       	},
-
-		uploadCsv(image) {
-			const URL = 'http://127.0.0.1:3000/product/category'
-
-			let data = new FormData();
-		    data.append('name', 'my-csv');
-		    data.append('file', event.target.files[0]); 
-
-		    let config = {
-		      header : {
-		        'Content-Type' : 'csv'
-		      }
-		    }
-
-		    this.$axios.$put(
-		      URL, 
-		      data,
-		      config
-		    ).then(
-		      response => {
-		        console.log('Csv upload response > ', response)
-		      }
-		    )
-		}
 	}
 }
 
@@ -379,5 +355,15 @@ export default {
 	display: none;
 }
 
+
+.product-img {
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: contain;
+	border: 1px solid rgba(0,0,0,0.125);
+	width: 50px;
+	height: 50px;
+	margin-top: 5px;
+}
 
 </style>

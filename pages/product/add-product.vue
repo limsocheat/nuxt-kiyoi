@@ -135,7 +135,7 @@
 		    	.then(res => {
 		    		this.items = res.data;
 		    		this.$toast.info('Succeessfully created');
-		    		// this.$router.push('/product/product-list');
+		    		this.$router.push('/product/product-list');
 		    	})
 		    	.catch(err => {
 					console.log(err.response);
