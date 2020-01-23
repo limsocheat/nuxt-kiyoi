@@ -274,7 +274,7 @@
 		    	this.$axios.$post(`api/return-purchase`, this.form)
 				.then(res => {
 					this.$set(this.$data, "return_purchase" , res.data);
-					this.$router.push(`/return/return-purchase`);
+				this.$router.push(`/return/return-purchase/view`);
 					console.log(res);
 				})
 				.catch(err => {
@@ -292,7 +292,7 @@
 				}
 
 				item.quantity = 1;
-				item.discount = 0;
+				item.discount = 1;
 			},
 
 			removeItem(index) {

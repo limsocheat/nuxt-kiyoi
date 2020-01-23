@@ -449,7 +449,7 @@
 							{
 								name: "Purchase",
 								icon: "mdi-plus-circle",
-								to: "/return/return-purchase",
+								to: "/return/return-purchase/view",
 								permission: "return purchases"
 							}
 						]
