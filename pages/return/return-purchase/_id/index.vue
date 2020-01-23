@@ -15,8 +15,8 @@
 					</div>
 					<div>
 						<label for="" class="font-weight-medium">Supplier: </label>
-						<span class="productDetail--item">{{ returnpurchase.supplier }}</span>
-						<!-- <span class="productDetail--item" v-if="returnpurchase.products">{{ returnpurchase.products.supplier.name}}</span> -->
+						<!-- <span class="productDetail--item">{{ returnpurchase.supplier.name }}</span> -->
+						<span class="productDetail--item" v-if="returnpurchase.supplier">{{ returnpurchase.supplier.name}}</span>
 					</div>
 					<div>
 						<table class="tableReturnPurchase">
@@ -27,18 +27,16 @@
 								<th  class="tableReturnPurchase--tr">Cost</th>
 								<th  class="tableReturnPurchase--tr">SubTotal</th>
 							</tr>
-							<tr  v-if="returnpurchase.products">
-								<td class="tableReturnPurchase--td">{{ returnpurchase.id }}</td>
-								<td class="tableReturnPurchase--td">{{ returnpurchase.products.name}}</td>
-								<td class="tableReturnPurchase--td">{{ returnpurchase.products.cost}}</td>
+							<tr  v-if="returnpurchase.products" v-for="product in returnpurchase.products">
+								<td class="tableReturnPurchase--td">{{returnpurchase.id}}</td>
+								<td class="tableReturnPurchase--td">{{ product.name }}</td>
+								<td class="tableReturnPurchase--td">{{ product.pivot.quantity }}</td>
+								<td class="tableReturnPurchase--td">USD {{ product.pivot.unit_price | formatMoney }}</td>
+								<td class="tableReturnPurchase--td">USD {{ product.pivot.unit_price * product.pivot.quantity | formatMoney }}</td>
 							</tr>
 							<tr>
 								<th class="tableReturnPurchase--td" colspan="4">Total</th>
 								<td class="tableReturnPurchase--td">USD {{ returnpurchase.paid | formatMoney }}</td>
-							</tr>
-							<tr class="tableReturnPurchase--td">
-								<th class="tableReturnPurchase--td">Shipping Charge</th>
-								<td></td>
 							</tr>
 							<tr class="tableReturnPurchase--td">
 								<th class="tableReturnPurchase--td" colspan="4">Grand Total</th>

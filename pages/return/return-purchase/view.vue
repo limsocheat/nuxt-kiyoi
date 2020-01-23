@@ -41,12 +41,6 @@
 						<td @click="viewReturnPurchase(item.id)">{{ item.supplier.name }}</td>
 						<td @click="viewReturnPurchase(item.id)">{{ item.account.name }}</td>
 						<td @click="viewReturnPurchase(item.id)">USD  {{ item.total | formatNumber}}</td>
-						<!-- <td >{{ item.created_at }}</td>
-						<td >{{ item.reference_no }}</td>
-						<td >{{ item.branch.address }}</td>
-						<td >{{ item.supplier.name }}</td>
-						<td >{{ item.account.name }}</td>
-						<td >USD  {{ item.total | formatNumber}}</td> -->
 						
 						<td class="text-center">
 							<div class="row"> 
@@ -161,7 +155,7 @@ export default {
 	methods: {
 
 		fetchData() {
-			this.$axios.$get(`/api/return-purchase?temsPerPage=${this.options.itemsPerPage}&page=${this.options.page}`)
+			this.$axios.$get(`/api/return-purchase/?temsPerPage=${this.options.itemsPerPage}&page=${this.options.page}`)
 			.then(res => {
 				this.items = res.returnpurchase.data;
 				this.total = res.total;
@@ -173,7 +167,7 @@ export default {
 		},
 
 		viewReturnPurchase(id) {
-      		this.$router.push(`/return/return-purchase/${id}/view`);
+      		this.$router.push(`/return/return-purchase/${id}`);
       	},
 
 		editItem(id) {
@@ -181,7 +175,7 @@ export default {
 		},
 
 		deleteItem(id) {
-      		if(confirm('Are u sure to Delete it?')) {
+      		if(confirm('Are you sure to Delete it?')) {
       			this.$axios.$delete(`api/return-purchase/` + id)
       			.then(res => {
       				this.fetchData();
