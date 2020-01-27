@@ -10,7 +10,7 @@
 			<div class="px-5">
 				<p class="caption font-italic pt-5">The field labels marked with * are required input fields.</p>
 				<v-row>
-					<v-col md="4" cols="12">
+					<v-col md="6" cols="12">
 						<label >Location(From)*</label>
 						<validation-provider rules="required" v-slot="{ errors }">
 							<v-autocomplete 
@@ -26,7 +26,7 @@
 							<span class="transfer--text">{{ errors[0] }}</span>
 						</validation-provider>
 					</v-col>
-					<v-col md="4" cols="12">
+					<v-col md="6" cols="12">
 						<label >Location(To)*</label>
 						<validation-provider rules="required" v-slot="{ errors }">
 							<v-autocomplete 
@@ -42,7 +42,7 @@
 							<span class="transfer--text">{{ errors[0] }}</span>
 						</validation-provider>
 					</v-col>
-					<v-col md="4" cols="12">
+					<v-col md="6" cols="12">
 						<label >Status</label>
 						<validation-provider rules="required" v-slot="{ errors }">
 							<v-select 
@@ -56,6 +56,13 @@
 							<span class="transfer--text">{{ errors[0] }}</span>
 						</validation-provider>
 					</v-col>
+					<v-col md="6" cols="12">
+						<label for="" >Shipping Cost</label>
+						<validation-provider rules="required" v-slot="{ errors }" name="Shipping Cost">
+							<v-text-field solo outlined dense v-model="form.shipping_charge"></v-text-field>
+							<span class="transfer--text">{{ errors[0] }}</span>
+						</validation-provider>
+					</v-col>
 					<v-col cols="12">
 						<label >Select Product</label>
 						<validation-provider rules="required" v-slot="{ errors }">
@@ -63,7 +70,6 @@
 								:items="products"
 							    dense
 							    solo
-							    v-model="form.name"
 							    item-text="name"
 							    item-value="name"
 							    return-object
@@ -86,14 +92,16 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr class="transfer--add" v-for="(item, index) in orders">
+							<tr class="transfer--add" v-for="(item, index) in form.products" :key="index">
 								<td>{{item.name}}</td>
 								<td>{{item.code}}</td>
 								<td>
-									<input type="number" class="table-qty" v-model="item.unit">
+									<input type="number" class="table-qty" v-model="item.quantity">
 								</td>
-								<td>USD {{ item.price | formatNumber }}</td>
-								<td>USD {{ item.unit * item.price | formatNumber }}</td>
+								<td>
+									<input type="number" v-model="item.price" class="table-qty">
+								</td>
+								<td>USD {{ item.quantity * item.price | formatNumber }}</td>
 								<td>
 	                              	<v-btn icon color="red" outlined @click="removeItem(index)">
 	                              		<v-icon small>mdi-delete</v-icon>
@@ -101,25 +109,14 @@
 	                           </td>
 							</tr>
 							<tr>
-								<td class="py-3">Total</td>
+								<td class="py-3" colspan="2">Total</td>
+								<td colspan="2">{{ totalQty }}</td>
+								<td>USD {{ grandTotal | formatNumber }}</td>
 							</tr>
 						</tbody>
 					</table>
 				</div>
 				</div>
-				<v-row class="px-5">
-					<v-col md="4" cols="12">
-						<label for="" >Shipping Cost</label>
-						<validation-provider rules="required" v-slot="{ errors }">
-							<input type="text" class="transfer--input" v-model="form.shipping_charge">
-							<span class="transfer--text">{{ errors[0] }}</span>
-						</validation-provider>
-					</v-col>
-					<v-col md="4" cols="12" class="d-flex flex-column">
-						<label for="" class="pt-1">Attach Document</label>
-						<input type="file" @change="uploadFile($event)" class="quotationCsv">
-					</v-col>
-				</v-row>
 				<div class="d-flex px-5 flex-column mb-5">
 					<label for="">Note</label>
 					<textarea cols="30" rows="7" class="textarea" v-model="form.description"></textarea>
@@ -152,7 +149,9 @@
 			return {
 				orders: [],
 				locations: [],
-				form: {},
+				form: {
+					products: [],
+				},
 				items: [],
 				products: [],
 				headers: [
@@ -186,6 +185,20 @@
 					},
 				],
 				status: ['Completed', 'Pending', 'Sent'],
+			}
+		},
+
+		computed: {
+			totalQty() {
+				return this.form.products.reduce((total,item) => {
+					return total + Number(item.quantity);
+				}, 0);
+			},
+
+			grandTotal() {
+				return this.form.products.reduce((total, item) => {
+					return total + (item.quantity * item.price);
+				}, 0);
 			}
 		},
 
@@ -235,34 +248,18 @@
 			},
 
 			addTocart(item) {
-				if(this.orders.includes(item)) {
-		          	alert("already there");
-		        }else {
-		          	this.orders.push(item);
+				if(this.form.products.includes(item)) {
+					Vue.set(item, 'quantity', 1);
+				}else {
+		          	this.form.products.push(item);
 		        }
 
-		        item.unit = 1;
+		        Vue.set(item, 'quantity', 1);
 			},
 
 			removeItem(index) {
-				this.orders.splice(index, 1)
+				this.form.products.splice(index, 1)
 			},
-
-			uploadFile(event) {
-				const url = 'http://127.0.0.1:3000/product/add_adjustment';
-				let data = new FormData();
-				data.append('file', event.target.files[0]);
-				let config = {
-					header: {
-						'content-Type' : 'image/*, application/pdf'
-					}
-				}
-
-				this.$axios.$post(url,data,config)
-				.then(res => {
-					console.log(res);
-				})
-			}
 		}
 	}
 </script>
@@ -309,14 +306,17 @@
 
 	.table-qty {
 		border: 1px solid rgba(0,0,0,0.125);
-		padding: 0 0 0 10px;
+		padding: 5px;
+		margin-top: 5px;
+		outline: none;
 	}
 
 	.transfer--add {
 		width: 100%;
+		border-collapse: collapse;
 	}
 	
-	>>> .v-select .dropdown-toggle .clear {
+	.v-select .dropdown-toggle .clear {
 	    display: none;
 	}
 
