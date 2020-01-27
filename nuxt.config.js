@@ -50,6 +50,7 @@ export default {
     { src: "~/plugins/laravel-permission"},
     { src: "~/plugins/vee-validate"},
     { src: "~/plugins/vue-printer"},
+    { src: "~/plugins/notification.js", ssr: false}
   ],
   /*
    ** Nuxt.js dev-modules
