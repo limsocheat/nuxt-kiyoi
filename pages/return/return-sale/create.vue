@@ -1,8 +1,8 @@
 <template>
 	<v-app>
 		<v-card class="mx-5 my-5">
-			<div class="py-3 px-5"> 
-				<h3>Add Return Sale</h3>
+			<div class="py-3 px-5 green darken-2" > 
+				<h3 class="white--text">Add Return Sale</h3>
 			</div>
 			<v-divider></v-divider>
 			<div class="px-5">
@@ -23,7 +23,7 @@
 						></v-autocomplete >
 					</v-col>
 					<v-col md="4" cols="12">
-						<label class="font-weight-bold" for="name">Supplier </label>
+						<label class="font-weight-bold" for="name">Customer* </label>
 						<v-autocomplete 
 							item-value="name" 
 							item-text="name"  
@@ -31,13 +31,13 @@
 							solo 
 							outlined 
 							return-object
-							:items="suppliers"
-							v-model="form.supplier"
+							:items="members"
+							v-model="form.member"
 							label="Please type, product code and select..."
 						></v-autocomplete >
 					</v-col>
 					<v-col md="4" cols="12">
-						<label class="font-weight-bold" for="name">Account</label>
+						<label class="font-weight-bold" for="name">Account*</label>
 						<v-autocomplete 
 							item-value="name" 
 							item-text="name"
@@ -123,8 +123,8 @@
 							</tr>
 							<tr>
 								<td class="py-5" colspan="2" >Total</td>
-								<td colspan="3">{{ calculateQty }}</td>
-								<td>USD {{ calculateTotal | formatMoney }}</td>
+								<td colspan="3">{{ Qty }}</td>
+								<td>USD {{ Total | formatMoney }}</td>
 								<td></td>
 							</tr>
 						</tbody>
@@ -138,13 +138,13 @@
 					<v-col md="6" cols="12">
 						<div class="d-flex flex-column mb-5">
 							<label for class="font-weight-bold">Return Note</label>
-							<textarea cols="30" rows="7" class="textarea" v-model="form.return_des"></textarea>
+							<textarea cols="30" rows="5" class="textarea" v-model="form.return_des"></textarea>
 						</div>
 					</v-col>
 					<v-col md="6" cols="12">
 						<div class="d-flex flex-column mb-5">
 							<label for class="font-weight-bold">Staff Note</label>
-							<textarea cols="30" rows="7" class="textarea" v-model="form.staff_des"></textarea>
+							<textarea cols="30" rows="5" class="textarea" v-model="form.staff_des"></textarea>
 						</div>
 					</v-col>
 				</v-row>
@@ -173,7 +173,7 @@
 		
 		created(){
 			this.fetchLocation(),
-			this.fetchSupplier(),
+			this.fetchMember(),
 			this.fetchAccount(),
 			this.fetchProduct()
 			// this.fetchReturnSale()
@@ -185,9 +185,9 @@
 				form: {
 					items: []
 				},
-				return_sale: [],
+				returnsale: [],
 				locations:[],
-				suppliers:[],
+				members:[],
 				accounts:[],
 				products:[],
 				itemsPerPage: 5,
@@ -195,13 +195,13 @@
 		},
 
 		computed: {
-			calculateQty() {
+			Qty() {
 				return this.form.items.reduce((total, item) => {
-					return total + item.quantity;
+					return total + Number(item.quantity);
 				}, 0);
 			},
-
-			calculateTotal() {
+		
+			Total() {
 				return this.form.items.reduce((total, item) => {
 					let subtotal =
 						(item.unit_price -
@@ -232,10 +232,10 @@
 				});
 			},
 
-			fetchSupplier(){
-				this.$axios.$get(`api/supplier`)
+			fetchMember(){
+				this.$axios.$get(`api/member`)
 				.then(res =>{
-					this.suppliers = res.suppliers.data;
+					this.members = res.members.data;
 					console.log(res)
 				})
 				.catch(err => {
@@ -268,9 +268,8 @@
 			createReturnSale() {
 		    	this.$axios.$post(`api/return-sale`, this.form)
 				.then(res => {
-					// this.return_sale = res.data;
-					this.$set(this.$data, "return_sales" , res.data);
-					this.$router.push(`/return/return-sale`)
+					this.$set(this.$data, "returnsales" , res.data);
+					this.$router.push(`/return/return-sale/view`);
 					console.log(res);
 				})
 				.catch(err => {
@@ -282,33 +281,18 @@
 			addTocart(item) {
 				if (this.form.items.includes(item)) {
 					alert("already there");
-				} else {
+				} 
+				else {
 					this.form.items.push(item);
 					console.log(item);
 				}
-
-				item.quantity = 1;
-				item.discount = 0;
+				Vue.set(item, 'quantity', 1);
+				Vue.set(item, 'discount', 1);
 			},
 
 			removeItem(index) {
 				this.form.items.splice(index, 1);
 			},
-
-			// uploadFile(event) {
-			// 	const url = "http://127.0.0.1:3000/product/add_adjustment";
-			// 	let data = new FormData();
-			// 	data.append("file", event.target.files[0]);
-			// 	let config = {
-			// 		header: {
-			// 			"content-Type": "image/*, application/pdf"
-			// 		}
-			// 	};
-
-			// 	this.$axios.$post(url, data, config).then(res => {
-			// 		console.log(res);
-			// 	});
-			// }
 		}
 	};
 </script>

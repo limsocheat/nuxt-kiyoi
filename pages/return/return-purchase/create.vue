@@ -176,6 +176,7 @@
 	Vue.filter("formatMoney", function(value) {
 		return numeral(value).format("0,0.00");
 	});
+	
 
 	export default {
 		name: "createReturnPurchase",
@@ -203,7 +204,7 @@
 		computed: {
 			calculateQty() {
 				return this.form.items.reduce((total, item) => {
-					return total + item.quantity;
+					return total + Number(item.quantity);
 				}, 0);
 			},
 
@@ -290,9 +291,8 @@
 					this.form.items.push(item);
 					console.log(item);
 				}
-
-				item.quantity = 1;
-				item.discount = 1;
+				Vue.set(item, 'quantity', 1);
+				Vue.set(item, 'discount', 1);
 			},
 
 			removeItem(index) {

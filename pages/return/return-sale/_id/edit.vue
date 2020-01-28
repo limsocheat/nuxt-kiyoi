@@ -2,7 +2,7 @@
 	<v-app>
 		<v-card class="mx-5 my-5">
 			<div class="green darken-2">
-				<v-card-title class="white--text">Edit​ Return Purchase</v-card-title>
+				<v-card-title class="white--text">Edit​ Return Sale</v-card-title>
 			</div>
 			<v-divider></v-divider>
 			<div class="px-5">
@@ -27,17 +27,17 @@
 						></v-autocomplete>
 					</v-col>
 					<v-col md="6" cols="12">
-						<label class="font-weight-bold">Supplier*</label>
+						<label class="font-weight-bold">Customer*</label>
 						<v-autocomplete
-							:items="suppliers"
+							:items="members"
 							item-text="name"
 							item-value="name"
 							solo
 							outlined
 							dense
 							return-object
-							v-model="form.supplier"
-							label="Please select Supplier"
+							v-model="form.member"
+							label="Please select Member"
 						></v-autocomplete>
 					</v-col>
 					<v-col md="6" cols="12">
@@ -161,7 +161,7 @@
 		created() {
 			this.fetchReturn();
 			this.fetchLocation();
-			this.fetchSupplier();
+			this.fetchMember();
 			this.fetchAccount();
 			this.fetchProduct();
 		},
@@ -171,10 +171,10 @@
 				form: {
 					products: []
 				},
-				suppliers: [],
+				members: [],
 				locations: [],
 				products: [],
-				returnpurchase: [],
+				returnsale: [],
 				accounts: []
 			};
 		},
@@ -219,11 +219,11 @@
 					});
 			},
 
-			fetchSupplier() {
+			fetchMember() {
 				this.$axios
-					.$get(`api/supplier`)
+					.$get(`api/member`)
 					.then(res => {
-						this.suppliers = res.suppliers.data;
+						this.members = res.members.data;
 						// this.$set(this.$data, "suppliers", res.suppliers.data);
 						console.log(res);
 					})
@@ -259,9 +259,9 @@
 
 			fetchReturn() {
 				this.$axios
-					.$get(`api/return-purchase/` + this.$route.params.id)
+					.$get(`api/return-sale/` + this.$route.params.id)
 					.then(res => {
-						this.$set(this.$data, "form", res.returnpurchase);
+						this.$set(this.$data, "form", res.returnsale);
 
 						for (let i in this.form.products) {
 							Vue.set(
@@ -297,18 +297,18 @@
 
 			updateReturn() {
 				this.$axios
-					.$patch(`api/return-purchase/` + this.form.id, {
+					.$patch(`api/return-sale/` + this.form.id, {
 						branch: this.form.branch,
 						products: this.form.products,
-						supplier: this.form.supplier,
+						member: this.form.member,
 						account: this.form.account,
 						return_des: this.form.return_des,
 						staff_des: this.form.staff_des
 					})
 					.then(res => {
-						// this.returnpurchase = res.data;
-						this.$set(this.$data, "returnpurchase", res.returnpurchase);
-						this.$router.push(`/return/return-purchase/view`);
+						// // this.returnsale = res.data;
+						// this.$set(this.$data, "returnsale", res.returnsale);
+						// this.$router.push(`/return/return-sale/view`);
 						console.log(res);
 					})
 					.catch(err => {

@@ -443,7 +443,7 @@
 							{
 								name: "Sale",
 								icon: "mdi-view-list",
-								to: "/return/return-sale",
+								to: "/return/return-sale/view",
 								permission: "return purchases"
 							},
 							{

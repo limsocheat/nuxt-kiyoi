@@ -2,23 +2,23 @@
 	<v-app class="mx-5 my-5">
 		<v-card>
 			<div id="printProduct">
-				<v-card-title class="teal darken-1 white--text">Return Purchase</v-card-title>
+				<v-card-title class="green darken-2 white--text">Return Purchase (Reference No: {{ returnpurchase.reference_no }})</v-card-title>
 				<v-divider></v-divider>
 				<div class="px-5 pt-5">
 					<div>
-						<label for="" class="font-weight-medium">Date: </label>
+						<label for="" class="font-weight-medium">Return Date: </label>
 						<span class="productDetail--item">{{ returnpurchase.created_at }}</span>
 					</div>
-					<div>
-						<label for="" class="font-weight-medium">Reference No: </label>
-						<span class="productDetail--item">{{ returnpurchase.reference_no }}</span>
-					</div>
+					
 					<div>
 						<label for="" class="font-weight-medium">Supplier: </label>
-						<!-- <span class="productDetail--item">{{ returnpurchase.supplier.name }}</span> -->
 						<span class="productDetail--item" v-if="returnpurchase.supplier">{{ returnpurchase.supplier.name}}</span>
 					</div>
 					<div>
+						<label for="" class="font-weight-medium">Business Location: </label>
+						<span class="productDetail--item" v-if=" returnpurchase.branch">{{ returnpurchase.branch.address }}</span>
+					</div>
+					<div class="px-5 pt-5">
 						<table class="tableReturnPurchase">
 							<tr>
 								<th  class="tableReturnPurchase--tr">#</th>
@@ -102,6 +102,8 @@
 		&--tr {
 			border: 1px solid #7c5cc4;
 			padding: 10px 10px 10px 10px;
+			color: white;
+			background-color: rgb(5, 151, 61);
 		}
 
 		&--td {
