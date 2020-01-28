@@ -340,12 +340,12 @@
 								icon: "mdi-id-card",
 								permission: "view sales"
 							},
-							{
-								name: "Coupon List",
-								to: "/sale/coupons",
-								icon: "mdi-ticket-percent",
-								permission: "view sales"
-							},
+							// {
+							// 	name: "Coupon List",
+							// 	to: "/sale/coupons",
+							// 	icon: "mdi-ticket-percent",
+							// 	permission: "view sales"
+							// },
 							{
 								name: "Delivery List",
 								to: "/sale/delivery",
