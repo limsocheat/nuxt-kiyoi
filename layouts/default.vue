@@ -5,10 +5,11 @@
 			<v-toolbar-title>KIYOI</v-toolbar-title>
 			<v-spacer></v-spacer>
 			<v-toolbar-items>
-				<v-btn text dark>
-					<v-icon left>mdi-cart</v-icon>
-					<nuxt-link style="color: #fff" class="pos--link" to="/pos">POS</nuxt-link>
-				</v-btn>
+				<nuxt-link style="color: #fff" class="posLink" to="/sale/pos/create">
+					<v-btn text dark class="posLink--title">
+						<v-icon left>mdi-cart</v-icon>POS
+					</v-btn>
+				</nuxt-link>
 				<v-btn text dark>{{ user.user ? user.user.name : null }}</v-btn>
 				<v-btn text dark @click="logout()">
 					<v-icon>mdi-logout</v-icon>
@@ -306,12 +307,6 @@
 						]
 					},
 					{
-						name: "POS",
-						icon: "mdi-wallet-giftcard",
-						to: "/pos/",
-						permission: "pos"
-					},
-					{
 						name: "Sale",
 						icon: "mdi-cart",
 						permission: "view sales",
@@ -325,6 +320,18 @@
 							{
 								name: "Add Sale",
 								to: "/sale/add_sale",
+								icon: "mdi-plus-circle",
+								permission: "view sales"
+							},
+							{
+								name: "POS List",
+								to: "/sale/pos/",
+								icon: "mdi-plus-circle",
+								permission: "view sales"
+							},
+							{
+								name: "POS",
+								to: "/pos/create",
 								icon: "mdi-plus-circle",
 								permission: "view sales"
 							},
@@ -694,7 +701,9 @@
 		padding-left: 2em;
 	}
 
-	.pos--link {
+	.posLink {
+		display: block;
 		text-decoration: none;
+		padding-top: 7px;
 	}
 </style>
