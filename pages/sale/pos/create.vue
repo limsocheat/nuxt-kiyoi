@@ -183,8 +183,12 @@
 															<v-col cols="3">
 																<v-card>
 																	<div class="card">
-																		<span class="card--title">Total Item</span>
+																		<span class="card--name">Total Item</span>
 																		<span class="card--item">{{ Qty }}</span>
+																	</div>
+																	<div class="card">
+																		<span class="card--name">Total Payable</span>
+																		<span class="card--item">{{ totalPrice }}</span>
 																	</div>
 																</v-card>
 															</v-col>
@@ -193,7 +197,7 @@
 													<v-card-actions>
 														<v-spacer></v-spacer>
 														<v-btn color="green darken-1" text @click="dialog2 = false">Cancel</v-btn>
-														<v-btn color="primary" @click="dialog = false">Add Payment</v-btn>
+														<v-btn color="primary" @click="addPayment">Add Payment</v-btn>
 													</v-card-actions>
 												</v-card>
 											</v-dialog>
@@ -295,20 +299,8 @@ export default {
 
 	methods: {
 
-		payment() {
-			if(this.form.items.length === 0) {
-				this.$notify({ group: 'all', text: 'No Product Added!!', type: 'warn', })
-			} else {
-				// this.$axios.$post(`api/sale`, this.form, {
-				// 	payment_status: 'paid'
-				// })
-				// .then(res => {
-				// 	console.log(res);
-				// })
-				// .catch(err => {
-				// 	console.log(err.response);
-				// })
-			}
+		addPayment() {
+			window.print()
 		},
 
 		fetchBiller() {
@@ -488,9 +480,17 @@ export default {
 	.card {
 		display: flex;
 		flex-direction: column;
-		padding: 10px;
+		padding: 10px 20px 20px 20px;
+		// margin-bottom: 10px;
+
+		&--name {
+			padding-bottom: 10px;
+		}
+
 		&--item {
-			border: 1px solid rgba(0, 0, 0, 0.125);
+			border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+			font-size: 18px;
+			padding-bottom: 10px;
 		}
 	}
 </style>

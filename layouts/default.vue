@@ -7,7 +7,7 @@
 			<v-toolbar-items>
 				<v-btn text dark>
 					<v-icon left>mdi-cart</v-icon>
-					<nuxt-link style="color: #fff" class="pos--link" to="/pos">POS</nuxt-link>
+					<nuxt-link style="color: #fff" class="pos--link" to="/sale/pos/create">POS</nuxt-link>
 				</v-btn>
 				<v-btn text dark>{{ user.user ? user.user.name : null }}</v-btn>
 				<v-btn text dark @click="logout()">
@@ -306,12 +306,6 @@
 						]
 					},
 					{
-						name: "POS",
-						icon: "mdi-wallet-giftcard",
-						to: "/pos/",
-						permission: "pos"
-					},
-					{
 						name: "Sale",
 						icon: "mdi-cart",
 						permission: "view sales",
@@ -325,6 +319,18 @@
 							{
 								name: "Add Sale",
 								to: "/sale/add_sale",
+								icon: "mdi-plus-circle",
+								permission: "view sales"
+							},
+							{
+								name: "POS List",
+								to: "/sale/pos/",
+								icon: "mdi-plus-circle",
+								permission: "view sales"
+							},
+							{
+								name: "POS",
+								to: "/pos/create",
 								icon: "mdi-plus-circle",
 								permission: "view sales"
 							},
