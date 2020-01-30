@@ -287,7 +287,7 @@
 					console.log(item);
 				}
 				Vue.set(item, 'quantity', 1);
-				Vue.set(item, 'discount', 1);
+				Vue.set(item, 'discount', 0);
 			},
 
 			removeItem(index) {

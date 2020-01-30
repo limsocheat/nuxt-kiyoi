@@ -24,26 +24,37 @@
 					<div class="pt-5">
 						<table class="tableReturn">
 							<tr>
-								<th  class="tableReturn--tr">#</th>
-								<th  class="tableReturn--tr">Product</th>
-								<th  class="tableReturn--tr">Qty</th>
-								<th  class="tableReturn--tr">Cost</th>
-								<th  class="tableReturn--tr">SubTotal</th>
+								<th class="tableReturn--tr">#</th>
+								<th class="tableReturn--tr">Product</th>
+								<th class="tableReturn--tr">Qty</th>
+								<th class="tableReturn--tr">Cost (USD)</th>
+								<th class="tableReturn--tr">Discount (%)</th>
+								<th class="tableReturn--tr">SubTotal (USD)</th>
 							</tr>
-							<tr  v-if="returnsale.products" v-for="product in returnsale.products">
-								<td class="tableReturn--td">{{returnsale.id}}</td>
-								<td class="tableReturn--td">{{ product.name }}</td>
-								<td class="tableReturn--td">{{ product.pivot.quantity }}</td>
-								<td class="tableReturn--td">USD {{ product.pivot.unit_price | formatMoney }}</td>
-								<td class="tableReturn--td">USD {{ product.pivot.unit_price * product.pivot.quantity | formatMoney }}</td>
-							</tr>
+							<template v-if="returnsale.products && returnsale.products.length > 0">
+								<tr v-for="i in returnsale.products">
+									<td class="tableReturn--td">{{ i.id }}</td>
+									<td class="tableReturn--td">{{ i.name }}</td>
+									<td class="tableReturn--td">{{ i.pivot.quantity }}</td>
+									<td class="tableReturn--td">{{ i.pivot.unit_price | formatMoney }}</td>
+									<td class="tableReturn--td">{{ i.pivot.discount }}</td>
+									<td class="tableReturn--td">{{ (i.pivot.unit_price - (i.pivot.unit_price * i.pivot.discount / 100)) * i.pivot.quantity | formatMoney }}</td>
+								</tr>
+							</template>
 							<tr>
-								<th class="tableReturn--td" colspan="4">Total</th>
-								<td class="tableReturn--td">USD {{ returnsale.paid | formatMoney }}</td>
+								<th class="tableReturn--td" colspan="2">Total</th>
+								<td class="tableReturn--td">{{ returnsale.total_quantity }}</td>
+								<td class="tableReturn--td">{{ returnsale.total_price | formatMoney }}</td>
+								<td class="tableReturn--td">{{ returnsale.total_discount }}</td>
+								<td class="tableReturn--td">{{ returnsale.sub_total | formatMoney }}</td>
 							</tr>
+							<!-- <tr class="tableReturn--td">
+								<th class="tableReturn--td" colspan="5">Discount</th>
+								<td class="tableReturn--td">{{ returnsale.total_discount }}</td>
+							</tr> -->
 							<tr class="tableReturn--td">
-								<th class="tableReturn--td" colspan="4">Grand Total</th>
-								<td class="tableReturn--td">10</td>
+								<th class="tableReturn--td" colspan="5">Grand Total</th>
+								<td class="tableReturn--td">{{ returnsale.sub_total | formatMoney }}</td>
 							</tr>
 						</table>
 					</div>
@@ -108,6 +119,7 @@
 			padding: 10px 10px 10px 10px;
 			color: white;
 			background-color: rgb(5, 151, 61);
+			// text-align: center;
 		}
 
 		&--td {

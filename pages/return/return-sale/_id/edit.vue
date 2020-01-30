@@ -138,7 +138,7 @@
 					</v-col>
 				</v-row>
 			</div>
-			<v-btn @click.prevent="updateReturn" class="blue mx-5 darken-2 mb-5 grey--text text--lighten-4">
+			<v-btn @click.prevent="updateReturn" class="green darken-2 mx-5 darken-2 mb-5 grey--text text--lighten-4">
 				<v-icon>mdi-check</v-icon>Update
 			</v-btn>
 		</v-card>
@@ -224,7 +224,6 @@
 					.$get(`api/member`)
 					.then(res => {
 						this.members = res.members.data;
-						// this.$set(this.$data, "suppliers", res.suppliers.data);
 						console.log(res);
 					})
 					.catch(err => {
@@ -249,7 +248,6 @@
 					.$get(`/api/product`)
 					.then(res => {
 						this.products = res.products.data;
-						// this.$set(this.$data, "items", res.items.data);
 						console.log(res);
 					})
 					.catch(err => {
@@ -303,13 +301,13 @@
 						member: this.form.member,
 						account: this.form.account,
 						return_des: this.form.return_des,
-						staff_des: this.form.staff_des
+						staff_des: this.form.staff_des,
 					})
 					.then(res => {
-						// // this.returnsale = res.data;
-						// this.$set(this.$data, "returnsale", res.returnsale);
-						// this.$router.push(`/return/return-sale/view`);
+						this.$set(this.$data, "returnsale", res.data);
 						console.log(res);
+						this.$router.push(`/return/return-sale/view`);
+						
 					})
 					.catch(err => {
 						console.log(err.response);

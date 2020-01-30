@@ -254,30 +254,30 @@
 								icon: "mdi-diamond-stone",
 								permission: "view product"
 							},
-							{
-								name: "Print Barcode",
-								to: "/product/print-barcode",
-								icon: "mdi-barcode",
-								permission: "view product"
-							},
-							{
-								name: "Adjustment List",
-								to: "/product/qty_adjustment",
-								icon: "mdi-format-list-bulleted-square",
-								permission: "view product"
-							},
-							{
-								name: "Add Adjustment",
-								to: "/product/add_adjustment",
-								icon: "mdi-playlist-edit",
-								permission: "view product"
-							},
-							{
-								name: "Stock Count",
-								to: "/product/stock-count",
-								icon: "mdi-shield-check",
-								permission: "view product"
-							}
+							// {
+							// 	name: "Print Barcode",
+							// 	to: "/product/print-barcode",
+							// 	icon: "mdi-barcode",
+							// 	permission: "view product"
+							// },
+							// {
+							// 	name: "Adjustment List",
+							// 	to: "/product/qty_adjustment",
+							// 	icon: "mdi-format-list-bulleted-square",
+							// 	permission: "view product"
+							// },
+							// {
+							// 	name: "Add Adjustment",
+							// 	to: "/product/add_adjustment",
+							// 	icon: "mdi-playlist-edit",
+							// 	permission: "view product"
+							// },
+							// {
+							// 	name: "Stock Count",
+							// 	to: "/product/stock-count",
+							// 	icon: "mdi-shield-check",
+							// 	permission: "view product"
+							// }
 						]
 					},
 					{
@@ -328,30 +328,30 @@
 								icon: "mdi-plus-circle",
 								permission: "view sales"
 							},
-							{
-								name: "Import Sale By CSV",
-								to: "/sale/import_sale",
-								icon: "mdi-file-import",
-								permission: "view sales"
-							},
-							{
-								name: "Gift Card List",
-								to: "/sale/gift_card",
-								icon: "mdi-id-card",
-								permission: "view sales"
-							},
+							// {
+							// 	name: "Import Sale By CSV",
+							// 	to: "/sale/import_sale",
+							// 	icon: "mdi-file-import",
+							// 	permission: "view sales"
+							// },
+							// {
+							// 	name: "Gift Card List",
+							// 	to: "/sale/gift_card",
+							// 	icon: "mdi-id-card",
+							// 	permission: "view sales"
+							// },
 							// {
 							// 	name: "Coupon List",
 							// 	to: "/sale/coupons",
 							// 	icon: "mdi-ticket-percent",
 							// 	permission: "view sales"
 							// },
-							{
-								name: "Delivery List",
-								to: "/sale/delivery",
-								icon: "mdi-truck-delivery",
-								permission: "view sales"
-							}
+							// {
+							// 	name: "Delivery List",
+							// 	to: "/sale/delivery",
+							// 	icon: "mdi-truck-delivery",
+							// 	permission: "view sales"
+							// }
 						]
 					},
 					{
