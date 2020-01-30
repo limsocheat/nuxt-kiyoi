@@ -62,7 +62,7 @@
 					</v-col>
 					<v-col sm="12" cols="12">
 						<label class="font-weight-bold" for="image">Product Image</label>
-						<div v-if="url" class="preview--image">
+						<div v-if="url">
 							<img :src="form.image" class="img-responsive" height="300" />
 						</div>
 						<input type="file" @change="uploadImage($event)" class="product--image" />
@@ -74,7 +74,7 @@
 				</v-row>
 			</ValidationObserver>
 			<v-card-actions class="px-5">
-				<v-btn color="primary" @click.prevent="createItem">
+				<v-btn color="primary" @click.prevent="updateItem">
 					<v-icon>mdi-check</v-icon>Create
 				</v-btn>
 			</v-card-actions>
@@ -94,7 +94,7 @@
 		data() {
 			return {
 				form: {
-					code: '',
+					// code: '',
 				},
 				items: [],
 				brands: [],
@@ -123,19 +123,27 @@
 			},
 
 		    fetchData() {
-		    	this.$axios.$get(`api/product`)
+		    	this.$axios.$get(`api/product/` + this.$route.params.id)
 		    	.then(res => {
                     // this.form = res.products.data;
-                    this.$set(this.$data, 'form', res.products.data);
-		    		console.log(res.products.data);
+                    this.$set(this.$data, 'form', res.product);
+		    		console.log(res);
                 })
                 .catch(err => {
                     console.log(err.response);
                 })
 		    },
 
-		    createItem() {
-		    	this.$axios.$post(`api/product`, this.form)
+		    updateItem() {
+		    	this.$axios.$patch(`api/product/` + this.form.id, {
+					name: this.form.name,
+					code: this.form.code,
+					barcode: this.form.barcode,
+					unit: this.form.unit,
+					price: this.form.price,
+					brand: this.form.brand,
+					image: this.form.image,
+				})
 		    	.then(res => {
 		    		this.items = res.data;
 		    		this.$toast.info('Succeessfully created');
@@ -172,7 +180,7 @@
 		width: 100%;
 	}
 
-	.preview--image {
-		text-align: center;
+	.img-responsive {
+		border: 1px solid seagreen;
 	}
 </style> 
