@@ -9,7 +9,7 @@
 				<p class="caption font-italic pt-5">The field labels marked with * are required input fields.</p>
 				<v-row>
 					<v-col md="4" cols="12">
-						<label class="font-weight-bold" for="address">location *</label>
+						<label class="font-weight-bold" for="address">location*</label>
 						<v-autocomplete 
 							item-value="address" 
 							item-text="address"  
@@ -23,7 +23,7 @@
 						></v-autocomplete >
 					</v-col>
 					<v-col md="4" cols="12">
-						<label class="font-weight-bold" for="name">Customer* </label>
+						<label class="font-weight-bold" for="name">Customer*</label>
 						<v-autocomplete 
 							item-value="name" 
 							item-text="name"  

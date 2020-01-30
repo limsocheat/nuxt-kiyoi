@@ -31,14 +31,14 @@
 								<th class="tableReturn--tr">Discount (%)</th>
 								<th class="tableReturn--tr">SubTotal (USD)</th>
 							</tr>
-							<template v-if="returnsale.products && returnsale.products.length > 0">
-								<tr v-for="i in returnsale.products">
-									<td class="tableReturn--td">{{ i.id }}</td>
-									<td class="tableReturn--td">{{ i.name }}</td>
-									<td class="tableReturn--td">{{ i.pivot.quantity }}</td>
-									<td class="tableReturn--td">{{ i.pivot.unit_price | formatMoney }}</td>
-									<td class="tableReturn--td">{{ i.pivot.discount }}</td>
-									<td class="tableReturn--td">{{ (i.pivot.unit_price - (i.pivot.unit_price * i.pivot.discount / 100)) * i.pivot.quantity | formatMoney }}</td>
+							<template v-if="returnsale.products">
+								<tr v-for="products in returnsale.products">
+									<td class="tableReturn--td">{{ products.id }}</td>
+									<td class="tableReturn--td">{{ products.name }}</td>
+									<td class="tableReturn--td">{{ products.pivot.quantity }}</td>
+									<td class="tableReturn--td">{{ products.pivot.unit_price | formatMoney }}</td>
+									<td class="tableReturn--td">{{ products.pivot.discount }}</td>
+									<td class="tableReturn--td">{{ (products.pivot.unit_price - (products.pivot.unit_price * products.pivot.discount / 100)) * products.pivot.quantity | formatMoney }}</td>
 								</tr>
 							</template>
 							<tr>
@@ -60,7 +60,7 @@
 					</div>
 				</div>
 			</div>
-			<v-btn @click="printProduct" class="mx-5 my-5 blue accent-3 white--text">
+			<v-btn @click="printProduct" class="mx-5 my-5 green darken-2 white--text">
 					<v-icon left>mdi-printer</v-icon>
 					Print
 				</v-btn>

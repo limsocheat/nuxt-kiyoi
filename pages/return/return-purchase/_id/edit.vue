@@ -127,18 +127,18 @@
 					<v-col md="6" cols="12">
 						<div class="d-flex flex-column mb-5">
 							<label for class="font-weight-bold">Return Note</label>
-							<textarea cols="30" rows="7" class="textarea" v-model="form.return_des"></textarea>
+							<textarea cols="30" rows="5" class="textarea" v-model="form.return_des"></textarea>
 						</div>
 					</v-col>
 					<v-col md="6" cols="12">
 						<div class="d-flex flex-column mb-5">
 							<label for class="font-weight-bold">Staff Note</label>
-							<textarea cols="30" rows="7" class="textarea" v-model="form.staff_des"></textarea>
+							<textarea cols="30" rows="5" class="textarea" v-model="form.staff_des"></textarea>
 						</div>
 					</v-col>
 				</v-row>
 			</div>
-			<v-btn @click.prevent="updateReturn" class="blue mx-5 darken-2 mb-5 grey--text text--lighten-4">
+			<v-btn @click.prevent="updateReturn" class="green darken-2 mx-5 darken-2 mb-5 grey--text text--lighten-4">
 				<v-icon>mdi-check</v-icon>Update
 			</v-btn>
 		</v-card>
@@ -224,7 +224,6 @@
 					.$get(`api/supplier`)
 					.then(res => {
 						this.suppliers = res.suppliers.data;
-						// this.$set(this.$data, "suppliers", res.suppliers.data);
 						console.log(res);
 					})
 					.catch(err => {
@@ -249,7 +248,6 @@
 					.$get(`/api/product`)
 					.then(res => {
 						this.products = res.products.data;
-						// this.$set(this.$data, "items", res.items.data);
 						console.log(res);
 					})
 					.catch(err => {

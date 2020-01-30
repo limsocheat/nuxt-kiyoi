@@ -145,11 +145,6 @@ export default {
 					
 				},
 			],
-			// menus: [
-			// 	{title: 'View', icon: 'mdi-eye', action: this.view},
-			// 	{title: 'Edit', icon: 'mdi-square-edit-outline', action: this.edit},
-			// 	{title: 'Delete', icon: 'mdi-trash-can-outline', action: this.deleteItem},
-			// ],
 		}
 	},
 
@@ -194,23 +189,23 @@ export default {
 			const URL = 'http://127.0.0.1:3000/product/category'
 
 			let data = new FormData();
-		    data.append('name', 'my-csv');
-		    data.append('file', event.target.files[0]); 
+				data.append('name', 'my-csv');
+				data.append('file', event.target.files[0]); 
 
 		    let config = {
-		      header : {
-		        'Content-Type' : 'csv'
-		      }
+				header : {
+					'Content-Type' : 'csv'
+				}
 		    }
 
 		    this.$axios.$put(
-		      URL, 
-		      data,
-		      config
+				URL, 
+				data,
+				config
 		    ).then(
-		      response => {
-		        console.log('Csv upload response > ', response)
-		      }
+				response => {
+					console.log('Csv upload response > ', response)
+				}
 		    )
 		}
 	}
