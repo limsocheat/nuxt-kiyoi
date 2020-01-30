@@ -5,10 +5,11 @@
 			<v-toolbar-title>KIYOI</v-toolbar-title>
 			<v-spacer></v-spacer>
 			<v-toolbar-items>
-				<v-btn text dark>
-					<v-icon left>mdi-cart</v-icon>
-					<nuxt-link style="color: #fff" class="pos--link" to="/pos">POS</nuxt-link>
-				</v-btn>
+				<nuxt-link style="color: #fff" class="posLink" to="/sale/pos/create">
+					<v-btn text dark class="posLink--title">
+						<v-icon left>mdi-cart</v-icon>POS
+					</v-btn>
+				</nuxt-link>
 				<v-btn text dark>{{ user.user ? user.user.name : null }}</v-btn>
 				<v-btn text dark @click="logout()">
 					<v-icon>mdi-logout</v-icon>
@@ -306,12 +307,6 @@
 						]
 					},
 					{
-						name: "POS",
-						icon: "mdi-wallet-giftcard",
-						to: "/pos/",
-						permission: "pos"
-					},
-					{
 						name: "Sale",
 						icon: "mdi-cart",
 						permission: "view sales",
@@ -328,6 +323,7 @@
 								icon: "mdi-plus-circle",
 								permission: "view sales"
 							},
+<<<<<<< HEAD
 							// {
 							// 	name: "Import Sale By CSV",
 							// 	to: "/sale/import_sale",
@@ -340,6 +336,32 @@
 							// 	icon: "mdi-id-card",
 							// 	permission: "view sales"
 							// },
+=======
+							{
+								name: "POS List",
+								to: "/sale/pos/",
+								icon: "mdi-plus-circle",
+								permission: "view sales"
+							},
+							{
+								name: "POS",
+								to: "/pos/create",
+								icon: "mdi-plus-circle",
+								permission: "view sales"
+							},
+							{
+								name: "Import Sale By CSV",
+								to: "/sale/import_sale",
+								icon: "mdi-file-import",
+								permission: "view sales"
+							},
+							{
+								name: "Gift Card List",
+								to: "/sale/gift_card",
+								icon: "mdi-id-card",
+								permission: "view sales"
+							},
+>>>>>>> 7e2c7fd3632551b1e1239a27ebb900cd9d917b16
 							// {
 							// 	name: "Coupon List",
 							// 	to: "/sale/coupons",
@@ -694,7 +716,9 @@
 		padding-left: 2em;
 	}
 
-	.pos--link {
+	.posLink {
+		display: block;
 		text-decoration: none;
+		padding-top: 7px;
 	}
 </style>
