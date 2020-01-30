@@ -350,6 +350,18 @@
 								permission: "view sales"
 							},
 							{
+								name: "POS List",
+								to: "/sale/pos/",
+								icon: "mdi-plus-circle",
+								permission: "view sales"
+							},
+							{
+								name: "POS",
+								to: "/pos/create",
+								icon: "mdi-plus-circle",
+								permission: "view sales"
+							},
+							{
 								name: "Import Sale By CSV",
 								to: "/sale/import_sale",
 								icon: "mdi-file-import",
