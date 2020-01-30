@@ -323,7 +323,7 @@
 								icon: "mdi-plus-circle",
 								permission: "view sales"
 							},
-<<<<<<< HEAD
+
 							// {
 							// 	name: "Import Sale By CSV",
 							// 	to: "/sale/import_sale",
@@ -336,7 +336,6 @@
 							// 	icon: "mdi-id-card",
 							// 	permission: "view sales"
 							// },
-=======
 							{
 								name: "POS List",
 								to: "/sale/pos/",
@@ -373,7 +372,6 @@
 								icon: "mdi-id-card",
 								permission: "view sales"
 							},
->>>>>>> 7e2c7fd3632551b1e1239a27ebb900cd9d917b16
 							// {
 							// 	name: "Coupon List",
 							// 	to: "/sale/coupons",

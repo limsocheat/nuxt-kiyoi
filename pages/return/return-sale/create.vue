@@ -151,7 +151,7 @@
 			</div>
 			<v-btn 
 				@click.prevent="createReturnSale"
-				class="blue mx-5 darken-2 mb-5 grey--text text--lighten-4"
+				class="green darken-2 mx-5 darken-2 mb-5 grey--text text--lighten-4"
 				>
 				<v-icon>mdi-check</v-icon>Submit
 			</v-btn>
