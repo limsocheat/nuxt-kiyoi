@@ -15,17 +15,17 @@
 					<v-row class="px-5">
 						<v-col cols="12" sm="6">
 							<label for>Category</label>
-							<v-select
+							<v-autocomplete
 								solo
 								outlined
 								dense
 								:items="category"
-								v-model="form.category"
+								v-model="form.expense_category"
 								item-text="name"
+								item-value="name"
 								label="Please Select"
-							>
-								<template v-slot:item="{ item }">{{ item.name }}</template>
-							</v-select>
+								return-object
+							></v-autocomplete>
 						</v-col>
 						<v-col cols="12" sm="6">
 							<label for>Amount</label>
@@ -33,17 +33,19 @@
 						</v-col>
 						<v-col cols="12" sm="12">
 							<label for>Expense For</label>
-							<v-select
+							<v-autocomplete
 								solo
 								outlined
 								dense
 								label="Please Select"
 								:items="users"
 								item-text="name"
+								item-value="name"
+								return-object
 								v-model="form.expense_for"
 							>
 								<template v-slot:item="{ item }">{{ item.name }}</template>
-							</v-select>
+							</v-autocomplete>
 						</v-col>
 						<v-col cols="12" sm="12">
 							<label for>Note</label>
@@ -60,7 +62,7 @@
 		</div>
 		<div class="d-flex justify-space-between">
 			<div>
-				<v-text-field label="Search" solo outlined dense></v-text-field>
+				<v-text-field label="Search" v-model="search" solo outlined dense></v-text-field>
 			</div>
 			<div>
 				<v-btn class="red darken-1">PDF</v-btn>
@@ -79,9 +81,9 @@
 					<tr>
 						<td>{{ item.created_at }}</td>
 						<td>{{ item.reference_no }}</td>
-						<td>{{ item.category }}</td>
+						<td>{{ item.expense_category.name }}</td>
 						<td>USD {{ item.amount | formatNumber }}</td>
-						<td>{{ item.expense_for }}</td>
+						<td>{{ item.user.name }}</td>
 						<td>{{ item.description }}</td>
 						<td>
 							<v-btn icon @click="editItem(item)" color="primary" outlined>
@@ -164,6 +166,14 @@
 			};
 		},
 
+		watch: {
+			search: {
+				handler() {
+					this.fetchData();
+				}
+			}
+		},
+
 		methods: {
 			randomNumber() {
 				return (this.form.code = Math.floor(
@@ -197,11 +207,11 @@
 
 			fetchData() {
 				this.$axios
-					.$get(`api/expense`)
+					.$get(`api/expense?search=${this.search}`)
 					.then(res => {
 						this.items = res.data;
 						this.total = res.meta.total;
-						console.log(res);
+						console.log(res.data);
 					})
 					.catch(err => {
 						console.log(err.response);
@@ -239,7 +249,7 @@
 					this.$axios
 						.$patch(`/api/expense/` + this.form.id, {
 							amount: this.form.amount,
-							category: this.form.category,
+							expense_category: this.form.expense_category,
 							expense_for: this.form.expense_for,
 							description: this.form.description
 						})
