@@ -134,12 +134,12 @@
 										<v-col cols="12">
 											<v-dialog v-model="dialog2" max-width="900">
 												<template v-slot:activator="{ on }">
-													<button @click="payment" class="posPayment-cash" v-on="on">
+													<button @click="openDialog" class="posPayment-cash" v-on="on">
 														<v-icon dark>mdi-check</v-icon>Payment
 													</button>
 												</template>
 												<v-card>
-													<v-card-title class="headline">Payment</v-card-title>
+													<v-card-title class="headline green darken-1 white--text">Payment</v-card-title>
 													<v-divider></v-divider>
 													<v-card-text>
 														<v-row>
@@ -188,7 +188,7 @@
 																	</div>
 																	<div class="card">
 																		<span class="card--name">Total Payable</span>
-																		<span class="card--item">{{ totalPrice }}</span>
+																		<span class="card--item">$ {{ totalPrice | formatMoney }}</span>
 																	</div>
 																</v-card>
 															</v-col>
@@ -300,7 +300,18 @@ export default {
 	methods: {
 
 		addPayment() {
-			window.print()
+		},
+
+		openDialog() {
+			if(this.form.items.length === 0) {
+				this.$notify({
+					group: 'all',
+					text: 'There is no Product in Cart!!!',
+					type: 'warning',
+				});
+			}
+
+			this.dialog2 = false;
 		},
 
 		fetchBiller() {
@@ -317,8 +328,12 @@ export default {
 		fetchProduct() {
 			this.$axios.$get(`api/product`)
 			.then(res => {
-				// this.products = res.products.data;
 				this.$set(this.$data, 'products', res.products.data);
+				
+				// for(let i in this.form.item) {
+				// 	console.log(i);
+				// }
+
 				console.log(res);
 			})
 			.catch(err => {
@@ -416,8 +431,8 @@ export default {
 	}
 
 	.pos-product {
-		min-height: 60vh;
-		max-height: 60vh;
+		min-height: 40vh;
+		max-height: 40vh;
 		overflow-y: auto;
 		overflow-x: hidden;
 	}
@@ -461,6 +476,7 @@ export default {
 		}
 
 		&.warn {
+			border-radius: 5px;
 			background: #dba91f;
 			border-left-color: #f48a06;
 		}
