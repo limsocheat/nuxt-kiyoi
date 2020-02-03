@@ -2,10 +2,10 @@
 	<v-app class="mx-5 my-5">
 		<div class="d-flex">
 			<div class="pb-5 pr-3" v-permission="'return sales'">
-				<nuxt-link class="nuxt--link" to="/return/return-purchase/create">
+				<nuxt-link class="nuxt--link" to="/return/return-sale/create">
 					<v-btn class="green darken-2" dark>
 						<v-icon left>mdi-plus-circle</v-icon>
-						Add Return Purchase
+						Add Return Sale
 					</v-btn>
 				</nuxt-link>
 			</div>
@@ -34,19 +34,19 @@
 				:server-items-length="total"
 			>
 				<template v-slot:item="{ item }">
-					<tr class="viewReturnPurchase">
-						<td @click="viewReturnPurchase(item.id)">{{ item.created_at}}</td>
-						<td @click="viewReturnPurchase(item.id)">{{ item.reference_no }}</td>
-						<td @click="viewReturnPurchase(item.id)">{{ item.branch.address }}</td>
-						<td @click="viewReturnPurchase(item.id)">{{ item.supplier.name }}</td>
-						<td @click="viewReturnPurchase(item.id)">{{ item.account.name }}</td>
-						<td @click="viewReturnPurchase(item.id)">USD  {{ item.total | formatNumber}}</td>
+					<tr class="viewReturnSale">
+						<td @click="viewReturnSale(item.id)">{{ item.created_at }}</td>
+						<td @click="viewReturnSale(item.id)">{{ item.reference_no }}</td>
+						<td @click="viewReturnSale(item.id)">{{ item.branch.address }}</td>
+						<td @click="viewReturnSale(item.id)">{{ item.member.name }}</td>
+						<td @click="viewReturnSale(item.id)">{{ item.account.name }}</td>
+						<td @click="viewReturnSale(item.id)">USD  {{ item.total | formatNumber}}</td>
 						
 						<td class="text-center">
 							<div class="row"> 
 								<v-tooltip top v-permission="'view sales'">
 									<template v-slot:activator="{ on }">
-										<v-btn small icon @click="viewReturnPurchase(item.id)" color="teal" outlined v-on="on">
+										<v-btn small icon @click="viewReturnSale(item.id)" color="teal" outlined v-on="on">
 											<v-icon small>mdi-eye</v-icon>
 										</v-btn>
 									</template>
@@ -87,48 +87,44 @@
 		return numeral(value).format("0,0.00");
 	});
 	
-	
 
 export default {
 
 	created() {
-		this.fetchData();
+		this.fetchReturn();
 	},
 
 	watch: {
 		options: {
 			handler() {
-				this.fetchData();
+				this.fetchReturn();
 			}
 		}
 	},
 
 	data() {
 		return {
-			date: new Date().toISOString(),
 			items: [],
-			search: "",
 			form: {},
 			total: 0,
 			options: {},
 			itemsPerPage: 5,
 			editedIndex: -1,
-			created: true,
-			dialog: false,
 			headers: [{
 					text: 'Date',
 					sortable: false,
-			
+					
 				}, {
 					text: 'Reference',
 					sortable: false,
-				
+					value: 'reference_no'
+					
 				}, {
 					text: 'Warehouse',
 					sortable: false,
 					
 				}, {
-					text: 'Supplier',
+					text: 'Customer',
 					sortable: false,
 					
 				}, {
@@ -150,10 +146,10 @@ export default {
 
 	methods: {
 
-		fetchData() {
-			this.$axios.$get(`/api/return-purchase/?temsPerPage=${this.options.itemsPerPage}&page=${this.options.page}`)
+		fetchReturn() {
+			this.$axios.$get(`/api/return-sale?temsPerPage=${this.options.itemsPerPage}&page=${this.options.page}`)
 			.then(res => {
-				this.items = res.returnpurchase.data;
+				this.items = res.returnsale.data;
 				this.total = res.total;
 				console.log(res)
 			})
@@ -162,52 +158,26 @@ export default {
 			})
 		},
 
-		viewReturnPurchase(id) {
-      		this.$router.push(`/return/return-purchase/${id}`);
-      	},
+		viewReturnSale(id){
+			this.$router.push(`/return/return-sale/${id}`)
+		},
 
 		editItem(id) {
-			this.$router.push(`/return/return-purchase/${id}/edit`);
+			this.$router.push(`/return/return-sale/${id}/edit`);
 		},
 
 		deleteItem(id) {
-      		if(confirm('Are you sure to Delete it?')) {
-      			this.$axios.$delete(`api/return-purchase/` + id)
-      			.then(res => {
-      				this.fetchData();
-						  	console.log(res);
-						   	this.$toast("Deleted Successfully");
-      			})
-      			.catch(err => {
+			if(confirm('Do you want to delete it?')) {
+				this.$axios.$delete(`api/return-sale/` + id)
+				.then(res => {
+					this.fetchReturn();
+					this.$toast.info('Succeessfully Delete');
+				})
+				.catch(err => {
 					console.log(err.response);
-      			})
-      		}
+				})
+			}
       	},
-		
-
-		uploadCsv(image) {
-			const URL = 'http://127.0.0.1:3000/product/category'
-
-			let data = new FormData();
-				data.append('name', 'my-csv');
-				data.append('file', event.target.files[0]); 
-
-		    let config = {
-				header : {
-					'Content-Type' : 'csv'
-				}
-		    }
-
-		    this.$axios.$put(
-				URL, 
-				data,
-				config
-		    ).then(
-				response => {
-					console.log('Csv upload response > ', response)
-				}
-		    )
-		}
 	}
 }
 
@@ -229,7 +199,8 @@ export default {
 	border-radius: 5px;
 	border: 1px solid #616161;
 }
-.viewReturnPurchase{
+.viewReturnSale{
 	cursor: pointer;
 }
+
 </style>

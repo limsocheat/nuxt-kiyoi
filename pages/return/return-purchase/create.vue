@@ -158,7 +158,7 @@
 				</v-row>
 			</div>
 			<v-btn 
-				class="blue mx-5 darken-2 mb-5 grey--text text--lighten-4"
+				class="green darken-2 mx-5 darken-2 mb-5 grey--text text--lighten-4"
 				@click.prevent="createReturnPurchase"
 				dark
 			>
@@ -176,6 +176,7 @@
 	Vue.filter("formatMoney", function(value) {
 		return numeral(value).format("0,0.00");
 	});
+	
 
 	export default {
 		name: "createReturnPurchase",
@@ -184,7 +185,6 @@
 			this.fetchSupplier(),
 			this.fetchAccount(),
 			this.fetchProduct()
-			// this.fetchReturnPurchase()
 		},
 
 		data() {
@@ -203,7 +203,7 @@
 		computed: {
 			calculateQty() {
 				return this.form.items.reduce((total, item) => {
-					return total + item.quantity;
+					return total + Number(item.quantity);
 				}, 0);
 			},
 
@@ -273,7 +273,7 @@
 			createReturnPurchase() {
 		    	this.$axios.$post(`api/return-purchase`, this.form)
 				.then(res => {
-					this.$set(this.$data, "return_purchase" , res.data);
+					this.$set(this.$data, "returnpurchases" , res.data);
 				this.$router.push(`/return/return-purchase/view`);
 					console.log(res);
 				})
@@ -290,9 +290,8 @@
 					this.form.items.push(item);
 					console.log(item);
 				}
-
-				item.quantity = 1;
-				item.discount = 1;
+				Vue.set(item, 'quantity', 1);
+				Vue.set(item, 'discount', 0);
 			},
 
 			removeItem(index) {
