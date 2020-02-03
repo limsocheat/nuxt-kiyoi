@@ -78,7 +78,7 @@
 		</div>
 		<div class="d-flex justify-space-between">
 			<div>
-				<v-text-field label="Search" solo outlined dense></v-text-field>
+				<v-text-field label="Search" v-model="search" solo outlined dense></v-text-field>
 			</div>
 			<div>
 				<v-btn class="red darken-1">PDF</v-btn>
@@ -153,6 +153,14 @@
 			};
 		},
 
+		watch: {
+			search: {
+				handler() {
+					this.fetchData();
+				}
+			}
+		},
+
 		methods: {
 			randomNumber() {
 				return (this.form.code = Math.floor(
@@ -162,7 +170,7 @@
 
 			fetchData() {
 				this.$axios
-					.$get(`api/expense-category`)
+					.$get(`api/expense-category?search=${this.search}`)
 					.then(res => {
 						this.items = res;
 						console.log(res);
