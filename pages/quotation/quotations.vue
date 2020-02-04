@@ -1,17 +1,24 @@
 <template>
 	<v-app class="mx-5 my-5">
 		<div class="d-flex">
-			<div class="pb-5 pr-3">
-				<nuxt-link to="/quotation/add_quotation" class="nuxt--link grey--text text--lighten-4">
-					<v-btn class="teal darken-1" dark v-permission="'add quotation'">
-						<v-icon left>mdi-plus-circle</v-icon>Add Quotation
+			<div class="pb-5 pr-3" v-permission="'view quotation'">
+				<nuxt-link class="nuxt--link" to="/quotation/add">
+					<v-btn class="green darken-2" dark>
+						<v-icon left>mdi-plus-circle</v-icon>
+						Add Quotation
 					</v-btn>
 				</nuxt-link>
 			</div>
 		</div>
 		<div class="d-flex justify-space-between">
 			<div>
-				<v-text-field label="Search" solo outlined dense></v-text-field>
+				<v-text-field 
+					label="Search" 
+					solo 
+					outlined 
+					dense
+					v-model="search"
+				></v-text-field>
 			</div>
 			<div>
 				<v-btn class="red darken-1">PDF</v-btn>
@@ -28,60 +35,46 @@
 				:server-items-length="total"
 			>
 				<template v-slot:item="{ item }">
-					<tr class="member--tr">
-						<!-- <td @click="gotoMember(item.id)">{{ item.date }}</td>
-						<td @click="gotoMember(item.id)">{{ item.reference }}</td>
-						<td @click="gotoMember(item.id)">{{ item.biller }}</td>
-						<td @click="gotoMember(item.id)">{{ item.members }}</td>
-						<td @click="gotoMember(item.id)">{{ item.suppliers }}</td>
-						<td @click="gotoMember(item.id)">
-							<span :class="item.quotation_status === 'Present' ? 'present' : 'absent'">
-								{{ item.quotation_status }}
+					<tr class="viewQuotation">
+						<td @click="viewQuotation(item.id)">{{ item.created_at }}</td>
+						<td @click="viewQuotation(item.id)">{{ item.reference_no }}</td>
+						<td @click="viewQuotation(item.id)">{{ item.biller.name }}</td>
+						<td @click="viewQuotation(item.id)">{{ item.member.name}}</td>
+						<td @click="viewQuotation(item.id)">{{ item.supplier.name}}</td>
+						<td @click="viewQuotation(item.id)">
+							<span :class="item.status === 'Pending' ? 'pending' : 'sent'">
+								{{ item.status }}
 							</span>
 						</td>
-						<td @click="gotoMember(item.id)">USD  {{ item.total | formatNumber}}</td> -->
-						<td >{{ item.date }}</td>
-						<td >{{ item.reference }}</td>
-						<td >{{ item.biller }}</td>
-						<td >{{ item.members }}</td>
-						<td >{{ item.suppliers }}</td>
-						<td >
-							<span :class="item.quotation_status === 'Sent' ? 'sent' : 'pending'">
-								{{ item.quotation_status }}
-							</span>
-						</td>
-						<td >USD  {{ item.total | formatNumber}}</td>
+						<td @click="viewQuotation(item.id)">USD  {{ item.total | formatNumber}}</td>
 						
-						<td>
-							<v-menu>
-								<template v-slot:activator="{ on: menu }">
-									<v-tooltip bottom>
-										<template v-slot:activator="{ on: tooltip }">
-											<v-btn
-											color="primary"
-											dark
-											v-on="{ ...tooltip, ...menu }"
-											smallF
-											>Action</v-btn>
-										</template>
-										<span>Action</span>
-									</v-tooltip>
-								</template>
-								<v-list>
-									<v-list-item
-										v-for="(menu, index) in menus"
-										:key="index"
-										dense
-										@click="menu.action(item.id)"
-										class="cyan darken-3"
-									>
-										<v-list-item-title class="white--text">
-											<v-icon left dark>{{menu.icon}}</v-icon>
-											{{ menu.title }}
-										</v-list-item-title>
-									</v-list-item>
-								</v-list>
-						    </v-menu>	
+						<td class="text-center">
+							<div class="row"> 
+								<v-tooltip top v-permission="'view sales'">
+									<template v-slot:activator="{ on }">
+										<v-btn small icon @click="viewQuotation(item.id)" color="teal" outlined v-on="on">
+											<v-icon small>mdi-eye</v-icon>
+										</v-btn>
+									</template>
+									<span>View</span>
+								</v-tooltip>
+								<v-tooltip top v-permission="'edit sales'">
+									<template v-slot:activator="{ on }">
+										<v-btn small icon @click="editItem(item.id)" color="primary" outlined v-on="on">
+											<v-icon small>mdi-pencil</v-icon>
+										</v-btn>
+									</template>
+									<span>Edit</span>
+								</v-tooltip>
+								<v-tooltip top v-permission="'delete sales'">
+									<template v-slot:activator="{ on }">
+										<v-btn small icon @click="deleteItem(item.id)" color="red" outlined v-on="on">
+											<v-icon small>mdi-delete</v-icon>
+										</v-btn>
+									</template>
+									<span>Delete</span>
+								</v-tooltip>
+							</div>
 						</td>
 					</tr>
 				</template>
@@ -102,7 +95,15 @@
 
 	export default {
 		created() {
-			this.getItems();
+			this.fetchData();
+		},
+		
+		watch: {
+			options: {
+				handler() {
+					this.fetchData();
+				}
+			}
 		},
 
 		data() {
@@ -120,71 +121,74 @@
 					{
 						text: "Date",
 						sortable: false,
-						value: "created_at"
+						// value: "created_at"
 					},
 					{
 						text: "Reference",
 						sortable: false,
-						value: "reference"
+						// value: "reference_no"
 					},
 					{
 						text: "Biller",
 						sortable: false,
-						value: "biller"
+						// value: "biller"
 					},
 					{
 						text: "Customer",
 						sortable: false,
-						value: "members"
+						// value: "members"
 					},
 					{
 						text: "Supplier",
 						sortable: false,
-						value: "suppliers"
+						// value: "suppliers"
 					},
 					{
-						text: "Quotation Status",
+						text: "Status",
 						sortable: false,
-						value: "quotation_status"
+						// value: "status"
 					},
 					{
 						text: "Grand Total",
 						sortable: false,
-						value: "total"
+						// value: "total"
 					},
 					{
-						text: "Actions",
+						text: "Action",
 						sortable: false,
-						value:"action"
+						// value:"action"
 					}
-				],
-				menus: [
-					{title: 'View', icon: 'mdi-eye', action: this.view},
-					{title: 'Edit', icon: 'mdi-square-edit-outline', action: this.edit},
-					{title: 'Create Sale', icon: 'mdi-plus-circle', action: this.createSale},
-					{title: 'Create Purchase',icon: 'mdi-cart-outline', action: this.createPurchase},
-					{title: 'Delete', icon: 'mdi-trash-can-outline', action: this.deleteItem},
 				],
 			};
 		},
 
 		methods: {
-			getItems() {
-				this.$axios.$get("/api/quotation").then(response => {
-					this.items = response.data;
-					this.total = response.total;
-					console.log(response);
-				});
+			fetchData() {
+				this.$axios.$get(`/api/quotation/?temsPerPage=${this.options.itemsPerPage}&page=${this.options.page}`)
+				.then(res => {
+					this.items = res.quotation.data;
+					this.total = res.total;
+					console.log(res);
+				})
+				.catch(err => {
+					console.log(err);
+				})
 			},
-			edit(id) {
-				this.$router.push(`/quotation/${id}/edit_quotation`);
+			viewQuotation(id) {
+      		this.$router.push(`/quotation/${id}`);
 			},
+
+			editItem(id) {
+				this.$router.push(`/quotation/${id}/edit`);
+			},
+
 			deleteItem(id) {
-				if(confirm('Are u sure to delete it?')) {
-					this.$axios.$delete('/api/quotation/' + id)
+				if(confirm('Do you want to Delete it?')) {
+					this.$axios.$delete(`api/quotation/` + id)
 					.then(res => {
-						this.getItems();
-						this.$toast.info('Succeessfully Delete');
+						this.fetchData();
+								console.log(res);
+								this.$toast("Deleted Successfully");
 					})
 					.catch(err => {
 						console.log(err.response);
@@ -230,7 +234,7 @@
 		border-radius: 3px;
 		color: #fff;
 	}
-	.member--tr {
-	cursor: pointer;
-}
+	.viewQuotation {
+		cursor: pointer;
+	}
 </style>
