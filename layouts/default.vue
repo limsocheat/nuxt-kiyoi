@@ -5,7 +5,7 @@
 			<v-toolbar-title>KIYOI</v-toolbar-title>
 			<v-spacer></v-spacer>
 			<v-toolbar-items>
-				<nuxt-link style="color: #fff" class="posLink" to="/sale/pos/create">
+				<nuxt-link v-permission="'pos'" style="color: #fff" class="posLink" to="/sale/pos/create">
 					<v-btn text dark class="posLink--title">
 						<v-icon left>mdi-cart</v-icon>POS
 					</v-btn>
@@ -31,44 +31,40 @@
 
 			<v-list dense rounded>
 				<div v-for="(item, i) in menus" :key="i" router exact>
-					<template v-if="!item.children">
-						<v-list-item :key="i" :to="item.to">
-							<v-list-item-content>
-								<v-list-item-title>
-									<v-icon left>{{ item.icon }}</v-icon>
-									{{ item.name }}
-								</v-list-item-title>
-							</v-list-item-content>
-						</v-list-item>
-					</template>
-					<template v-else>
-						<v-list-group :key="i.name" :value="false">
-							<template v-slot:activator>
+					<div v-if="$laravel.hasPermission(item.permission)">
+						<template v-if="!item.children">
+							<v-list-item :key="i" :to="item.to">
 								<v-list-item-content>
 									<v-list-item-title>
 										<v-icon left>{{ item.icon }}</v-icon>
 										{{ item.name }}
 									</v-list-item-title>
 								</v-list-item-content>
-							</template>
-							<template v-for="(subMenu, i) in item.children">
-								<v-list-item
-									:to="subMenu.to"
-									:key="i"
-									exact
-									class="subMenu"
-									v-if="$laravel.hasPermission(subMenu.permission)"
-								>
+							</v-list-item>
+						</template>
+						<template v-else>
+							<v-list-group :key="i.name" :value="false">
+								<template v-slot:activator>
 									<v-list-item-content>
 										<v-list-item-title>
-											<v-icon left>{{ subMenu.icon }}</v-icon>
-											{{ subMenu.name }}
+											<v-icon left>{{ item.icon }}</v-icon>
+											{{ item.name }}
 										</v-list-item-title>
 									</v-list-item-content>
-								</v-list-item>
-							</template>
-						</v-list-group>
-					</template>
+								</template>
+								<template v-for="(subMenu, i) in item.children">
+									<v-list-item :to="subMenu.to" :key="i" exact class="subMenu">
+										<v-list-item-content>
+											<v-list-item-title>
+												<v-icon left>{{ subMenu.icon }}</v-icon>
+												{{ subMenu.name }}
+											</v-list-item-title>
+										</v-list-item-content>
+									</v-list-item>
+								</template>
+							</v-list-group>
+						</template>
+					</div>
 				</div>
 			</v-list>
 		</v-navigation-drawer>
@@ -89,7 +85,7 @@
 						name: "Dashboard",
 						icon: "mdi-view-dashboard",
 						to: "/",
-						permission: "view users|add users"
+						permission: "view users"
 					},
 					// {
 					// 	name: "Website Control",
@@ -254,7 +250,7 @@
 								to: "/product/brand",
 								icon: "mdi-diamond-stone",
 								permission: "view product"
-							},
+							}
 							// {
 							// 	name: "Print Barcode",
 							// 	to: "/product/print-barcode",
@@ -365,13 +361,13 @@
 								to: "/sale/import_sale",
 								icon: "mdi-file-import",
 								permission: "view sales"
-							},
-							{
-								name: "Gift Card List",
-								to: "/sale/gift_card",
-								icon: "mdi-id-card",
-								permission: "view sales"
-							},
+							}
+							// {
+							// 	name: "Gift Card List",
+							// 	to: "/sale/gift_card",
+							// 	icon: "mdi-id-card",
+							// 	permission: "view sales"
+							// },
 							// {
 							// 	name: "Coupon List",
 							// 	to: "/sale/coupons",
@@ -470,11 +466,12 @@
 					{
 						name: "Return",
 						icon: "mdi-package-down",
-						permission: "return purchases",
+						permission: "return sales",
 						children: [
 							{
 								name: "Sale",
 								icon: "mdi-view-list",
+								permission: "return sales",
 								to: "/return/return-sale/view",
 								permission: "return purchases"
 							},
@@ -708,6 +705,174 @@
 		computed: {
 			user() {
 				return this.$store.state.auth ? this.$store.state.auth.user : {};
+			}
+		},
+
+		// async created() {
+		// 	const { data: permissions } = await this.$axios.get(
+		// 		"/api/auth/permissions"
+		// 	);
+		// 	const { data: roles } = await this.$axios.get("/api/auth/roles");
+
+		// 	this.$laravel.setPermissions(permissions);
+		// 	this.$laravel.setRoles(roles);
+		// 	console.log(roles, permissions);
+		// }
+
+		created() {
+			if (this.user.role[0] === "administrator") {
+				this.$laravel.setPermissions([
+					"view users",
+					"add users",
+					"edit users",
+					"delete users",
+					"view sales",
+					"add sales",
+					"import sales",
+					"edit sales",
+					"delete sales",
+					"view website",
+					"add website",
+					"edit website",
+					"delete website",
+					"view product",
+					"add product",
+					"edit product",
+					"delete product",
+					"import product",
+					"view purchase",
+					"add purchase",
+					"edit purchase",
+					"delete purchase",
+					"import purchase",
+					"view expense",
+					"add expense",
+					"edit expense",
+					"delete expense",
+					"import expense",
+					"view quotation",
+					"add quotation",
+					"edit quotation",
+					"view transfer",
+					"add transfer",
+					"edit transfer",
+					"view employee",
+					"add employee",
+					"edit employee",
+					"delete employee",
+					"view account",
+					"add account",
+					"edit account",
+					"delete account",
+					"import account",
+					"view customer",
+					"add customer",
+					"edit customer",
+					"delete customer",
+					"import customer",
+					"view biller",
+					"add biller",
+					"edit biller",
+					"delete biller",
+					"import biller",
+					"view supplier",
+					"add supplier",
+					"edit supplier",
+					"delete supplier",
+					"import supplier",
+					"summary report",
+					"product report",
+					"daily sale report",
+					"monthly sale report",
+					"daily purchase report",
+					"monthly purchase report",
+					"sale report",
+					"payment report",
+					"purchase report",
+					"warehouse report",
+					"product qty alert",
+					"user report",
+					"customer report",
+					"supplier report",
+					"due report",
+					"support",
+					"payment log",
+					"add withdraw method",
+					"view withdraw method",
+					"edit withdraw method",
+					"delete withdraw method",
+					"charge commission",
+					"pos",
+					"return sales",
+					"return purchases"
+				]);
+			}
+
+			if (this.user.role[0] === "saleman") {
+				this.$laravel.setPermissions([
+					"view sales",
+					"add sales",
+					"edit sales",
+					"delete sales",
+					"import sales",
+					"summary report",
+					"product report",
+					"daily sale report",
+					"monthly sale report",
+					"daily purchase report",
+					"sale report",
+					"purchase report",
+					"warehouse report",
+					"product qty alert",
+					"customer report",
+					"supplier report",
+					"due report",
+					"pos",
+					"return sales"
+				]);
+			}
+
+			if (this.user.role[0] === "accountant") {
+				this.$laravel.setPermissions([
+					"view account",
+					"add account",
+					"edit account",
+					"delete account",
+					"import account",
+					"view expense",
+					"add expense",
+					"edit expense",
+					"delete expense",
+					"import expense"
+				]);
+			}
+
+			if (this.user.role[0] === "saleManager") {
+				this.$laravel.setPermissions([
+					"view sales",
+					"import sales",
+					"view product",
+					"payment log",
+					"add withdraw method",
+					"view expense",
+					"return sales",
+					"return purchases",
+					"summary report",
+					"product report",
+					"daily sale report",
+					"monthly sale report",
+					"daily purchase report",
+					"monthly purchase report",
+					"sale report",
+					"payment report",
+					"purchase report",
+					"warehouse report",
+					"product qty alert",
+					"user report",
+					"customer report",
+					"supplier report",
+					"due report"
+				]);
 			}
 		}
 	};

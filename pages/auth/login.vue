@@ -84,12 +84,15 @@
 							this.$laravel.setPermissions(permissions);
 							this.$laravel.setRoles(roles);
 							this.loading = false;
+							
+							// console.log(roles)
 						});
 				} catch (e) {
 					this.loading = false;
 					this.$toast.error(e.message);
 				}
 			}
-		}
+		},
+
 	};
 </script>
