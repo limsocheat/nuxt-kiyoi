@@ -1,7 +1,7 @@
 <template>
 	<v-app class="mx-5 my-5">
 		<div class="d-flex">
-			<div class="pb-5 pr-3" v-permission="'return sales'">
+			<div class="pb-5 pr-3" v-permission="'return purchases'">
 				<nuxt-link class="nuxt--link" to="/return/return-purchase/create">
 					<v-btn class="green darken-2" dark>
 						<v-icon left>mdi-plus-circle</v-icon>
@@ -10,22 +10,24 @@
 				</nuxt-link>
 			</div>
 		</div>
-		<div class="d-flex justify-space-between">
-			<div>
-				<v-text-field
-					label="Search"
-					solo 
-					outlined
-					dense
-				></v-text-field>
-			</div>
-			<div>
-				<v-btn class="red darken-1">PDF</v-btn>
-				<v-btn class="lime lighten-1">CSV</v-btn>
-				<v-btn class="blue lighten-1">Print</v-btn>
-			</div>
-		</div>
 		<v-card>
+			<div class="d-flex justify-space-between pt-6 px-5">
+				<div>
+					<v-text-field
+						label="Search"
+						solo 
+						outlined
+						dense
+						v-model="search"
+					></v-text-field>
+				</div>
+				<div>
+					<v-btn class="red darken-1">PDF</v-btn>
+					<v-btn class="lime lighten-1">CSV</v-btn>
+					<v-btn class="blue lighten-1">Print</v-btn>
+				</div>
+			</div>
+			<v-divider></v-divider>
 			<v-data-table
 				:headers="headers"
 				:items="items"
@@ -34,19 +36,19 @@
 				:server-items-length="total"
 			>
 				<template v-slot:item="{ item }">
-					<tr class="viewReturnPurchase">
-						<td @click="viewReturnPurchase(item.id)">{{ item.created_at}}</td>
-						<td @click="viewReturnPurchase(item.id)">{{ item.reference_no }}</td>
-						<td @click="viewReturnPurchase(item.id)">{{ item.branch.address }}</td>
-						<td @click="viewReturnPurchase(item.id)">{{ item.supplier.name }}</td>
-						<td @click="viewReturnPurchase(item.id)">{{ item.account.name }}</td>
-						<td @click="viewReturnPurchase(item.id)">USD  {{ item.total | formatNumber}}</td>
+					<tr class="viewReturn">
+						<td @click="viewReturn(item.id)">{{ item.created_at}}</td>
+						<td @click="viewReturn(item.id)">{{ item.reference_no }}</td>
+						<td @click="viewReturn(item.id)">{{ item.branch.address }}</td>
+						<td @click="viewReturn(item.id)">{{ item.supplier.name }}</td>
+						<td @click="viewReturn(item.id)">{{ item.account.name }}</td>
+						<td @click="viewReturn(item.id)">{{ item.sub_total | Money}}</td>
 						
 						<td class="text-center">
 							<div class="row"> 
 								<v-tooltip top v-permission="'view sales'">
 									<template v-slot:activator="{ on }">
-										<v-btn small icon @click="viewReturnPurchase(item.id)" color="teal" outlined v-on="on">
+										<v-btn small icon @click="viewReturn(item.id)" color="teal" outlined v-on="on">
 											<v-icon small>mdi-eye</v-icon>
 										</v-btn>
 									</template>
@@ -83,7 +85,7 @@
 	import Vue from 'vue';
 
 	var numeral = require("numeral");
-	Vue.filter("formatNumber", function (value) {
+	Vue.filter("Money", function (value) {
 		return numeral(value).format("0,0.00");
 	});
 	
@@ -93,6 +95,7 @@ export default {
 
 	created() {
 		this.fetchData();
+		this.fetchSearch();
 	},
 
 	watch: {
@@ -100,14 +103,19 @@ export default {
 			handler() {
 				this.fetchData();
 			}
-		}
+		},
+		search:{
+			handler(){
+				this.fetchSearch();
+			}
+		},
 	},
 
 	data() {
 		return {
 			date: new Date().toISOString(),
 			items: [],
-			search: "",
+			search: '',
 			form: {},
 			total: 0,
 			options: {},
@@ -136,7 +144,7 @@ export default {
 					sortable: false,
 					
 				},{
-					text: 'Grand Total',
+					text: 'Grand Total​​​​​ (USD)',
 					sortable: false,
 					
 				},{
@@ -155,14 +163,24 @@ export default {
 			.then(res => {
 				this.items = res.returnpurchase.data;
 				this.total = res.total;
-				console.log(res)
+				console.log(res);
 			})
 			.catch(err => {
 				console.log(err);
 			})
 		},
+		fetchSearch(){
+			this.$axios.$get(`/api/return-purchase?search=${this.search}`)
+			.then(res =>{
+				this.items = res.returnpurchase.data;
+				console.log(res);
+			})
+			.catch(err =>{
+				console.log(err.response);
+			})
+		},
 
-		viewReturnPurchase(id) {
+		viewReturn(id) {
       		this.$router.push(`/return/return-purchase/${id}`);
       	},
 
@@ -229,7 +247,7 @@ export default {
 	border-radius: 5px;
 	border: 1px solid #616161;
 }
-.viewReturnPurchase{
+.viewReturn{
 	cursor: pointer;
 }
 </style>

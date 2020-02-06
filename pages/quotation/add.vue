@@ -1,9 +1,9 @@
 <template>
 	<v-app>
 		<v-card class="mx-5 my-5">
-			<div class="py-3 px-5 green darken-2">
-				<h3 class="white--text">
-					Add Return Purchase
+			<div class="py-3 px-5 green darken-2 white--text" >
+				<h3>
+					Add Quotation
 				</h3>
 			</div>
 			<v-divider></v-divider>
@@ -11,7 +11,53 @@
 				<p class="caption font-italic pt-5">The field labels marked with * are required input fields.</p>
 				<v-row>
 					<v-col md="4" cols="12">
-						<label class="font-weight-bold">Location *</label>
+						<label class="font-weight-bold" for="name">Biller*</label>
+						<v-autocomplete 
+							item-value="name" 
+							item-text="name"  
+							dense 
+							solo 
+							outlined 
+							return-object
+							v-model="form.biller"
+							:items="billers"
+							label="Please type, select..."
+						>
+						</v-autocomplete >
+					</v-col>
+					<v-col md="4" cols="12">
+						<label class="font-weight-bold" for="name">Supplier*</label>
+						<v-autocomplete 
+							item-value="name" 
+							item-text="name"  
+							dense 
+							solo 
+							outlined 
+							return-object
+							v-model="form.supplier"
+							:items="suppliers"
+							label="Please type, select..."
+						>
+						</v-autocomplete >
+					</v-col>
+					
+					<v-col md="4" cols="12">
+						<label class="font-weight-bold" for="name">Customer*</label>
+						<v-autocomplete 
+							item-value="name" 
+							item-text="name"  
+							dense 
+							solo 
+							outlined 
+							return-object
+							v-model="form.member"
+							:items="members"
+							label="Please type, select..."
+						>
+						</v-autocomplete >
+					</v-col>
+					<v-col md="4" cols="12">
+						<label class="font-weight-bold" for="address">Warehouse*</label>
 						<v-autocomplete 
 							item-value="address" 
 							item-text="address"  
@@ -26,53 +72,47 @@
 						</v-autocomplete >
 					</v-col>
 					<v-col md="4" cols="12">
-						<label class="font-weight-bold">Supplier</label>
-						<v-autocomplete 
-							item-value="name" 
-							item-text="name"  
-							dense 
+						<label for="" class="font-weight-bold">Shipping Cost*</label>
+						<v-text-field
 							solo 
-							outlined 
-							return-object
-						v-model="form.supplier"
-							:items="suppliers"
-							label="Please type, select..."
-						></v-autocomplete >
+							outlined
+							dense
+							type="number"
+							v-model="form.shipping_cost"
+							placeholder="0.00"
+						></v-text-field>
 					</v-col>
 					<v-col md="4" cols="12">
-						<label class="font-weight-bold">Account</label>
-						<v-autocomplete 
-							item-value="name" 
-							item-text="name"
+						<label for="" class="font-weight-bold">Status*</label>
+						<v-select
 							solo 
-							outlined 
-							dense 
-							return-object
-							label="Select Account ..." 
-							v-model="form.account"
-							:items="accounts"
-						>
-						</v-autocomplete >
-					</v-col>
-					<v-col md="12" col="12">
-						<label for="">Select Product</label>
-						<v-autocomplete
-							:items="products"
-							label="Please type, select product..."
+							outlined
 							dense
+							label="Pending"
+							:items="status"
+							v-model="form.status"
+						></v-select>
+					</v-col>
+					<v-col cols="12">
+						<label class="font-weight-bold">Select Product</label>
+						<v-autocomplete
 							solo
-							return-object
+							outlined
+							dense
+							label="Please type product code and select"
+							:items="products"
 							item-text="name"
 							item-value="name"
-							@input="addTocart"
+							return-object
+
 						></v-autocomplete>
 					</v-col>
 				</v-row>
 				<div>
 					<label class="font-weight-bold mb-3">Order Table</label>
-					<table class="tableReturn">
+					<table class="quote">
 						<thead>
-							<tr class="tableReturn--header">
+							<tr class="quote--header">
 								<td>Name</td>
 								<td>Code</td>
 								<td>Quantity</td>
@@ -83,7 +123,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr class="tableReturn--td" v-for="(item, index) in form.items" :key="index">
+							<tr class="quote--td" v-for="(item, index) in form.items" :key="index">
 								<td>{{item.name}}</td>
 								<td>{{item.code}}</td>
 								<td>
@@ -131,40 +171,24 @@
 					</table>
 				</div>
 				<v-row>
-					<!-- <v-col md="12" cols="12" class="d-flex flex-column mb-5">
+					<v-col cols="12" class="d-flex flex-column">
 						<label for="" class="font-weight-bold pt-1">Attach Document</label>
-						<input type="file" @change="uploadFile($event)" class="attachDoc">
-					</v-col> -->
-					<!-- <v-col md="6" cols="12">
-						<label for="" class="font-weight-bold">Order Tax</label>
-						<v-autocomplete 
-							solo 
-							outlined
-							dense
-						></v-autocomplete >
-					</v-col> -->
-					<v-col md="6" cols="12">
-						<div class="d-flex flex-column mb-5">
-							<label for="" class="font-weight-bold">Return Note</label>
-							<textarea cols="30" rows="7" class="textarea" v-model="form.return_des"></textarea>
-						</div>
-					</v-col>
-					<v-col md="6" cols="12">
-						<div class="d-flex flex-column mb-5">
-							<label for="" class="font-weight-bold">Staff Note</label>
-							<textarea cols="30" rows="7" class="textarea" v-model="form.staff_des"></textarea>
-						</div>
+						<input type="file" @change="uploadFile($event)" class="quotationCsv">
 					</v-col>
 				</v-row>
+				<div class="d-flex flex-column mb-5">
+					<label for="">Note</label>
+					<textarea cols="30" rows="5" class="textarea"></textarea>
+				</div>
+				<v-btn 
+					class="green darken-2 mb-5 white--text" 
+					dark 
+					@click.prevent="createQuotation"
+					>
+					<v-icon>mdi-check</v-icon>
+					Submit
+				</v-btn>
 			</div>
-			<v-btn 
-				class="green darken-2 mx-5 darken-2 mb-5 grey--text text--lighten-4"
-				@click.prevent="createReturnPurchase"
-				dark
-			>
-				<v-icon>mdi-check</v-icon>
-				Submit
-			</v-btn>
 		</v-card>
 	</v-app>
 </template>
@@ -176,29 +200,30 @@
 	Vue.filter("formatMoney", function(value) {
 		return numeral(value).format("0,0.00");
 	});
-	
+ 	export default {
+		name: "addQuotation",
 
-	export default {
-		name: "createReturnPurchase",
 		created(){
-			this.fetchLocation(),
-			this.fetchSupplier(),
-			this.fetchAccount(),
+			this.fetchBiller();
+			this.fetchSupplier();
+			this.fetchMember();
+			this.fetchLocation();
 			this.fetchProduct()
 		},
 
 		data() {
 			return {
-
 				form: {
 					items: []
 				},
 				locations:[],
 				suppliers:[],
-				accounts:[],
+				billers:[],
+				members:[],
 				products:[],
+				status:["Pending", "Sent"],
 				itemsPerPage: 5,
-			};
+			}
 		},
 		computed: {
 			calculateQty() {
@@ -225,7 +250,6 @@
 					product.quantity
 				);
 			},
-
 			fetchLocation(){
 				this.$axios.$get(`api/location`)
 				.then(res =>{
@@ -248,17 +272,26 @@
 				});
 			},
 
-			fetchAccount(){
-				this.$axios.$get(`api/account`)
+			fetchBiller(){
+				this.$axios.$get(`api/biller`)
 				.then(res =>{
-					this.accounts = res.account;
+					this.billers = res.billers.data;
 					console.log(res)
 				})
 				.catch(err => {
 					console.log(err.response);
 				});
 			},
-
+			fetchMember(){
+				this.$axios.$get(`api/member`)
+				.then(res =>{
+					this.members = res.members.data;
+					console.log(res)
+				})
+				.catch(err => {
+					console.log(err.response);
+				});
+			},
 			fetchProduct(){
 				this.$axios.$get(`api/product`)
 				.then(res =>{
@@ -269,12 +302,11 @@
 					console.log(err.response);
 				})
 			},
-			
-			createReturnPurchase() {
-		    	this.$axios.$post(`api/return-purchase`, this.form)
+			createQuotation() {
+		    	this.$axios.$post(`api/quotation`, this.form)
 				.then(res => {
-					this.$set(this.$data, "returnpurchases" , res.data);
-				this.$router.push(`/return/return-purchase/view`);
+					this.$set(this.$data, "quotations" , res.data);
+					this.$router.push(`/quotation/quotations`);
 					console.log(res);
 				})
 				.catch(err => {
@@ -297,7 +329,6 @@
 			removeItem(index) {
 				this.form.items.splice(index, 1);
 			},
-
 			uploadFile(event) {
 				const url = 'http://127.0.0.1:3000/product/add_adjustment';
 				let data = new FormData();
@@ -307,7 +338,6 @@
 						'content-Type' : 'image/*, application/pdf'
 					}
 				}
-
 				this.$axios.$post(url,data,config)
 				.then(res => {
 					console.log(res);
@@ -320,16 +350,15 @@
 <style lang="scss">
 
 	.textarea {
-		border: 1px solid rgba(0, 0, 0, 0.125);
+		border: 1px solid rgba(0,0,0,0.125);
 		outline: 1px solid #461577;
 	}
-
-	.attachDoc {
-		padding: 3px 10px 3px 10px;
-		border: 1px solid rgba(0, 0, 0, 0.2);
+	
+	.quotationCsv {
+		border: 1px solid rgba(0,0,0,0.300);
+		padding: 3px 0px 3px 10px;
 	}
-
-	.tableReturn {
+	.quote {
 		width: 100%;
 		margin-top: 10px;
 		border-collapse: collapse;

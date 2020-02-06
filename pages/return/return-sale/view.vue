@@ -10,28 +10,32 @@
 				</nuxt-link>
 			</div>
 		</div>
-		<div class="d-flex justify-space-between">
-			<div>
-				<v-text-field
-					label="Search"
-					solo 
-					outlined
-					dense
-				></v-text-field>
-			</div>
-			<div>
-				<v-btn class="red darken-1">PDF</v-btn>
-				<v-btn class="lime lighten-1">CSV</v-btn>
-				<v-btn class="blue lighten-1">Print</v-btn>
-			</div>
-		</div>
+		
 		<v-card>
+			<div class="d-flex justify-space-between pt-6 px-5">
+				<div>
+					<v-text-field
+						label="Search Customer"
+						solo 
+						outlined
+						dense
+						v-model="search"
+					></v-text-field>
+				</div>
+				<div>
+					<v-btn class="red darken-1">PDF</v-btn>
+					<v-btn class="lime lighten-1">CSV</v-btn>
+					<v-btn @click="print" class="blue lighten-1">Print</v-btn>
+				</div>
+			</div>
+			<v-divider></v-divider>
 			<v-data-table
 				:headers="headers"
 				:items="items"
 				:items-per-page="itemsPerPage"
 				:options.sync="options"
 				:server-items-length="total"
+				id="print"	
 			>
 				<template v-slot:item="{ item }">
 					<tr class="viewReturnSale">
@@ -40,7 +44,7 @@
 						<td @click="viewReturnSale(item.id)">{{ item.branch.address }}</td>
 						<td @click="viewReturnSale(item.id)">{{ item.member.name }}</td>
 						<td @click="viewReturnSale(item.id)">{{ item.account.name }}</td>
-						<td @click="viewReturnSale(item.id)">USD  {{ item.total | formatNumber}}</td>
+						<td @click="viewReturnSale(item.id)">{{ item.sub_total | Menoy }}</td>
 						
 						<td class="text-center">
 							<div class="row"> 
@@ -83,7 +87,7 @@
 	import Vue from 'vue';
 
 	var numeral = require("numeral");
-	Vue.filter("formatNumber", function (value) {
+	Vue.filter("Menoy", function (value) {
 		return numeral(value).format("0,0.00");
 	});
 	
@@ -92,6 +96,7 @@ export default {
 
 	created() {
 		this.fetchReturn();
+		this.fetchSearch();
 	},
 
 	watch: {
@@ -99,7 +104,12 @@ export default {
 			handler() {
 				this.fetchReturn();
 			}
-		}
+		},
+		search:{
+			handler(){
+				this.fetchSearch();
+			}
+		},
 	},
 
 	data() {
@@ -107,6 +117,7 @@ export default {
 			items: [],
 			form: {},
 			total: 0,
+			search: '',
 			options: {},
 			itemsPerPage: 5,
 			editedIndex: -1,
@@ -132,17 +143,25 @@ export default {
 					sortable: false,
 					
 				},{
-					text: 'Grand Total',
+					text: 'Grand Total (USD)',
 					sortable: false,
 					
 				},{
 					text: 'Action',
 					sortable: false,
-					
 				},
 			],
 		}
 	},
+	// computed: {
+	// 	tableItems () {
+	// 	if (!this.search) {
+	// 		return this.items;
+	// 	}
+
+	// 	return this.items.filter(item => item.members.indexOf(this.search) > -1)
+	// 	}
+	// },
 
 	methods: {
 
@@ -155,6 +174,17 @@ export default {
 			})
 			.catch(err => {
 				console.log(err);
+			})
+		},
+
+		fetchSearch(){
+			this.$axios.$get(`/api/return-sale?search=${this.search}`)
+			.then(res =>{
+				this.items = res.returnsale.data;
+				console.log(res)
+			})
+			.catch(err =>{
+				console.log(err.response);
 			})
 		},
 
@@ -177,7 +207,10 @@ export default {
 					console.log(err.response);
 				})
 			}
-      	},
+		  },
+		print() {
+			this.$htmlToPaper('print')
+		},
 	}
 }
 

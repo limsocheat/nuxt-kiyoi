@@ -403,7 +403,7 @@
 							{
 								name: "Add Quotation",
 								icon: "mdi-plus-circle",
-								to: "/quotation/add_quotation",
+								to: "/quotation/add",
 								permission: "view quotation"
 							}
 						]
