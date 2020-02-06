@@ -9,7 +9,7 @@
 				<p class="caption font-italic pt-5">The field labels marked with * are required input fields.</p>
 				<ValidationObserver ref="form">
 					<v-row>
-						<v-col md="4" cols="12">
+						<v-col md="6" cols="12">
 							<label class="font-weight-bold">Customer*</label>
 							<validation-provider rules="required" name="Customer" v-slot="{ errors }">
 								<v-autocomplete
@@ -26,7 +26,7 @@
 								<span class="red--text">{{ errors[0] }}</span>
 							</validation-provider>
 						</v-col>
-						<v-col md="4" cols="12">
+						<v-col md="6" cols="12">
 							<label class="font-weight-bold">Warehouse*</label>
 							<validation-provider rules="required" name="Location" v-slot="{ errors }">
 								<v-autocomplete
