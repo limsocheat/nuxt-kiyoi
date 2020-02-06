@@ -226,10 +226,16 @@
 								return-object
 							></v-autocomplete>
 						</v-col>
-						<v-col v-for="(item, index) in products" :key="index" cols="4">
+					</v-row>
+					<v-row class="px-5">
+						<v-col v-for="(item, index) in products" :key="index" cols="3">
 							<v-card @click="addPos(item)" v-if="item.image" class="posCard">
-								<img class="posCard--pos-img" :src="'http://127.0.0.1:8000/image/' + item.image" />
-								<span class="posCard--title">{{ item.name }}</span>
+								<div>
+									<img class="posCard--pos-img" :src="baseURL + 'image/' + item.image" />
+								</div>
+								<div class="posCard--title">
+									<span>{{ item.name }}</span>
+								</div>
 							</v-card>
 						</v-col>
 					</v-row>
@@ -244,150 +250,146 @@
 	</v-app>
 </template>
 <script>
-import Vue from 'vue';
+	import Vue from "vue";
 
-let numeral = require('numeral');
+	let numeral = require("numeral");
 
-Vue.filter('formatMoney', function(value) {
-	return numeral(value).format('0,0.00');
-})
+	Vue.filter("formatMoney", function(value) {
+		return numeral(value).format("0,0.00");
+	});
 
-export default {
-	layout: "pos",
-	name: 'PosShop',
-	created() {
-		this.fetchProduct()
-		this.fetchCustomer()
-		this.fetchBiller()
-	},
-	data() {
-		return {
-			customers: [],
-			dialog: false,
-			dialog2: false,
-			form: {
-				items: [],
+	export default {
+		layout: "pos",
+		name: "PosShop",
+		created() {
+			this.fetchProduct();
+			this.fetchCustomer();
+			this.fetchBiller();
+		},
+		data() {
+			return {
+				customers: [],
+				dialog: false,
+				dialog2: false,
+				form: {
+					items: []
+				},
+				products: [],
+				dialog: false,
+				biller: [],
+				payment_method: ["Cash", "Credit Card"],
+				baseURL: process.env.APP_URL
+			};
+		},
+
+		computed: {
+			Qty() {
+				return this.form.items.reduce((total, item) => {
+					return total + Number(item.quantity);
+				}, 0);
 			},
-			products: [],
-			dialog: false,
-			biller: [],
-			payment_method: ['Cash', 'Credit Card'],
+
+			discount() {
+				return this.form.items.reduce((total, item) => {
+					// return
+					console.log(item);
+				}, 0);
+			},
+
+			totalPrice() {
+				return this.form.items.reduce((total, item) => {
+					let s = item.price * item.quantity;
+					return total + s;
+				}, 0);
+			}
+		},
+
+		methods: {
+			addPayment() {},
+
+			openDialog() {
+				if (this.form.items.length === 0) {
+					this.$notify({
+						group: "all",
+						text: "There is no Product in Cart!!!",
+						type: "warning"
+					});
+				}
+
+				this.dialog2 = false;
+			},
+
+			fetchBiller() {
+				this.$axios
+					.$get(`api/biller`)
+					.then(res => {
+						Vue.set(this.$data, "biller", res.billers.data);
+						console.log(res);
+					})
+					.catch(err => {
+						console.log(err.response);
+					});
+			},
+
+			fetchProduct() {
+				this.$axios
+					.$get(`api/product`)
+					.then(res => {
+						this.$set(this.$data, "products", res.products.data);
+
+						// for(let i in this.form.item) {
+						// 	console.log(i);
+						// }
+						console.log(res);
+					})
+					.catch(err => {
+						console.log(err.response);
+					});
+			},
+
+			fetchCustomer() {
+				this.$axios
+					.$get(`api/member`)
+					.then(res => {
+						this.$set(this.$data, "customers", res.members.data);
+						console.log(res);
+					})
+					.catch(err => {
+						console.log(err.response);
+					});
+			},
+
+			addPos(item) {
+				if (this.form.items.includes(item)) {
+					Vue.set(item, "quantity", (item.quantity += 1));
+				} else {
+					this.form.items.push(item);
+					Vue.set(item, "quantity", 1);
+				}
+			},
+
+			addDiscount() {
+				this.dialog = true;
+			},
+
+			addToCart(item) {
+				if (this.form.items.includes(item)) {
+					Vue.set(item, "quantity", (item.quantity += 1));
+				} else {
+					this.form.items.push(item);
+					Vue.set(item, "quantity", 1);
+				}
+			},
+
+			removeProduct(index) {
+				this.form.items.splice(index, 1);
+			},
+
+			subTotal(product) {
+				return product.price * product.quantity;
+			}
 		}
-	},
-
-	computed: {
-		Qty() {
-			return this.form.items.reduce((total, item) => {
-				return total + Number(item.quantity);
-			}, 0);
-		},
-
-		discount() {
-			return this.form.items.reduce((total, item) => {
-				// return 
-				console.log(item);
-			}, 0);	
-		},
-
-		totalPrice() {
-			return this.form.items.reduce((total, item) => {
-				let s = item.price * item.quantity;
-				return total + s; 
-			}, 0)
-		}
-	},
-
-	methods: {
-
-		addPayment() {
-		},
-
-		openDialog() {
-			if(this.form.items.length === 0) {
-				this.$notify({
-					group: 'all',
-					text: 'There is no Product in Cart!!!',
-					type: 'warning',
-				});
-			}
-
-			this.dialog2 = false;
-		},
-
-		fetchBiller() {
-			this.$axios.$get(`api/biller`)
-			.then(res => {
-				Vue.set(this.$data, 'biller', res.billers.data);
-				console.log(res);
-			})
-			.catch(err => {
-				console.log(err.response)
-			})
-		},
-
-		fetchProduct() {
-			this.$axios.$get(`api/product`)
-			.then(res => {
-				this.$set(this.$data, 'products', res.products.data);
-				
-				// for(let i in this.form.item) {
-				// 	console.log(i);
-				// }
-
-				console.log(res);
-			})
-			.catch(err => {
-				console.log(err.response)
-			})
-		},
-
-		fetchCustomer() {
-			this.$axios.$get(`api/member`)
-			.then(res => {
-				this.$set(this.$data, 'customers', res.members.data);
-				console.log(res);
-			})
-			.catch(err => {
-				console.log(err.response);
-			})
-		},
-
-		addPos(item) {
-			if(this.form.items.includes(item)) {
-				Vue.set(item, 'quantity', item.quantity += 1);
-			}
-			else {
-				this.form.items.push(item);
-				Vue.set(item, 'quantity', 1)
-			}
-		},
-
-		addDiscount() {
-			this.dialog = true;	
-		},
-
-		addToCart(item) {
-			if(this.form.items.includes(item)) {
-				Vue.set(item, 'quantity', item.quantity += 1);
-			}
-			else {
-				this.form.items.push(item);
-				Vue.set(item, 'quantity', 1);
-			}
-		},
-
-		removeProduct(index) {
-			this.form.items.splice(index, 1);
-		},
-
-		subTotal(product) {
-			return (
-					product.price * product.quantity
-				);
-		},
-	}
-}
-
+	};
 </script>
 
 <style lang="scss">
@@ -409,17 +411,17 @@ export default {
 	}
 
 	.posCard {
-		box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.125);
+		border: #000;
 		display: flex;
 		flex-direction: column;
-		width: 130px;
-		margin-left: 20px;
-		margin-right: 20px;
+		width: 100%;
 		&--pos-img {
-			border: 1px solid #efefef;
-			height: 100px;
-			padding-left: 20px;
-			padding-right: 20px;
+			height: auto;
+			object-fit: inherit;
+			display: block;
+			margin-left: auto;
+			margin-right: auto;
+			overflow: hidden;
 		}
 
 		&--title {
@@ -428,6 +430,10 @@ export default {
 			padding-top: 5px;
 			padding-bottom: 5px;
 		}
+	}
+
+	.posCard:hover {
+		outline: 1px solid #535561;
 	}
 
 	.pos-product {
