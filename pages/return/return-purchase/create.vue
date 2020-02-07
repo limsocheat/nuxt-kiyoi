@@ -61,6 +61,7 @@
 							label="Please type, select product..."
 							dense
 							solo
+							outlined
 							return-object
 							item-text="name"
 							item-value="name"
@@ -93,6 +94,7 @@
 											class="table-order"
 											name="form.items[index].quantity"
 											v-model="form.items[index].quantity"
+											placeholder="0.00"
 										/>
 										<span>{{ errors[0] }}</span>
 									</validation-provider>
