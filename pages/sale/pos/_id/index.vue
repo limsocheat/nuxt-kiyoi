@@ -30,8 +30,10 @@
 				</thead>
 				<tbody>
 					<template v-if="pos.products && pos.products.length > 0">
-						<tr v-for="(item, index) in sale.products" :key="index">
-							<td>{{ item }}</td>
+						<tr v-for="(item, index) in pos.products" :key="index">
+							<td>{{ item.name }}</td>
+							<td>{{ item.pivot.quantity }}</td>
+							<td>$ {{ item.price | formatMoney }}</td>
 						</tr>
 					</template>
 					<template v-else>
@@ -48,63 +50,70 @@
 
 
 <script>
-	import Vue from 'vue';	
+	import Vue from "vue";
 
 	let numeral = require("numeral");
 
-	Vue.filter('formatMoney', function(value) {
+	Vue.filter("formatMoney", function(value) {
 		return numeral(value).format("0,0.00");
 	});
 
 	export default {
-		name: 'idSale',
+		name: "idSale",
 		created() {
 			this.fetchSale();
-			
+		},
+
+		updated() {
 			import("print-js").then(() => {
 				this.printReady = true;
-				const style = "@page { margin-top: 40px } @media print { h1 { color: blue } }";
+				const style =
+					"@page { margin-top: 40px } @media print { h1 { color: blue } }";
 				printJS({
-					printable: 'printPOS', 
-					type: 'html',
+					printable: "printPOS",
+					type: "html",
 					scanStyle: false,
-					style: '../../assets/css/print-pos.scss', style,
-					targetStyles: ["*"],
-				})
+					style: "../../assets/css/print-pos.scss",
+					style,
+					targetStyles: ["*"]
+				});
 			});
 		},
 
 		data() {
 			return {
 				pos: [],
-				printReady: false,
-			}
+				printReady: false
+			};
 		},
 
 		methods: {
 			print() {
-				const style = "@page { margin-top: 40px } @media print { h1 { color: blue } }";
+				const style =
+					"@page { margin-top: 40px } @media print { h1 { color: blue } }";
 				printJS({
-					printable: 'printPOS', 
-					type: 'html',
+					printable: "printPOS",
+					type: "html",
 					scanStyle: false,
-					style: '../../assets/css/print-pos.scss', style,
-					targetStyles: ["*"],
-				})
+					style: "../../assets/css/print-pos.scss",
+					style,
+					targetStyles: ["*"]
+				});
 			},
 
 			fetchSale() {
-				this.$axios.$get(`api/sale/` + this.$route.params.id)
-				.then(res => {
-					this.$set(this.$data, 'pos', res.sales);
-					console.log(res);
-				})
-				.catch(err => {
-					console.log(err.response);
-				})
+				this.$axios
+					.$get(`api/sale/` + this.$route.params.id)
+					.then(res => {
+						this.$set(this.$data, "pos", res.sales);
+						console.log(res);
+					})
+					.catch(err => {
+						console.log(err.response);
+					});
 			}
 		}
-	}
+	};
 </script>
 
 <style lang="scss">

@@ -152,7 +152,6 @@
 						`api/sale?search=${this.search}&itemsPerPage=${this.options.itemsPerPage}&page=${this.options.page}`
 					)
 					.then(res => {
-						// this.items = res.sales.data;
 						this.$set(this.$data, "items", res.sales.data);
 						this.total = res.sales.total;
 						console.log(res);
