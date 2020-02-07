@@ -16,7 +16,7 @@
 		</div>
 		<div class="d-flex justify-space-between">
 			<div>
-				<v-text-field label="Search" solo outlined dense></v-text-field>
+				<v-text-field label="Search" v-model="search" solo outlined dense></v-text-field>
 			</div>
 			<div>
 				<v-btn class="red darken-1">PDF</v-btn>
@@ -25,7 +25,13 @@
 			</div>
 		</div>
 		<v-card>
-			<v-data-table :headers="headers" :items="items" :items-per-page="itemsPerPage">
+			<v-data-table
+				:headers="headers"
+				:items="items"
+				:items-per-page="itemsPerPage"
+				:server-items-length="total"
+				:options.sync="options"
+			>
 				<template v-slot:item="{ item }">
 					<tr class="sale-tr">
 						<td>{{ item.created_at }}</td>
@@ -119,17 +125,36 @@
 						sortable: false,
 						value: "action"
 					}
-				]
+				],
+				total: 0
 			};
+		},
+
+		watch: {
+			search: {
+				handler() {
+					this.fetchData();
+				}
+			},
+			options: {
+				handler() {
+					this.fetchData();
+				}
+			},
+
+			immediate: true
 		},
 
 		methods: {
 			fetchData() {
 				this.$axios
-					.$get(`api/sale`)
+					.$get(
+						`api/sale?search=${this.search}&itemsPerPage=${this.options.itemsPerPage}&page=${this.options.page}`
+					)
 					.then(res => {
 						// this.items = res.sales.data;
 						this.$set(this.$data, "items", res.sales.data);
+						this.total = res.sales.total;
 						console.log(res);
 					})
 					.catch(err => {
