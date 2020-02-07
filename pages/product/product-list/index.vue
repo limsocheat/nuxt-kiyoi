@@ -109,106 +109,119 @@
 
 
 <script>
-import Vue from 'vue';
-var numeral = require("numeral");
+	import Vue from "vue";
+	var numeral = require("numeral");
 
-Vue.filter("formatNumber", function(value) {
-	return numeral(value).format("0,0.00");
-})
+	Vue.filter("formatNumber", function(value) {
+		return numeral(value).format("0,0.00");
+	});
 
-export default {
-	name: 'Product',
+	export default {
+		name: "Product",
 
-	created() {
-		this.fetchData()
-	},
+		created() {
+			this.fetchData();
+		},
 
-	watch: {
-		options: {
-			handler() {
-				this.fetchData();
+		watch: {
+			options: {
+				handler() {
+					this.fetchData();
+				}
+			}
+		},
+
+		data() {
+			return {
+				barcode: [
+					"Code 128",
+					"Code 39",
+					"UPC-A",
+					"UPC-E",
+					"EAN-8",
+					"EAN-13"
+				],
+				items: [],
+				search: "",
+				form: {},
+				page: 1,
+				total: 0,
+				options: {},
+				itemsPerPage: 5,
+				editedIndex: -1,
+				created: true,
+				dialog: false,
+				dialog2: false,
+				headers: [
+					{
+						text: "Image",
+						sortable: false
+					},
+					{
+						text: "Name",
+						value: "name"
+					},
+					{
+						text: "Code",
+						sortable: false,
+						value: "code"
+					},
+					{
+						text: "Unit",
+						sortable: false,
+						value: "unit"
+					},
+					{
+						text: "Price",
+						sortable: false,
+						value: "price"
+					},
+					{
+						text: "Actions",
+						sortable: false,
+						value: "action"
+					}
+				]
+			};
+		},
+
+		methods: {
+			fetchData() {
+				let vm = this;
+				this.$axios
+					.$get(
+						`/api/product?temsPerPage=${this.options.itemsPerPage}&page=${this.options.page}`
+					)
+					.then(res => {
+						vm.items = res.products.data;
+						vm.total = res.products.total;
+						console.log(res);
+					})
+					.catch(err => {
+						console.log(err);
+					});
+			},
+
+			editItem(id) {
+				this.$router.push(`/product/product-list/${id}/edit`);
+			},
+
+			viewItem(id) {
+				this.$router.push(`/product/product-list/${id}`);
+			},
+
+			deleteItem(item) {
+				this.$axios
+					.$delete(`api/product/` + item.id)
+					.then(res => {
+						this.fetchData();
+					})
+					.catch(err => {
+						console.log(err.response);
+					});
 			}
 		}
-	},
-
-	data() {
-		return {
-			barcode: [
-				'Code 128', 'Code 39', 'UPC-A', 'UPC-E', 'EAN-8', 'EAN-13'
-			],
-			items: [],
-			search: '',
-			form: {},
-			page: 1,
-			total: 0,
-			options: {},
-			itemsPerPage: 5,
-			editedIndex: -1,
-			created: true,
-			dialog: false,
-			dialog2: false,
-			headers: [
-				{
-					text: "Image",
-					sortable: false,
-				}, {
-					text: "Name",
-					value: "name",
-				}, {
-					text: "Code",
-					sortable: false,
-					value: "code",
-				},{
-					text: "Unit",
-					sortable: false,
-					value: "unit",
-				},{
-					text: "Price",
-					sortable: false,
-					value: "price",
-				},{
-					text: "Actions",
-					sortable: false,
-					value: "action",
-				},
-			],
-		}
-	},
-
-	methods: {
-		fetchData() {
-			let vm = this;
-			this.$axios.$get(`/api/product?temsPerPage=${this.options.itemsPerPage}&page=${this.options.page}`)
-			.then(res => {
-				vm.items = res.products.data;
-				vm.total = res.total;
-				console.log(res)
-			})
-			.catch(err => {
-				console.log(err);
-			})
-		},
-
-		editItem(id) {
-			this.$router.push(`/product/product-list/${id}/edit`);
-		},
-
-		viewItem(id) {
-			this.$router.push(`/product/product-list/${id}`)
-		},
-
-      	deleteItem(item) {
-      		this.$axios.$delete(`api/product/` + item.id)
-      		.then(res => {
-      			this.fetchData()
-      		})
-      		.catch(err => {
-      			console.log(err.response);
-      		})
-      	},
-	}
-}
-
+	};
 </script>
 <style lang="scss">
 	.menu-list {
