@@ -43,7 +43,7 @@
 								<span class="red--text">{{errors[0]}}</span>
 							</validation-provider>
 						</v-col>
-						<v-col md="4" cols="12">
+						<!-- <v-col md="4" cols="12">
 							<label class="font-weight-bold">Payment Status*</label>
 							<validation-provider rules="required" name="Payment Status" v-slot="{ errors }">
 								<v-select
@@ -56,7 +56,7 @@
 								></v-select>
 								<span class="red--text">{{ errors[0] }}</span>
 							</validation-provider>
-						</v-col>
+						</v-col>-->
 						<v-col md="4" cols="12">
 							<label class="font-weight-bold">Payment Method*</label>
 							<validation-provider rules="required" name="Payment Method" v-slot="{errors}">
@@ -285,13 +285,11 @@
 					.then(res => {
 						this.sales = res.data;
 						console.log(res);
-						this.$router.push(`/sale/sale-list`)
+						this.$router.push(`/sale/sale-list`);
 					})
 					.catch(err => {
 						console.log(err.response);
-						this.$refs.form.validate(
-							err.response.data.errors
-						)
+						this.$refs.form.validate(err.response.data.errors);
 					});
 			},
 
@@ -301,8 +299,8 @@
 				} else {
 					this.form.items.push(item);
 				}
-				Vue.set(item, 'quantity', 1);
-				Vue.set(item, 'discount', 0);
+				Vue.set(item, "quantity", 1);
+				Vue.set(item, "discount", 0);
 			},
 
 			removeItem(index) {

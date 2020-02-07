@@ -42,7 +42,7 @@
 								item-text="name"
 								item-value="name"
 								return-object
-								v-model="form.expense_for"
+								v-model="form.user"
 							>
 								<template v-slot:item="{ item }">{{ item.name }}</template>
 							</v-autocomplete>
@@ -250,7 +250,7 @@
 						.$patch(`/api/expense/` + this.form.id, {
 							amount: this.form.amount,
 							expense_category: this.form.expense_category,
-							expense_for: this.form.expense_for,
+							user: this.form.user,
 							description: this.form.description
 						})
 						.then(res => {

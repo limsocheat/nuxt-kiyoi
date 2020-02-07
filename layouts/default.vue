@@ -335,24 +335,12 @@
 							{
 								name: "POS List",
 								to: "/sale/pos/",
-								icon: "mdi-plus-circle",
+								icon: "mdi-view-list",
 								permission: "view sales"
 							},
 							{
 								name: "POS",
-								to: "/pos/create",
-								icon: "mdi-plus-circle",
-								permission: "view sales"
-							},
-							{
-								name: "POS List",
-								to: "/sale/pos/",
-								icon: "mdi-plus-circle",
-								permission: "view sales"
-							},
-							{
-								name: "POS",
-								to: "/pos/create",
+								to: "/sale/pos/create",
 								icon: "mdi-plus-circle",
 								permission: "view sales"
 							},
@@ -808,7 +796,10 @@
 				]);
 			}
 
-			if (this.user.role[0] === "saleman") {
+			if (
+				this.user.role[0] === "saleman" ||
+				this.user.role[0] === "Supervisor"
+			) {
 				this.$laravel.setPermissions([
 					"view sales",
 					"add sales",
