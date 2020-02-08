@@ -103,7 +103,6 @@
 									<input
 										type="number"
 										class="table-order"
-										name="form.items[index].unit_price"
 										v-model="form.items[index].unit_price"
 										placeholder="0.00"
 									/>
@@ -133,28 +132,16 @@
 					</table>
 				</div>
 				<v-row>
-					<!-- <v-col md="12" cols="12" class="d-flex flex-column mb-5">
-						<label for="" class="font-weight-bold pt-1">Attach Document</label>
-						<input type="file" @change="uploadFile($event)" class="attachDoc">
-					</v-col> -->
-					<!-- <v-col md="6" cols="12">
-						<label for="" class="font-weight-bold">Order Tax</label>
-						<v-autocomplete 
-							solo 
-							outlined
-							dense
-						></v-autocomplete >
-					</v-col> -->
 					<v-col md="6" cols="12">
 						<div class="d-flex flex-column mb-5">
 							<label for="" class="font-weight-bold">Return Note</label>
-							<textarea cols="30" rows="7" class="textarea" v-model="form.return_des"></textarea>
+							<textarea cols="30" rows="5" class="textarea" v-model="form.return_des"></textarea>
 						</div>
 					</v-col>
 					<v-col md="6" cols="12">
 						<div class="d-flex flex-column mb-5">
 							<label for="" class="font-weight-bold">Staff Note</label>
-							<textarea cols="30" rows="7" class="textarea" v-model="form.staff_des"></textarea>
+							<textarea cols="30" rows="5" class="textarea" v-model="form.staff_des"></textarea>
 						</div>
 					</v-col>
 				</v-row>

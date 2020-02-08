@@ -146,9 +146,9 @@
 										placeholder="0.00"
 									/>
 								</td>
-								<td>
+								<!-- <td>
 									<input type="text" class="table-order" v-model=" form.items[index].unit_price">
-								</td>
+								</td> -->
 								<td>
 									<input
 										type="number"

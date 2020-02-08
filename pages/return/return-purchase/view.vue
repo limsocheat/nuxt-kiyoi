@@ -42,7 +42,7 @@
 						<td @click="viewReturn(item.id)">{{ item.branch.address }}</td>
 						<td @click="viewReturn(item.id)">{{ item.supplier.name }}</td>
 						<td @click="viewReturn(item.id)">{{ item.account.name }}</td>
-						<td @click="viewReturn(item.id)">{{ item.sub_total | Money}}</td>
+						<td @click="viewReturn(item.id)">{{ item.grand_total | Money}}</td>
 						
 						<td class="text-center">
 							<div class="row"> 
