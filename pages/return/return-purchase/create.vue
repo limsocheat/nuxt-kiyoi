@@ -10,22 +10,39 @@
 			<div class="px-5">
 				<p class="caption font-italic pt-5">The field labels marked with * are required input fields.</p>
 				<v-row>
-					<v-col md="4" cols="12">
-						<label class="font-weight-bold">Location *</label>
-						<v-autocomplete 
-							item-value="address" 
-							item-text="address"  
-							dense 
-							solo 
+					<v-col md="6" cols="12">
+						<label class="font-weight-bold">Reference No *</label>
+						<validation-provider name="Name" rules="required" v-slot="{ errors }">
+							<v-text-field 
 							outlined 
-							return-object
-							v-model="form.location"
-							:items="locations"
-							label="Please type, select..."
-						>
-						</v-autocomplete >
+							solo 
+							dense 
+							label="Reference no..." 
+							v-model="form.reference_no"
+							></v-text-field>
+							<span class="red--text">{{ errors[0] }}</span>
+						</validation-provider>
 					</v-col>
-					<v-col md="4" cols="12">
+
+					<v-col md="6" cols="12">
+						<label class="font-weight-bold">Location *</label>
+						<validation-provider name="Name" rules="required" v-slot="{ errors }">
+							<v-autocomplete 
+								item-value="address" 
+								item-text="address"  
+								dense 
+								solo 
+								outlined 
+								return-object
+								v-model="form.location"
+								:items="locations"
+								label="Please type, select..."
+							>
+							</v-autocomplete >
+							<span class="red--text">{{ errors[0] }}</span>
+						</validation-provider>
+					</v-col>
+					<v-col md="6" cols="12">
 						<label class="font-weight-bold">Supplier</label>
 						<v-autocomplete 
 							item-value="name" 
@@ -39,7 +56,7 @@
 							label="Please type, select..."
 						></v-autocomplete >
 					</v-col>
-					<v-col md="4" cols="12">
+					<v-col md="6" cols="12">
 						<label class="font-weight-bold">Account</label>
 						<v-autocomplete 
 							item-value="name" 
