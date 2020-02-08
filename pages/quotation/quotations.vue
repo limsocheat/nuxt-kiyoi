@@ -48,7 +48,7 @@
 								{{ item.status }}
 							</span>
 						</td>
-						<td @click="viewQuotation(item.id)"> {{ item.sub_total | formatMoney }}</td>
+						<td @click="viewQuotation(item.id)"> {{ item.grand_total | formatMoney }}</td>
 						
 						<td class="text-center">
 							<div class="row"> 
@@ -128,42 +128,34 @@
 					{
 						text: "Date",
 						sortable: false,
-						// value: "created_at"
 					},
 					{
 						text: "Reference No",
 						sortable: false,
-						// value: "reference_no"
 					},
 					{
 						text: "Biller",
 						sortable: false,
-						// value: "biller"
 					},
 					{
 						text: "Customer",
 						sortable: false,
-						// value: "members"
 					},
 					{
 						text: "Supplier",
 						sortable: false,
-						// value: "suppliers"
 					},
 					{
 						text: "Status",
 						sortable: false,
-						// value: "status"
 					},
 					{
 						text: "Grand Total",
 						sortable: false,
-						// value: "total"
 					},
 					{
 						text: "Action",
 						sortable: false,
-						// value:"action"
 					}
 				],
 			};

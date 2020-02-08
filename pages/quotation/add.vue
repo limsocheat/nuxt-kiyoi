@@ -142,10 +142,12 @@
 									<input
 										type="number"
 										class="table-order"
-										name="form.items[index].unit_price"
 										v-model="form.items[index].unit_price"
 										placeholder="0.00"
 									/>
+								</td>
+								<td>
+									<input type="text" class="table-order" v-model=" form.items[index].unit_price">
 								</td>
 								<td>
 									<input
@@ -179,7 +181,7 @@
 				</v-row> -->
 				<v-row>
 					<v-col cols="12" class="d-flex flex-column">
-						<label for="" class="font-weight-bold pt-1" >Attach Document</label>
+						<label for="" class="font-weight-bold pt-4" >Attach Document</label>
 						<v-spacer></v-spacer>
 						<v-file-input 
 						label="File input" 
@@ -193,7 +195,7 @@
 					</v-col>
 				</v-row>
 				<div class="d-flex flex-column mb-5">
-					<label for="">Note</label>
+					<label for="" class="font-weight-bold ">Note</label>
 					<textarea cols="30" rows="5" class="textarea"></textarea>
 				</div>
 				<v-btn 

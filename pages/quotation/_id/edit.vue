@@ -125,7 +125,11 @@
 								<td>{{item.name}}</td>
 								<td>{{item.code}}</td>
 								<td>
-									<input type="number" class="table-quantity" v-model="form.products[index].quantity" />
+									<input 
+										type="number" 
+										class="table-quantity" 
+										v-model="form.products[index].quantity" 
+									/>
 								</td>
 								<td>
 									<input
@@ -233,7 +237,6 @@
 				status:["Pending", "Sent"],
 				members:[],
 				file:[],
-				description:[]
 			};
 		},
 

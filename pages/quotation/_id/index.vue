@@ -51,6 +51,10 @@
 								<td class="tableReturn--td">{{ quotation.total_discount }}</td>
 								<td class="tableReturn--td">{{ quotation.sub_total | formatMoney }}</td>
 							</tr>
+							<tr>
+							<th class="tableReturn--td" colspan="5">Shipping Cost:</th>
+								<td class="tableReturn--td">{{ quotation.shipping_cost | formatMoney }}</td>
+							</tr>
 							<tr class="tableReturn--td">
 								<th class="tableReturn--td" colspan="5">Grand Total</th>
 								<td class="tableReturn--td">{{ quotation.sub_total | formatMoney }}</td>
