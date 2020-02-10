@@ -119,7 +119,6 @@ export default {
 			search: '',
 			options: {},
 			itemsPerPage: 5,
-			editedIndex: -1,
 			headers: [{
 					text: 'Date',
 					sortable: false,

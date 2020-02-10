@@ -120,9 +120,6 @@ export default {
 			total: 0,
 			options: {},
 			itemsPerPage: 5,
-			editedIndex: -1,
-			created: true,
-			dialog: false,
 			headers: [{
 					text: 'Date',
 					sortable: false,
