@@ -10,12 +10,11 @@
 				</nuxt-link>
 			</div>
 		</div>
-		
 		<v-card>
 			<div class="d-flex justify-space-between pt-6 px-5">
 				<div>
 					<v-text-field
-						label="Search Customer"
+						label="Search..."
 						solo 
 						outlined
 						dense
@@ -120,7 +119,6 @@ export default {
 			search: '',
 			options: {},
 			itemsPerPage: 5,
-			editedIndex: -1,
 			headers: [{
 					text: 'Date',
 					sortable: false,

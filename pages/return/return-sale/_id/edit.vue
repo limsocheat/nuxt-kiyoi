@@ -8,9 +8,12 @@
 			<div class="px-5">
 				<p class="caption font-italic pt-5">The field labels marked with * are required input fields.</p>
 				<v-row>
-					<v-col md="6" cols="12">
-						<label for="reference_no" class="font-weight-bold">Reference No</label>
-						<v-text-field solo outlined dense v-model="form.reference_no"></v-text-field>
+					<v-col sm="6" cols="12">
+						<label class="font-weight-bold" for="name">Reference No*</label>
+						<validation-provider name="Name" rules="required" v-slot="{ errors }">
+							<v-text-field outlined solo dense label="Reference_no" v-model="form.reference_no"></v-text-field>
+							<span class="red--text">{{ errors[0] }}</span>
+						</validation-provider>
 					</v-col>
 					<v-col md="6" cols="12">
 						<label class="font-weight-bold">Location*</label>
@@ -127,13 +130,13 @@
 					<v-col md="6" cols="12">
 						<div class="d-flex flex-column mb-5">
 							<label for class="font-weight-bold">Return Note</label>
-							<textarea cols="30" rows="7" class="textarea" v-model="form.return_des"></textarea>
+							<textarea cols="30" rows="5" class="textarea" v-model="form.return_des"></textarea>
 						</div>
 					</v-col>
 					<v-col md="6" cols="12">
 						<div class="d-flex flex-column mb-5">
 							<label for class="font-weight-bold">Staff Note</label>
-							<textarea cols="30" rows="7" class="textarea" v-model="form.staff_des"></textarea>
+							<textarea cols="30" rows="5" class="textarea" v-model="form.staff_des"></textarea>
 						</div>
 					</v-col>
 				</v-row>
@@ -302,6 +305,7 @@
 						account: this.form.account,
 						return_des: this.form.return_des,
 						staff_des: this.form.staff_des,
+						reference_no: this.form.reference_no
 					})
 					.then(res => {
 						this.$set(this.$data, "returnsale", res.data);

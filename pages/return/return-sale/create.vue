@@ -8,7 +8,20 @@
 			<div class="px-5">
 				<p class="caption font-italic pt-5">The field labels marked with * are required input fields.</p>
 				<v-row>
-					<v-col md="4" cols="12">
+					<v-col md="6" cols="12">
+						<label class="font-weight-bold">Reference No *</label>
+						<validation-provider name="Name" rules="required" v-slot="{ errors }">
+							<v-text-field 
+							outlined 
+							solo 
+							dense 
+							label="Reference no..." 
+							v-model="form.reference_no"
+							></v-text-field>
+							<span class="red--text">{{ errors[0] }}</span>
+						</validation-provider>
+					</v-col>
+					<v-col md="6" cols="12">
 						<label class="font-weight-bold" for="address">location*</label>
 						<v-autocomplete 
 							item-value="address" 
@@ -22,7 +35,7 @@
 							label="Please type, product code and select..."
 						></v-autocomplete >
 					</v-col>
-					<v-col md="4" cols="12">
+					<v-col md="6" cols="12">
 						<label class="font-weight-bold" for="name">Customer*</label>
 						<v-autocomplete 
 							item-value="name" 
@@ -36,7 +49,7 @@
 							label="Please type, product code and select..."
 						></v-autocomplete >
 					</v-col>
-					<v-col md="4" cols="12">
+					<v-col md="6" cols="12">
 						<label class="font-weight-bold" for="name">Account*</label>
 						<v-autocomplete 
 							item-value="name" 
@@ -92,6 +105,7 @@
 											class="table-order"
 											name="form.items[index].quantity"
 											v-model="form.items[index].quantity"
+											placeholder="0.00"
 										/>
 										<span>{{ errors[0] }}</span>
 									</validation-provider>
@@ -100,7 +114,6 @@
 									<input
 										type="number"
 										class="table-order"
-										name="form.items[index].unit_price"
 										v-model="form.items[index].unit_price"
 										placeholder="0.00"
 									/>

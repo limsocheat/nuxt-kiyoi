@@ -10,23 +10,25 @@
 				</nuxt-link>
 			</div>
 		</div>
-		<div class="d-flex justify-space-between">
-			<div>
-				<v-text-field 
-					label="Search" 
-					solo 
-					outlined 
-					dense
-					v-model="search"
-				></v-text-field>
-			</div>
-			<div>
-				<v-btn class="red darken-1">PDF</v-btn>
-				<v-btn class="lime lighten-1">CSV</v-btn>
-				<v-btn class="blue lighten-1">Print</v-btn>
-			</div>
-		</div>
+		
 		<v-card>
+			<div class="d-flex justify-space-between pt-6 px-5">
+				<div>
+					<v-text-field 
+						label="Search" 
+						solo 
+						outlined 
+						dense
+						v-model="search"
+					></v-text-field>
+				</div>
+				<div>
+					<v-btn class="red darken-1">PDF</v-btn>
+					<v-btn class="lime lighten-1">CSV</v-btn>
+					<v-btn class="blue lighten-1">Print</v-btn>
+				</div>
+			</div>
+			<v-divider></v-divider>
 			<v-data-table
 				:headers="headers"
 				:items="items"
@@ -46,7 +48,7 @@
 								{{ item.status }}
 							</span>
 						</td>
-						<td @click="viewQuotation(item.id)">USD  {{ item.total | formatNumber}}</td>
+						<td @click="viewQuotation(item.id)"> {{ item.grand_total | formatMoney }}</td>
 						
 						<td class="text-center">
 							<div class="row"> 
@@ -89,7 +91,7 @@
 	import Vue from 'vue';
 
 	var numeral = require("numeral");
-	Vue.filter("formatNumber", function (value) {
+	Vue.filter("formatMoney", function (value) {
 		return numeral(value).format("0,0.00");
 	});
 
@@ -103,7 +105,12 @@
 				handler() {
 					this.fetchData();
 				}
+			},
+			search:{
+			handler(){
+				this.fetchSearch();
 			}
+		},
 		},
 
 		data() {
@@ -121,42 +128,34 @@
 					{
 						text: "Date",
 						sortable: false,
-						// value: "created_at"
 					},
 					{
-						text: "Reference",
+						text: "Reference No",
 						sortable: false,
-						// value: "reference_no"
 					},
 					{
 						text: "Biller",
 						sortable: false,
-						// value: "biller"
 					},
 					{
 						text: "Customer",
 						sortable: false,
-						// value: "members"
 					},
 					{
 						text: "Supplier",
 						sortable: false,
-						// value: "suppliers"
 					},
 					{
 						text: "Status",
 						sortable: false,
-						// value: "status"
 					},
 					{
 						text: "Grand Total",
 						sortable: false,
-						// value: "total"
 					},
 					{
 						text: "Action",
 						sortable: false,
-						// value:"action"
 					}
 				],
 			};
@@ -174,6 +173,16 @@
 					console.log(err);
 				})
 			},
+			fetchSearch(){
+			this.$axios.$get(`/api/quotation?search=${this.search}`)
+			.then(res =>{
+				this.items = res.quotation.data;
+				console.log(res)
+			})
+			.catch(err =>{
+				console.log(err.response);
+			})
+		},
 			viewQuotation(id) {
       		this.$router.push(`/quotation/${id}`);
 			},
@@ -187,8 +196,8 @@
 					this.$axios.$delete(`api/quotation/` + id)
 					.then(res => {
 						this.fetchData();
-								console.log(res);
-								this.$toast("Deleted Successfully");
+						console.log(res);
+						this.$toast.success("Deleted Successfully");
 					})
 					.catch(err => {
 						console.log(err.response);

@@ -10,22 +10,39 @@
 			<div class="px-5">
 				<p class="caption font-italic pt-5">The field labels marked with * are required input fields.</p>
 				<v-row>
-					<v-col md="4" cols="12">
-						<label class="font-weight-bold">Location *</label>
-						<v-autocomplete 
-							item-value="address" 
-							item-text="address"  
-							dense 
-							solo 
+					<v-col md="6" cols="12">
+						<label class="font-weight-bold">Reference No *</label>
+						<validation-provider name="Name" rules="required" v-slot="{ errors }">
+							<v-text-field 
 							outlined 
-							return-object
-							v-model="form.location"
-							:items="locations"
-							label="Please type, select..."
-						>
-						</v-autocomplete >
+							solo 
+							dense 
+							label="Reference no..." 
+							v-model="form.reference_no"
+							></v-text-field>
+							<span class="red--text">{{ errors[0] }}</span>
+						</validation-provider>
 					</v-col>
-					<v-col md="4" cols="12">
+
+					<v-col md="6" cols="12">
+						<label class="font-weight-bold">Location *</label>
+						<validation-provider name="Name" rules="required" v-slot="{ errors }">
+							<v-autocomplete 
+								item-value="address" 
+								item-text="address"  
+								dense 
+								solo 
+								outlined 
+								return-object
+								v-model="form.location"
+								:items="locations"
+								label="Please type, select..."
+							>
+							</v-autocomplete >
+							<span class="red--text">{{ errors[0] }}</span>
+						</validation-provider>
+					</v-col>
+					<v-col md="6" cols="12">
 						<label class="font-weight-bold">Supplier</label>
 						<v-autocomplete 
 							item-value="name" 
@@ -39,7 +56,7 @@
 							label="Please type, select..."
 						></v-autocomplete >
 					</v-col>
-					<v-col md="4" cols="12">
+					<v-col md="6" cols="12">
 						<label class="font-weight-bold">Account</label>
 						<v-autocomplete 
 							item-value="name" 
@@ -61,6 +78,7 @@
 							label="Please type, select product..."
 							dense
 							solo
+							outlined
 							return-object
 							item-text="name"
 							item-value="name"
@@ -93,6 +111,7 @@
 											class="table-order"
 											name="form.items[index].quantity"
 											v-model="form.items[index].quantity"
+											placeholder="0.00"
 										/>
 										<span>{{ errors[0] }}</span>
 									</validation-provider>
@@ -101,7 +120,6 @@
 									<input
 										type="number"
 										class="table-order"
-										name="form.items[index].unit_price"
 										v-model="form.items[index].unit_price"
 										placeholder="0.00"
 									/>
@@ -131,28 +149,16 @@
 					</table>
 				</div>
 				<v-row>
-					<!-- <v-col md="12" cols="12" class="d-flex flex-column mb-5">
-						<label for="" class="font-weight-bold pt-1">Attach Document</label>
-						<input type="file" @change="uploadFile($event)" class="attachDoc">
-					</v-col> -->
-					<!-- <v-col md="6" cols="12">
-						<label for="" class="font-weight-bold">Order Tax</label>
-						<v-autocomplete 
-							solo 
-							outlined
-							dense
-						></v-autocomplete >
-					</v-col> -->
 					<v-col md="6" cols="12">
 						<div class="d-flex flex-column mb-5">
 							<label for="" class="font-weight-bold">Return Note</label>
-							<textarea cols="30" rows="7" class="textarea" v-model="form.return_des"></textarea>
+							<textarea cols="30" rows="5" class="textarea" v-model="form.return_des"></textarea>
 						</div>
 					</v-col>
 					<v-col md="6" cols="12">
 						<div class="d-flex flex-column mb-5">
 							<label for="" class="font-weight-bold">Staff Note</label>
-							<textarea cols="30" rows="7" class="textarea" v-model="form.staff_des"></textarea>
+							<textarea cols="30" rows="5" class="textarea" v-model="form.staff_des"></textarea>
 						</div>
 					</v-col>
 				</v-row>
