@@ -1,23 +1,52 @@
 <template>
 	<v-app>
-		<v-app-bar color="green darken-3" app fixed clipped dense dark>
+		<v-app-bar
+			color="green darken-3"
+			app
+			fixed
+			clipped
+			dense
+			dark
+		>
 			<v-app-bar-nav-icon @click.stop="toggle = !toggle"></v-app-bar-nav-icon>
 			<v-toolbar-title>KIYOI</v-toolbar-title>
 			<v-spacer></v-spacer>
 			<v-toolbar-items>
-				<nuxt-link v-permission="'pos'" style="color: #fff" class="posLink" to="/sale/pos/create">
-					<v-btn text dark class="posLink--title">
+				<nuxt-link
+					v-permission="'pos'"
+					style="color: #fff"
+					class="posLink"
+					to="/sale/pos/create"
+				>
+					<v-btn
+						text
+						dark
+						class="posLink--title"
+					>
 						<v-icon left>mdi-cart</v-icon>POS
 					</v-btn>
 				</nuxt-link>
-				<v-btn text dark>{{ user.user ? user.user.name : null }}</v-btn>
-				<v-btn text dark @click="logout()">
+				<v-btn
+					text
+					dark
+				>{{ user.user ? user.user.name : null }}</v-btn>
+				<v-btn
+					text
+					dark
+					@click="logout()"
+				>
 					<v-icon>mdi-logout</v-icon>
 				</v-btn>
 			</v-toolbar-items>
 		</v-app-bar>
 
-		<v-navigation-drawer app clipped-left class="color" dense v-model="toggle">
+		<v-navigation-drawer
+			app
+			clipped-left
+			class="color"
+			dense
+			v-model="toggle"
+		>
 			<v-list-item class="text-center font-weight-bold color--item">
 				<v-list-item-content>
 					<!-- <v-img 
@@ -29,11 +58,22 @@
 
 			<v-divider></v-divider>
 
-			<v-list dense rounded>
-				<div v-for="(item, i) in menus" :key="i" router exact>
+			<v-list
+				dense
+				rounded
+			>
+				<div
+					v-for="(item, i) in menus"
+					:key="i"
+					router
+					exact
+				>
 					<div v-if="$laravel.hasPermission(item.permission)">
 						<template v-if="!item.children">
-							<v-list-item :key="i" :to="item.to">
+							<v-list-item
+								:key="i"
+								:to="item.to"
+							>
 								<v-list-item-content>
 									<v-list-item-title>
 										<v-icon left>{{ item.icon }}</v-icon>
@@ -43,7 +83,10 @@
 							</v-list-item>
 						</template>
 						<template v-else>
-							<v-list-group :key="i.name" :value="false">
+							<v-list-group
+								:key="i.name"
+								:value="false"
+							>
 								<template v-slot:activator>
 									<v-list-item-content>
 										<v-list-item-title>
@@ -53,7 +96,12 @@
 									</v-list-item-content>
 								</template>
 								<template v-for="(subMenu, i) in item.children">
-									<v-list-item :to="subMenu.to" :key="i" exact class="subMenu">
+									<v-list-item
+										:to="subMenu.to"
+										:key="i"
+										exact
+										class="subMenu"
+									>
 										<v-list-item-content>
 											<v-list-item-title>
 												<v-icon left>{{ subMenu.icon }}</v-icon>
@@ -226,6 +274,13 @@
 						name: "Users Management",
 						icon: "mdi-account-group",
 						to: "/users",
+						permission: "view users"
+					},
+
+					{
+						name: "Calendar",
+						icon: "mdi-calendar-month",
+						to: "/calendar",
 						permission: "view users"
 					},
 					{

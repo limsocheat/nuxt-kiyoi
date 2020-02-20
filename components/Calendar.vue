@@ -74,13 +74,14 @@
 							<validation-provider
 								rules="required"
 								v-slot="{ errors }"
+								name="Color"
 							>
 								<v-text-field
 									type="color"
 									label="Color"
 									v-model="form.color"
 								></v-text-field>
-								<span>{{ errors[0] }}</span>
+								<span class="red--text">{{ errors[0] }}</span>
 							</validation-provider>
 						</form>
 					</ValidationObserver>
