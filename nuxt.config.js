@@ -49,7 +49,8 @@ export default {
     { src: "~/plugins/vuetify-snackbar"},
     { src: "~/plugins/laravel-permission"},
     { src: "~/plugins/vee-validate" },
-    { src: "~/plugins/notification.js", ssr: false}
+    { src: "~/plugins/notification.js", ssr: false},
+    { src: "~/plugins/vue-fullcalendar.js", ssr: false},
   ],
   /*
    ** Nuxt.js dev-modules

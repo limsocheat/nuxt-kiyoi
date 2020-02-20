@@ -20,9 +20,11 @@
 			</div>
 			<div>
 				<v-btn class="red darken-1">
-					<a href="/api/purchase/export">PDF</a>
+					<a :href="baseURL + '/api/purchase/export-pdf'">PDF</a>
 				</v-btn>
-				<v-btn class="lime lighten-1">CSV</v-btn>
+				<v-btn class="lime lighten-1">
+					<a :href="baseURL + '/api/purchase/export'">CSV</a>
+				</v-btn>
 				<v-btn class="blue lighten-1">Print</v-btn>
 			</div>
 		</div>
@@ -108,6 +110,7 @@
 
 		data() {
 			return {
+				baseURL: process.env.APP_URL,
 				items: [],
 				search: "",
 				form: {},
@@ -164,7 +167,7 @@
 					)
 					.then(res => {
 						// this.items = res.data;
-						this.$set(this.$data, 'items', res.data);
+						this.$set(this.$data, "items", res.data);
 						this.total = res.total;
 						console.log(res);
 					})
@@ -194,8 +197,7 @@
 
 			viewPurchase(id) {
 				this.$router.push(`/purchase/${id}`);
-			},
-		
+			}
 		}
 	};
 </script>

@@ -21,19 +21,31 @@
 			<table class="tablePOS">
 				<thead>
 					<tr class="tablePOS--item">
-						<th>Items</th>
-						<th>Quantity</th>
-						<th>Price</th>
-						<th>Discount</th>
-						<th>Total</th>
+						<th class="px-3">Items</th>
+						<th class="px-3">Quantity</th>
+						<th class="px-3">Price</th>
+						<th class="px-3">Total</th>
 					</tr>
 				</thead>
 				<tbody>
 					<template v-if="pos.products && pos.products.length > 0">
 						<tr v-for="(item, index) in pos.products" :key="index">
-							<td>{{ item.name }}</td>
-							<td>{{ item.pivot.quantity }}</td>
-							<td>$ {{ item.price | formatMoney }}</td>
+							<td class="px-3 tablePOS-border">{{ item.name }}</td>
+							<td class="px-3 tablePOS-border">{{ item.pivot.quantity }}</td>
+							<td class="px-3 tablePOS-border">$ {{ item.price | formatMoney }}</td>
+							<td class="px-3 tablePOS-border">$ {{ subTotal(item) | formatMoney }}</td>
+						</tr>
+						<tr>
+							<td colspan="3" class="px-3">Sub Total</td>
+							<td class="px-3">$ {{ totalPrice | formatMoney }}</td>
+						</tr>
+						<tr>
+							<td colspan="3" class="px-3 py-1">Discount</td>
+							<td class="px-3 py-1">% {{ pos.discount }}</td>
+						</tr>
+						<tr>
+							<td colspan="3" class="px-3 py-1">Total</td>
+							<td class="px-3 py-1">$ {{ total | formatMoney }}</td>
 						</tr>
 					</template>
 					<template v-else>
@@ -43,7 +55,7 @@
 					</template>
 				</tbody>
 			</table>
-			<button @click="print">Print</button>
+			<v-btn @click="print">Print</v-btn>
 		</div>
 	</v-container>
 </template>
@@ -64,18 +76,93 @@
 			this.fetchSale();
 		},
 
+		computed: {
+			totalPrice() {
+				return this.pos.products.reduce((total, item) => {
+					let s = item.price * item.pivot.quantity;
+					return total + s;
+				}, 0);
+			},
+
+			total() {
+				return this.pos.products.reduce((total, item) => {
+					let s =
+						(item.pivot.unit_price -
+							(item.pivot.unit_price * this.pos.discount) / 100) *
+						item.pivot.quantity;
+					return total + s;
+					console.log(item);
+				}, 0);
+			}
+		},
+
 		updated() {
 			import("print-js").then(() => {
 				this.printReady = true;
-				const style =
-					"@page { margin-top: 40px } @media print { h1 { color: blue } }";
+				const style = `
+									.kiyoiContainer {
+										// text-align: center;
+										padding: 20px;
+									}
+
+									.kiyoiPOS {
+										text-align: center;
+										display: flex;
+										flex-direction: column;
+										padding-top: 20px;
+									}
+									
+									.kiyoiPOS--title1 {
+										font-size: 30px;
+										font-weight: 370;
+										padding-bottom: 15px;
+									}
+
+									.kiyoiPOS--title2 {
+										padding-bottom: 15px;
+									}
+
+									.kiyoiPOS--title3 {
+										padding-bottom: 15px;
+										font-size: 25px;
+										font-weight: 350;
+									}
+									
+									.kiyoiInfo {
+										display: flex;
+										justify-content: space-between;
+									}
+									.kiyoiInfo--item {
+										display: flex;
+										flex-direction: column;
+									}
+									.kiyoiInfo--title {
+										font-weight: 400;
+									}
+
+
+									.tablePOS { 
+										width: 100%; text-align: left; border-collapse: collapse; 
+										margin-top: 20px;
+									} 
+									.tablePOS--item { 
+										border-top: 1px solid rgba(0, 0, 0, 0.125); border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+									}
+
+									.tablePOS-border {
+										border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+										padding-top: 5px;
+										padding-bottom: 5px;
+									}
+								`;
+
 				printJS({
 					printable: "printPOS",
 					type: "html",
-					scanStyle: false,
-					style: "../../assets/css/print-pos.scss",
-					style,
-					targetStyles: ["*"]
+					scanStyles: false,
+					// style: "../../assets/css/print_pos.scss"
+					style
+					// targetStyles: []
 				});
 			});
 		},
@@ -89,14 +176,14 @@
 
 		methods: {
 			print() {
-				const style =
-					"@page { margin-top: 40px } @media print { h1 { color: blue } }";
+				// const style =
+				// 	"@page { margin-top: 40px } @media print { body { font-size: 10px; } }";
 				printJS({
 					printable: "printPOS",
 					type: "html",
 					scanStyle: false,
-					style: "../../assets/css/print-pos.scss",
-					style,
+					// css: "../../assets/css/print-pos.scss"
+					// style,
 					targetStyles: ["*"]
 				});
 			},
@@ -111,6 +198,10 @@
 					.catch(err => {
 						console.log(err.response);
 					});
+			},
+
+			subTotal(item) {
+				return item.price * item.pivot.quantity;
 			}
 		}
 	};
@@ -119,7 +210,7 @@
 <style lang="scss">
 	.kiyoiContainer {
 		// text-align: center;
-		padding: 50px;
+		padding: 20px;
 	}
 
 	.kiyoiPOS {
@@ -158,8 +249,8 @@
 
 	.tablePOS {
 		width: 100%;
-		text-align: left;
 		border-collapse: collapse;
+		text-align: left;
 		&--item {
 			border-top: 1px solid rgba($color: #000000, $alpha: 1);
 			border-bottom: 1px solid rgba($color: #000000, $alpha: 1);
@@ -169,5 +260,10 @@
 			text-align: center;
 			border: 2px solid seagreen;
 		}
+
+		&-border {
+			border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+		}
 	}
+	//
 </style>
