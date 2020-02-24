@@ -730,11 +730,17 @@
 						]
 					},
 					{
-						name: "Support",
-						icon: "mdi-face-agent",
-						to: "/supports/",
+						name: "History Log",
+						icon: "mdi-map-search-outline",
+						to: "/history/",
 						permission: "support"
 					}
+					// {
+					// 	name: "Support",
+					// 	icon: "mdi-face-agent",
+					// 	to: "/supports/",
+					// 	permission: "support"
+					// }
 				]
 			};
 		},
