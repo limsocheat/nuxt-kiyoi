@@ -16,7 +16,8 @@
 				:items="activities"
 			>
 				<template v-slot:item="{ item }">
-					<tr>
+					<!-- For Product history -->
+					<tr v-if="item.subject_type === 'App\\Product'">
 						<td>{{ getMoment(item.created_at) }}</td>
 						<td>
 							{{ item.properties.attributes.type }}
@@ -25,6 +26,16 @@
 						</td>
 						<td> {{ item.properties.attributes.user_name }} </td>
 					</tr>
+
+					<!-- For Sale history -->
+					<tr v-if="item.subject_type === 'App\\Sale'">
+						<td>{{ getMoment(item.created_at) }}</td>
+						<td>
+							{{ item.description }}
+						</td>
+						<td> {{ item.properties.attributes.user_name }} </td>
+					</tr>
+
 				</template>
 			</v-data-table>
 		</v-card>

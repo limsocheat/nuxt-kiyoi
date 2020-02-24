@@ -2,13 +2,27 @@
 	<v-app class="mx-5 my-5">
 		<div class="d-flex">
 			<div class="pb-5 d-flex">
-				<nuxt-link class="nuxt--link" to="/sale/add_sale">
-					<v-btn class="teal darken-1" dark v-permission="'add sales'">
+				<nuxt-link
+					class="nuxt--link"
+					to="/sale/add_sale"
+				>
+					<v-btn
+						class="teal darken-1"
+						dark
+						v-permission="'add sales'"
+					>
 						<v-icon left>mdi-plus-circle</v-icon>Add Sale
 					</v-btn>
 				</nuxt-link>
-				<nuxt-link class="nuxt--link px-3" to="/sale/import_sale">
-					<v-btn class="purple darken-1" dark v-permission="'add sales'">
+				<nuxt-link
+					class="nuxt--link px-3"
+					to="/sale/import_sale"
+				>
+					<v-btn
+						class="purple darken-1"
+						dark
+						v-permission="'add sales'"
+					>
 						<v-icon left>mdi-file</v-icon>Import Sale
 					</v-btn>
 				</nuxt-link>
@@ -16,7 +30,13 @@
 		</div>
 		<div class="d-flex justify-space-between">
 			<div>
-				<v-text-field label="Search" v-model="search" solo outlined dense></v-text-field>
+				<v-text-field
+					label="Search"
+					v-model="search"
+					solo
+					outlined
+					dense
+				></v-text-field>
 			</div>
 			<div>
 				<v-btn class="red darken-1">PDF</v-btn>
@@ -35,6 +55,7 @@
 				<template v-slot:item="{ item }">
 					<tr class="sale-tr">
 						<td>{{ item.created_at }}</td>
+						<td>{{ item.user.name }}</td>
 						<td>{{ item.reference_no }}</td>
 						<td>{{ item.member.name }}</td>
 						<td>
@@ -44,13 +65,37 @@
 						<td>USD {{ item.paid | formatNumber }}</td>
 						<td>USD {{ item.due_amount | formatNumber }}</td>
 						<td>
-							<v-btn @click="viewInfo(item.id)" small outlined icon color="teal">
-								<v-icon small text>mdi-eye</v-icon>
+							<v-btn
+								@click="viewInfo(item.id)"
+								small
+								outlined
+								icon
+								color="teal"
+							>
+								<v-icon
+									small
+									text
+								>mdi-eye</v-icon>
 							</v-btn>
-							<v-btn @click="editSale(item.id)" small outlined icon color="primary">
-								<v-icon small text>mdi-pencil</v-icon>
+							<v-btn
+								@click="editSale(item.id)"
+								small
+								outlined
+								icon
+								color="primary"
+							>
+								<v-icon
+									small
+									text
+								>mdi-pencil</v-icon>
 							</v-btn>
-							<v-btn @click="removeSale(item.id)" small outlined icon color="red">
+							<v-btn
+								@click="removeSale(item.id)"
+								small
+								outlined
+								icon
+								color="red"
+							>
 								<v-icon small>mdi-delete</v-icon>
 							</v-btn>
 						</td>
@@ -90,6 +135,10 @@
 						text: "Date",
 						sortable: false,
 						value: "date"
+					},
+					{
+						text: "Seller",
+						sortable: false
 					},
 					{
 						text: "Invoice No",
