@@ -48,6 +48,26 @@
 											<span class="red--text">{{ errors[0] }}</span>
 										</validation-provider>
 									</div>
+
+									<!-- Address -->
+									<div class="AddUserForm">
+										<label class="font-weight-bold" for="name">Address</label>
+										<validation-provider name="Address" rules="required" v-slot="{ errors }">
+											<input type="text" class="AddUserForm--input" v-model="form.address" />
+											<span class="red--text">{{ errors[0] }}</span>
+										</validation-provider>
+									</div>
+
+									<!-- Phone -->
+									<div class="AddUserForm">
+										<label class="font-weight-bold" for="name">Phone</label>
+										<validation-provider name="Phone" rules="required" v-slot="{ errors }">
+											<input type="text" class="AddUserForm--input" v-model="form.phone" />
+											<span class="red--text">{{ errors[0] }}</span>
+										</validation-provider>
+									</div>
+									
+									<!-- Email -->
 									<div class="AddUserForm">
 										<validation-provider name="Email" rules="required|email" v-slot="{ errors }">
 											<label class="font-weight-bold" for="email">Email</label>
@@ -55,10 +75,21 @@
 											<span class="red--text">{{ errors[0] }}</span>
 										</validation-provider>
 									</div>
+									
+									<!-- Password -->
 									<div class="AddUserForm">
 										<label class="font-weight-bold" for="password">Password</label>
-										<validation-provider name="Password" rules="required" v-slot="{ errors }">
+										<validation-provider name="Password" rules="required|min:6" v-slot="{ errors }">
 											<input type="password" class="AddUserForm--input" v-model="form.password" />
+											<span class="red--text">{{ errors[0] }}</span>
+										</validation-provider>
+									</div>
+
+									<!-- Role -->
+									<div class="AddUserForm">
+										<label class="font-weight-bold" for="name">Role</label>
+										<validation-provider name="Role" rules="required" v-slot="{ errors }">
+											<v-select :items="role" v-model="form.role" outlined solo dense></v-select>	
 											<span class="red--text">{{ errors[0] }}</span>
 										</validation-provider>
 									</div>
@@ -81,6 +112,8 @@
 				</v-toolbar>
 			</v-card-title>
 			<v-divider></v-divider>
+
+			<!-- DataTable -->
 			<v-data-table :headers="headers" :items="items" v-permission="'view users'">
 				<template v-slot:item.action="{item}">
 					<v-tooltip top v-permission="'edit users'">
@@ -106,12 +139,8 @@
 </template>
 
 <script>
-	import { ValidationProvider, ValidationObserver } from "vee-validate";
 	export default {
-		components: {
-			ValidationProvider, ValidationObserver
-		},
-
+		name: 'UserField',
 		watch: {
 			name: {
 				handler() {
@@ -153,18 +182,16 @@
 					},
 					{
 						text: "Mobile",
-						sortable: false
-					},
-					{
-						text: "Balance",
-						sortable: false
+						sortable: false,
+						value: 'phone',
 					},
 					{
 						text: "Action",
 						value: "action",
 						sortable: false
 					}
-				]
+				],
+				role: ['saleman', 'administator'],
 			};
 		},
 
@@ -192,6 +219,9 @@
 						.$patch(`/api/user/` + this.form.id, {
 							name: this.form.name,
 							email: this.form.email,
+							phone: this.form.phone,
+							address: this.form.address,
+							role: this.form.role,
 							password: this.form.password
 						})
 						.then(res => {

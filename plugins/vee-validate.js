@@ -23,8 +23,14 @@ extend('email', {
 
 
 extend('min', {
-	...min,
-	message: "*Name Must be 3 characters at least"
+	// ...min,
+	validate(value, { length }) {
+    	return value.length >= length;
+  	},
+
+ 	params: ['length'],
+  	
+  	message: 'The {_field_} field must have at least {length} characters'
 });
 
 // import Vue from 'vue';
