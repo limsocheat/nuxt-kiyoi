@@ -191,7 +191,7 @@
 						sortable: false
 					}
 				],
-				role: ['saleman', 'administator'],
+				role: ['saleman', 'administrator', 'saleManager', 'supervisor', 'member', 'techinician'],
 			};
 		},
 
