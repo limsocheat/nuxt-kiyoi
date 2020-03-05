@@ -50,22 +50,22 @@
 									</div>
 
 									<!-- Address -->
-									<div class="AddUserForm">
+									<!-- <div class="AddUserForm">
 										<label class="font-weight-bold" for="name">Address</label>
 										<validation-provider name="Address" rules="required" v-slot="{ errors }">
 											<input type="text" class="AddUserForm--input" v-model="form.address" />
 											<span class="red--text">{{ errors[0] }}</span>
 										</validation-provider>
 									</div>
-
+ -->
 									<!-- Phone -->
-									<div class="AddUserForm">
+									<!-- <div class="AddUserForm">
 										<label class="font-weight-bold" for="name">Phone</label>
 										<validation-provider name="Phone" rules="required" v-slot="{ errors }">
 											<input type="text" class="AddUserForm--input" v-model="form.phone" />
 											<span class="red--text">{{ errors[0] }}</span>
 										</validation-provider>
-									</div>
+									</div> -->
 									
 									<!-- Email -->
 									<div class="AddUserForm">
@@ -89,7 +89,7 @@
 									<div class="AddUserForm">
 										<label class="font-weight-bold" for="name">Role</label>
 										<validation-provider name="Role" rules="required" v-slot="{ errors }">
-											<v-select :items="role" v-model="form.role" outlined solo dense></v-select>	
+											<v-select multiple :items="roles" item-value="id" item-text="name" v-model="form.role_ids" outlined solo dense></v-select>	
 											<span class="red--text">{{ errors[0] }}</span>
 										</validation-provider>
 									</div>
@@ -115,23 +115,33 @@
 
 			<!-- DataTable -->
 			<v-data-table :headers="headers" :items="items" v-permission="'view users'">
-				<template v-slot:item.action="{item}">
-					<v-tooltip top v-permission="'edit users'">
-						<template v-slot:activator="{ on }">
-							<v-btn icon @click="editItem(item)" color="primary" outlined v-on="on">
-								<v-icon small>mdi-pencil</v-icon>
-							</v-btn>
-						</template>
-						<span>Edit</span>
-					</v-tooltip>
-					<v-tooltip top v-permission="'delete users'">
-						<template v-slot:activator="{ on }">
-							<v-btn icon @click="deleteItem(item)" color="red" outlined v-on="on">
-								<v-icon small>mdi-delete</v-icon>
-							</v-btn>
-						</template>
-						<span>Delete</span>
-					</v-tooltip>
+				<template v-slot:item="{ item }">
+					<tr>
+						<td>{{ item.id }}</td>
+						<td>{{ item.name }}</td>
+						<td>{{ item.email }}</td>
+						<td>{{ item.count_referrer }}</td>
+						<td>{{ item.referral_code }}</td>
+						<td>{{ item.referred_by }}</td>
+						<td>
+							<v-tooltip top v-permission="'edit users'">
+								<template v-slot:activator="{ on }">
+									<v-btn icon @click="editItem(item)" color="primary" outlined v-on="on">
+										<v-icon small>mdi-pencil</v-icon>
+									</v-btn>
+								</template>
+								<span>Edit</span>
+							</v-tooltip>
+							<v-tooltip top v-permission="'delete users'">
+								<template v-slot:activator="{ on }">
+									<v-btn icon @click="deleteItem(item)" color="red" outlined v-on="on">
+										<v-icon small>mdi-delete</v-icon>
+									</v-btn>
+								</template>
+								<span>Delete</span>
+							</v-tooltip>
+						</td>
+					</tr>
 				</template>
 			</v-data-table>
 		</v-card>
@@ -159,6 +169,7 @@
 
 		data() {
 			return {
+				baseURL: process.env.APP_URL,
 				dialog: false,
 				items: [],
 				form: {},
@@ -181,9 +192,17 @@
 						sortable: false
 					},
 					{
-						text: "Mobile",
+						text: "Referral Count",
 						sortable: false,
-						value: 'phone',
+					},
+					{
+						text: "Referral_Code",
+						sortable: false,
+						value: 'referal_code',
+					},
+					{
+						text: "Referrer By",
+						sortable: false,
 					},
 					{
 						text: "Action",
@@ -191,7 +210,7 @@
 						sortable: false
 					}
 				],
-				role: ['saleman', 'administrator', 'saleManager', 'supervisor', 'member', 'techinician'],
+				roles: [],
 			};
 		},
 
@@ -207,13 +226,21 @@
 				});
 			},
 
+			getRoles(){
+				this.$axios.$get(this.baseURL + `/api/data/roles`).then(response => {
+					this.roles = response;
+				})
+			},
+
 			editItem(item) {
+				this.getRoles();
 				this.editedIndex = this.items.indexOf(item);
 				this.form = Object.assign({}, item);
 				this.dialog = true;
 			},
 
 			addUser() {
+				this.getRoles();
 				if (this.editedIndex > -1) {
 					this.$axios
 						.$patch(`/api/user/` + this.form.id, {
@@ -221,7 +248,7 @@
 							email: this.form.email,
 							phone: this.form.phone,
 							address: this.form.address,
-							role: this.form.role,
+							role_ids: this.form.role_ids,
 							password: this.form.password
 						})
 						.then(res => {
@@ -274,6 +301,7 @@
 
 		created() {
 			this.getItems();
+			this.getRoles()
 		}
 	};
 </script>

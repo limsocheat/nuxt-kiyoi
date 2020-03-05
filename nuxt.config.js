@@ -72,7 +72,8 @@ export default {
    ** See https://axios.nuxtjs.org/options
    */
   axios: {
-	  proxy: true
+	  proxy: true,
+    basURL: process.env.APP_URL,
   },
 
   proxy: {
