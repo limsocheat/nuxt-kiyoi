@@ -3,7 +3,7 @@
 		<v-content>
 			<v-container class="fill-height" fluid>
 				<v-row align="center" justify="center">
-					<v-col cols="12" sm="8" md="4">
+					<v-col cols="12" md="8">
 						<v-card class="elevation-12">
 							<v-toolbar color="primary" dark flat>
 								<v-toolbar-title>Register form</v-toolbar-title>
@@ -99,11 +99,16 @@
 			async registerUser() {
 				await this.$axios.post(this.baseURL + `api/register`, this.auth)
 		        .then (res => {
-		          this.$toast.success('User was successfully authenticated.')
+		          this.$toast.success('User was successfully registed.')
 		          this.$router.push('/')
 		        })
-		        .catch(e => {
-		          this.$toast.error('Error: Please check your credentials.')
+		        .catch(err => {
+		        	if(err.response.status === 422) {
+		         		this.$refs.form.validate(err.response.data.errors)
+		        	}
+		        	else {
+		          		this.$toast.error('Error: Please check your credentials.')
+		        	}
 		        });
 	        }
 		},
