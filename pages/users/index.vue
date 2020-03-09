@@ -117,6 +117,13 @@
 			<v-data-table :headers="headers" :items="items" v-permission="'view users'">
 				<template v-slot:item="{ item }">
 					<tr>
+						<td v-if="item.image">
+						  	<img :src="baseURL + `image/${item.image}`" alt=""> 
+						</td>
+						<td v-else>
+							<!-- <img src="../../assets/img/avatar.jpg" alt="" width="50" height="50"> -->
+							<span>No Image</span>
+						</td>
 						<td>{{ item.id }}</td>
 						<td>{{ item.name }}</td>
 						<td>{{ item.email }}</td>
@@ -126,7 +133,7 @@
 						<td>
 							<v-tooltip top v-permission="'edit users'">
 								<template v-slot:activator="{ on }">
-									<v-btn icon @click="editItem(item)" color="primary" outlined v-on="on">
+									<v-btn icon @click="editItem(item.id)" color="primary" outlined v-on="on">
 										<v-icon small>mdi-pencil</v-icon>
 									</v-btn>
 								</template>
@@ -176,6 +183,10 @@
 				name: '',
 				email: '',
 				headers: [
+					{
+						text: "Image",
+						sortable: false
+					},
 					{
 						text: "ID",
 						value: "id",
@@ -232,51 +243,26 @@
 				})
 			},
 
-			editItem(item) {
-				this.getRoles();
-				this.editedIndex = this.items.indexOf(item);
-				this.form = Object.assign({}, item);
-				this.dialog = true;
+			editItem(id) {
+				this.$router.push(`/users/${id}/edit`)
 			},
 
 			addUser() {
 				this.getRoles();
-				if (this.editedIndex > -1) {
-					this.$axios
-						.$patch(`/api/user/` + this.form.id, {
-							name: this.form.name,
-							email: this.form.email,
-							phone: this.form.phone,
-							address: this.form.address,
-							role_ids: this.form.role_ids,
-							password: this.form.password
-						})
-						.then(res => {
-							this.getItems();
-							this.closeDialog();
-							this.$toast.info("Succeessfully Updated");
-						})
-						.catch(err => {
-							this.$refs.nameOfObserver.validate(
-								err.response.data.errors
-							);
-						});
-				} else {
-					this.$axios
-						.$post(`/api/user`, this.form)
-						.then(res => {
-							this.form = res;
-							this.getItems();
-							this.$toast.info("Succeessfully Created");
-							this.closeDialog();
-						})
-						.catch(err => {
-							this.$refs.nameOfObserver.validate(
-								err.response.data.errors
-							);
-							console.log(err.response.data.errors);
-						});
-				}
+				this.$axios
+					.$post(`/api/user`, this.form)
+					.then(res => {
+						this.form = res;
+						this.getItems();
+						this.$toast.info("Succeessfully Created");
+						this.closeDialog();
+					})
+					.catch(err => {
+						this.$refs.nameOfObserver.validate(
+							err.response.data.errors
+						);
+						console.log(err.response.data.errors);
+					});
 			},
 
 			closeDialog() {
