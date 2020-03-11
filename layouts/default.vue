@@ -308,8 +308,8 @@
 							},
 							{
 								name: "Product Category",
-								to: "/product/brand",
-								icon: "mdi-diamond-stone",
+								to: "/product/category",
+								icon: "mdi-align-horizontal-left",
 							}
 							// {
 							// 	name: "Print Barcode",
