@@ -305,6 +305,11 @@
 								to: "/product/brand",
 								icon: "mdi-diamond-stone",
 								permission: "view product"
+							},
+							{
+								name: "Product Category",
+								to: "/product/brand",
+								icon: "mdi-diamond-stone",
 							}
 							// {
 							// 	name: "Print Barcode",
@@ -563,25 +568,25 @@
 							}
 						]
 					},
-					{
-						name: "Accounting",
-						icon: "mdi-bank",
-						permission: "view account",
-						children: [
-							{
-								name: "Account List",
-								icon: "mdi-view-list",
-								to: "/accounting/account",
-								permission: "view account"
-							},
-							{
-								name: "Balance Sheet",
-								icon: "mdi-google-spreadsheet",
-								to: "/accounting/balancesheet",
-								permission: "view account"
-							}
-						]
-					},
+					// {
+					// 	name: "Accounting",
+					// 	icon: "mdi-bank",
+					// 	permission: "view account",
+					// 	children: [
+					// 		{
+					// 			name: "Account List",
+					// 			icon: "mdi-view-list",
+					// 			to: "/accounting/account",
+					// 			permission: "view account"
+					// 		},
+					// 		{
+					// 			name: "Balance Sheet",
+					// 			icon: "mdi-google-spreadsheet",
+					// 			to: "/accounting/balancesheet",
+					// 			permission: "view account"
+					// 		}
+					// 	]
+					// },
 					{
 						name: "People",
 						icon: "mdi-account-circle",

@@ -105,6 +105,7 @@
 <script>
 
 export default {
+	middleware: 'check_user_role',
 	data() {
 		return {
 			users: [
