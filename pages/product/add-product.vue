@@ -24,16 +24,16 @@
 						</validation-provider>
 					</v-col>
 					<v-col sm="6" cols="12">
-						<label class="font-weight-bold" for>Brand*</label>
+						<label class="font-weight-bold" for>Category</label>
 						<v-autocomplete
 							outlined
 							solo
 							dense
-							:items="brands"
+							:items="categories"
 							item-text="name"
-							item-value="name"
-							label="Select Brand"
-							v-model="form.brand"
+							item-value="id"
+							label="Select Category"
+							v-model="form.category"
 							return-object
 						></v-autocomplete>
 					</v-col>
@@ -88,7 +88,8 @@
 		name: "AddProduct",
 		created() {
 			this.fetchData()
-			this.fetchBrand()
+			// this.fetchBrand()
+			this.getCategory()
 		},
 
 		data() {
@@ -99,6 +100,7 @@
 				items: [],
 				brands: [],
 				url: null,
+				categories: [],
 				itemsPerPage: 5,
 				barcodes: ['Code 128', 'Code 39', 'UPC-A', 'UPC-E', 'EAN-8', 'EAN-13'],
 			}
@@ -108,6 +110,17 @@
     	methods: {
 		    randomNumber() {
 		     	return this.form.code = Math.floor(1000000 + Math.random() * 90000000)
+		    },
+
+		    getCategory() {
+		    	this.$axios.$get(`api/category`)
+		    	.then(res => {
+		    		this.$set(this.$data, 'categories', res.categories.data)
+		    		console.log(res);
+		    	})
+		    	.catch(err => {
+		    		console.log(err.response);
+		    	})
 		    },
 
 			fetchBrand() {

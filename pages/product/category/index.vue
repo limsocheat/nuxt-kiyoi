@@ -210,6 +210,7 @@
 
 			closeDialog() {
 				this.dialog = false;
+				this.create = true
 				this.form = {}
 			}
 		}
