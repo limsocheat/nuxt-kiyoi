@@ -40,7 +40,7 @@
 							<v-card-title>Add User</v-card-title>
 							<v-divider></v-divider>
 							<v-card-text>
-								<ValidationObserver ref="nameOfObserver">
+								<ValidationObserver ref="form">
 									<div class="AddUserForm">
 										<label class="font-weight-bold" for="name">Name</label>
 										<validation-provider name="Name" rules="required" v-slot="{ errors }">
@@ -49,24 +49,6 @@
 										</validation-provider>
 									</div>
 
-									<!-- Address -->
-									<!-- <div class="AddUserForm">
-										<label class="font-weight-bold" for="name">Address</label>
-										<validation-provider name="Address" rules="required" v-slot="{ errors }">
-											<input type="text" class="AddUserForm--input" v-model="form.address" />
-											<span class="red--text">{{ errors[0] }}</span>
-										</validation-provider>
-									</div>
- -->
-									<!-- Phone -->
-									<!-- <div class="AddUserForm">
-										<label class="font-weight-bold" for="name">Phone</label>
-										<validation-provider name="Phone" rules="required" v-slot="{ errors }">
-											<input type="text" class="AddUserForm--input" v-model="form.phone" />
-											<span class="red--text">{{ errors[0] }}</span>
-										</validation-provider>
-									</div> -->
-									
 									<!-- Email -->
 									<div class="AddUserForm">
 										<validation-provider name="Email" rules="required|email" v-slot="{ errors }">
@@ -124,8 +106,8 @@
 							<!-- <img src="../../assets/img/avatar.jpg" alt="" width="50" height="50"> -->
 							<span>No Image</span>
 						</td>
-						<td>{{ item.id }}</td>
 						<td>{{ item.name }}</td>
+						<td>{{ item.role_name }}</td>
 						<td>{{ item.email }}</td>
 						<td>{{ item.count_referrer }}</td>
 						<td>{{ item.referral_code }}</td>
@@ -188,13 +170,12 @@
 						sortable: false
 					},
 					{
-						text: "ID",
-						value: "id",
+						text: "Name",
+						value: "name",
 						sortable: false
 					},
 					{
-						text: "Name",
-						value: "name",
+						text: "Role",
 						sortable: false
 					},
 					{
@@ -258,7 +239,7 @@
 						this.closeDialog();
 					})
 					.catch(err => {
-						this.$refs.nameOfObserver.validate(
+						this.$refs.form.validate(
 							err.response.data.errors
 						);
 						console.log(err.response.data.errors);
