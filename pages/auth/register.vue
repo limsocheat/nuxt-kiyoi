@@ -11,10 +11,20 @@
 							</v-toolbar>
 							<v-card-text>
 								<ValidationObserver ref="form">
-										<validation-provider name="Name" rules="required" v-slot="{ errors }">
+										<validation-provider name="First Name" rules="required" v-slot="{ errors }">
 											<v-text-field
-												label="Name"
-												v-model="auth.name"
+												label="First Name"
+												v-model="auth.first_name"
+												prepend-icon="mdi-account"
+												type="text"
+											/>										
+											<span class="red--text px-6">{{ errors[0] }}</span>
+										</validation-provider>
+
+										<validation-provider name="Last Name" rules="required" v-slot="{ errors }">
+											<v-text-field
+												label="Last Name"
+												v-model="auth.last_name"
 												prepend-icon="mdi-account"
 												type="text"
 											/>										

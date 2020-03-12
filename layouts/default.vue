@@ -29,7 +29,7 @@
 				<v-btn
 					text
 					dark
-				>{{ user.user ? user.user.name : null }}</v-btn>
+				>{{ user.user ? user.user.first_name : null }}</v-btn>
 				<v-btn
 					text
 					dark
@@ -949,6 +949,10 @@
 					"supplier report",
 					"due report"
 				]);
+			}
+
+			if(this.user.role[0] === 'member') {
+				this.$laravel.setPermissions(['member']);
 			}
 		}
 	};
