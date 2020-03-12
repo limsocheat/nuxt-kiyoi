@@ -5,7 +5,10 @@ export default ({ store, redirect }) => {
 	// 	return redirect('/')
 
 	// }
-	// else if(authenticatedUser.role == 'member') {
-	// 	return redirect('/member/dashboard')
+	if(authenticatedUser.role == 'member') {
+		return redirect('/member/product')
+	}
+	// else {
+	// 	return redirect('/')
 	// }
 }

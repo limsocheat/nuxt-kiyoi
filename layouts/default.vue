@@ -281,7 +281,7 @@
 						name: "Calendar",
 						icon: "mdi-calendar-month",
 						to: "/calendar",
-						permission: "view users"
+						permission: "calendar",
 					},
 					{
 						name: "Product",
@@ -631,6 +631,21 @@
 						]
 					},
 					{
+						name: 'Profile',
+						permission: 'member',
+						to: '/member/profile',
+					},
+					{
+						name: 'Purchase',
+						permission: 'member',
+						to: '/member/purchase',
+					},
+					{
+						name: 'Product',
+						permission: 'member',
+						to: '/member/product',
+					},
+					{
 						name: "Report",
 						icon: "mdi-newspaper-variant",
 						permission: "summary report",
@@ -776,6 +791,7 @@
 		created() {
 			if (this.user.role[0] === "administrator") {
 				this.$laravel.setPermissions([
+					'calendar',
 					"view users",
 					"add users",
 					"edit users",
@@ -867,6 +883,7 @@
 				this.user.role[0] === "Supervisor"
 			) {
 				this.$laravel.setPermissions([
+					'calendar',
 					"view sales",
 					"add sales",
 					"edit sales",
@@ -891,6 +908,7 @@
 
 			if (this.user.role[0] === "accountant") {
 				this.$laravel.setPermissions([
+					'calendar',
 					"view account",
 					"add account",
 					"edit account",
@@ -906,6 +924,7 @@
 
 			if (this.user.role[0] === "saleManager") {
 				this.$laravel.setPermissions([
+					'calendar',
 					"view sales",
 					"import sales",
 					"view product",
