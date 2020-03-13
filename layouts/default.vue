@@ -26,6 +26,7 @@
 						<v-icon left>mdi-cart</v-icon>POS
 					</v-btn>
 				</nuxt-link>
+				
 				<v-btn
 					text
 					dark
@@ -274,7 +275,7 @@
 						name: "Users Management",
 						icon: "mdi-account-group",
 						to: "/users",
-						permission: "view users"
+						permission: "view sales"
 					},
 
 					{

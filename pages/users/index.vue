@@ -34,7 +34,7 @@
 					<v-spacer></v-spacer>
 					<v-dialog v-model="dialog" max-width="600px">
 						<template v-slot:activator="{ on }">
-							<v-btn v-permission="'add users'" v-on="on">New</v-btn>
+							<v-btn v-on="on">New</v-btn>
 						</template>
 						<v-card>
 							<v-card-title>Add User</v-card-title>
@@ -96,7 +96,7 @@
 			<v-divider></v-divider>
 
 			<!-- DataTable -->
-			<v-data-table :headers="headers" :items="items" v-permission="'view users'">
+			<v-data-table :headers="headers" :items="items">
 				<template v-slot:item="{ item }">
 					<tr>
 						<td v-if="item.image">
@@ -106,14 +106,14 @@
 							<!-- <img src="../../assets/img/avatar.jpg" alt="" width="50" height="50"> -->
 							<span>No Image</span>
 						</td>
-						<td>{{ item.name }}</td>
+						<td>{{ item.last_name }}</td>
 						<td>{{ item.role_name }}</td>
 						<td>{{ item.email }}</td>
 						<td>{{ item.count_referrer }}</td>
 						<td>{{ item.referral_code }}</td>
 						<td>{{ item.referred_by }}</td>
 						<td>
-							<v-tooltip top v-permission="'edit users'">
+							<v-tooltip top>
 								<template v-slot:activator="{ on }">
 									<v-btn icon @click="editItem(item.id)" color="primary" outlined v-on="on">
 										<v-icon small>mdi-pencil</v-icon>
@@ -121,7 +121,7 @@
 								</template>
 								<span>Edit</span>
 							</v-tooltip>
-							<v-tooltip top v-permission="'delete users'">
+							<v-tooltip top>
 								<template v-slot:activator="{ on }">
 									<v-btn icon @click="deleteItem(item)" color="red" outlined v-on="on">
 										<v-icon small>mdi-delete</v-icon>

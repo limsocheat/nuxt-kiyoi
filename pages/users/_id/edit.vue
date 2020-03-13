@@ -51,9 +51,15 @@
 						<v-divider></v-divider>
 						<ValidationObserver ref="nameOfObserver">
 							<v-form class="px-5">
-								<!-- Name -->
+								<!-- First Name -->
 								<validation-provider name="Name" rules="required" v-slot="{ errors }">
-									<v-text-field v-model="user.name" label="Name"></v-text-field>
+									<v-text-field v-model="user.first_name" label="First Name"></v-text-field>
+									<span class="red--text">{{ errors[0] }}</span>
+								</validation-provider>
+
+								<!-- Last Name -->
+								<validation-provider name="Name" rules="required" v-slot="{ errors }">
+									<v-text-field v-model="user.last_name" label="Last Name"></v-text-field>
 									<span class="red--text">{{ errors[0] }}</span>
 								</validation-provider>
 
@@ -167,7 +173,8 @@ export default {
 			this.getRoles()
 			this.$axios.$put(`api/user/` + this.user.id, {
 				image: this.user.image,
-				name: this.user.name,
+				first_name: this.user.first_name,
+				last_name: this.user.last_name,
 				email: this.user.email,
 				phone: this.user.phone,
 				password: this.user.password,
