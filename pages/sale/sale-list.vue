@@ -83,6 +83,7 @@
 								outlined
 								icon
 								color="primary"
+								v-permission="'view users'"
 							>
 								<v-icon
 									small
@@ -95,6 +96,7 @@
 								outlined
 								icon
 								color="red"
+								v-permission="'view users'"
 							>
 								<v-icon small>mdi-delete</v-icon>
 							</v-btn>

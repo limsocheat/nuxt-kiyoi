@@ -1,7 +1,7 @@
 <template>
 	<v-app class="mx-5 my-5">
 		<div class="d-flex">
-			<div class="pb-5 pr-3" v-permission="'return purchases'">
+			<div class="pb-5 pr-3" v-permission="'view admin'">
 				<nuxt-link class="nuxt--link" to="/return/return-purchase/create">
 					<v-btn class="green darken-2" dark>
 						<v-icon left>mdi-plus-circle</v-icon>
@@ -54,15 +54,15 @@
 									</template>
 									<span>View</span>
 								</v-tooltip>
-								<v-tooltip top v-permission="'edit sales'">
-									<template v-slot:activator="{ on }">
-										<v-btn small icon @click="editItem(item.id)" color="primary" outlined v-on="on">
+								<v-tooltip top v-permission="'view users'">
+									<template v-slot:activator="{ on }" >
+										<v-btn  small icon @click="editItem(item.id)" color="primary" outlined v-on="on">
 											<v-icon small>mdi-pencil</v-icon>
 										</v-btn>
 									</template>
 									<span>Edit</span>
 								</v-tooltip>
-								<v-tooltip top v-permission="'delete sales'">
+								<v-tooltip top v-permission="'view users'">
 									<template v-slot:activator="{ on }">
 										<v-btn small icon @click="deleteItem(item.id)" color="red" outlined v-on="on">
 											<v-icon small>mdi-delete</v-icon>

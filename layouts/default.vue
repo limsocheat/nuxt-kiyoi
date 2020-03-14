@@ -633,16 +633,19 @@
 					},
 					{
 						name: 'Profile',
+						icon: 'mdi-account-circle',
 						permission: 'member',
 						to: '/member/profile',
 					},
 					{
 						name: 'Purchase',
+						icon: 'mdi-cart-arrow-right',
 						permission: 'member',
 						to: '/member/purchase',
 					},
 					{
 						name: 'Product',
+						icon: 'mdi-sitemap',
 						permission: 'member',
 						to: '/member/product',
 					},
@@ -877,6 +880,10 @@
 					"return sales",
 					"return purchases"
 				]);
+			}
+
+			if(this.user.role[0] === 'technician') {
+				this.$laravel.setPermissions(['view website', 'add website', 'edit website', 'delete website', 'calendar'])
 			}
 
 			if (
