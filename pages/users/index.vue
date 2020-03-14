@@ -225,7 +225,14 @@
 			},
 
 			editItem(id) {
-				this.$router.push(`/users/${id}/edit`)
+				console.log(this.$store.state.auth.user.role);
+				if(this.$store.state.auth.user.role[0] === 'administrator') {
+					this.$router.push(`/users/${id}/edit`)
+				}
+				else {
+					this.$router.push(`/users/profile`)
+				}
+				// this.$router.push(`/users/${id}/edit`)
 			},
 
 			addUser() {

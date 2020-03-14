@@ -1,6 +1,6 @@
 <template>
 	<v-app class="mx-5 my-5">
-		<div class="d-flex">
+		<div class="d-flex" id="div_id">
 			<div class="pb-5 pr-3">
 				<nuxt-link to="/product/add-product" class="nuxt--link grey--text text--lighten-4">
 					<v-btn class="teal darken-1" dark v-permission="'add sales'">
@@ -50,10 +50,21 @@
 			<div>
 				<v-text-field label="Search" solo outlined dense></v-text-field>
 			</div>
-			<div>
-				<v-btn class="red darken-1">PDF</v-btn>
-				<v-btn class="lime lighten-1">CSV</v-btn>
-				<v-btn class="blue lighten-1">Print</v-btn>
+			<div class="print">
+				<a class="print--link" :href="baseURL + `api/product/export_pdf`">
+					<v-btn class="red" dark>
+						<v-icon>mdi-file-pdf</v-icon>PDF
+					</v-btn>
+				</a>
+				
+				<a class="print--link" :href="baseURL + `api/product/export`">
+					<v-btn dark class="green accent-4">
+						<v-icon>mdi-file-excel-outline</v-icon>CSV
+					</v-btn>
+				</a>
+				<v-btn dark class="blue lighten-2" @click="printPage">
+					<v-icon>mdi-printer</v-icon>Print
+				</v-btn>
 			</div>
 		</div>
 		<v-data-table
@@ -66,7 +77,7 @@
 			<template v-slot:item="{ item }">
 				<tr>
 					<td v-if="item.image">
-						<img :src="'http://127.0.0.1:8000/image/' + item.image" class="product-img" />
+						<img :src="item.image_url" class="product-img" />
 					</td>
 					<td v-else>
 						<span>No Image</span>
@@ -133,6 +144,7 @@
 
 		data() {
 			return {
+				baseURL: process.env.APP_URL,
 				barcode: [
 					"Code 128",
 					"Code 39",
@@ -219,6 +231,10 @@
 					.catch(err => {
 						console.log(err.response);
 					});
+			},
+
+			printPage() {
+
 			}
 		}
 	};
@@ -257,5 +273,11 @@
 		width: 50px;
 		height: 50px;
 		margin-top: 5px;
+	}
+
+	.print {
+		&--link {
+			text-decoration: none;
+		}
 	}
 </style>

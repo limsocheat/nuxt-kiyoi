@@ -69,7 +69,7 @@
 					</v-col>
 					<v-col md="12" sm="12" cols="12">
 						<label class="font-weight-bold" for>Product Details</label>
-						<vue-editor v-model="form.description"></vue-editor>
+						<vue-editor v-model="form.description" />
 					</v-col>
 				</v-row>
 			</ValidationObserver>
@@ -94,7 +94,7 @@
 		data() {
 			return {
 				form: {
-					// code: '',
+					description: null,
 				},
 				items: [],
 				brands: [],
@@ -143,6 +143,7 @@
 					price: this.form.price,
 					brand: this.form.brand,
 					image: this.form.image,
+					description: this.form.description,
 				})
 		    	.then(res => {
 		    		this.items = res.data;
