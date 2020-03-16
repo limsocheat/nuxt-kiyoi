@@ -18,14 +18,21 @@
 			<div>
 				<v-text-field label="Search" solo outlined dense></v-text-field>
 			</div>
-			<div>
-				<v-btn class="red darken-1">
-					<a :href="baseURL + '/api/purchase/export-pdf'">PDF</a>
+			<div class="print">
+				<a class="print--link" :href="baseURL + '/api/purchase/export-pdf'">
+					<v-btn dark class="red darken-1">
+						<v-icon>mdi-file-pdf</v-icon>PDF
+					</v-btn>
+				</a>
+
+				<a class="print--link" :href="baseURL + '/api/purchase/export'">
+					<v-btn dark class="teal lighten-2">
+						<v-icon>mdi-file-excel-outline</v-icon>CSV
+					</v-btn>
+				</a>
+				<v-btn dark class="blue lighten-1">
+					<v-icon>mdi-printer</v-icon>Print
 				</v-btn>
-				<v-btn class="lime lighten-1">
-					<a :href="baseURL + '/api/purchase/export'">CSV</a>
-				</v-btn>
-				<v-btn class="blue lighten-1">Print</v-btn>
 			</div>
 		</div>
 		<v-card>
@@ -246,4 +253,11 @@
 	.viewPurchase {
 		cursor: pointer;
 	}
+	
+	.print {
+		&--link {
+			text-decoration: none;
+		}
+	}
+
 </style>
