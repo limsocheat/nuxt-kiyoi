@@ -2,7 +2,7 @@
 	<v-app class="mx-5 my-5">
 		<div>
 			<div class="py-5">
-				<v-dialog v-model="dialog" max-width="700px" v-permission="'add employee'" persistent>
+				<v-dialog v-model="dialog" max-width="700px" v-permission="'add payroll'" persistent>
 					<template v-slot:activator="{ on }">
 						<v-btn class="blue darken-1" dark v-on="on">
 							<v-icon left>mdi-plus-circle</v-icon>
@@ -125,7 +125,7 @@
 							<v-tooltip bottom>
 								<template v-slot:activator="{ on }">
 									<!-- Edit Item -->
-									<v-btn @click="editItem(item)" icon outlined color="primary" v-on="on">
+									<v-btn v-permission="'edit payroll'" @click="editItem(item)" icon outlined color="primary" v-on="on">
 										<v-icon small>
 											mdi-pencil
 										</v-icon>
@@ -136,7 +136,7 @@
 							<v-tooltip bottom>
 								<template v-slot:activator="{ on }">
 									<!-- Delete Item -->
-									<v-btn @click="deleteItem(item)" icon outlined color="red" v-on="on">
+									<v-btn v-permission="'delete payroll'" @click="deleteItem(item)" icon outlined color="red" v-on="on">
 										<v-icon small>
 											mdi-delete
 										</v-icon>

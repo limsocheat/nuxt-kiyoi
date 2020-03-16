@@ -591,19 +591,19 @@
 					{
 						name: "People",
 						icon: "mdi-account-circle",
-						permission: "view biller",
+						permission: "view users",
 						children: [
 							{
 								name: "Member List",
 								icon: "mdi-account-tie",
 								to: "/people/member",
-								permission: "view biller"
+								permission: "view users"
 							},
 							{
 								name: "Add Member",
 								icon: "mdi-plus-circle",
 								to: "/people/add_member",
-								permission: "view biller"
+								permission: "view users"
 							},
 							{
 								name: "Biller List",
@@ -615,33 +615,21 @@
 								name: "Add Biller",
 								icon: "mdi-plus-circle",
 								to: "/people/add_biller",
-								permission: "view biller"
+								permission: "add biller"
 							},
 							{
 								name: "Supplier List",
 								icon: "mdi-shield-star",
 								to: "/people/supplier",
-								permission: "view biller"
+								permission: "view supplier"
 							},
 							{
 								name: "Add Supplier",
 								icon: "mdi-plus-circle",
 								to: "/people/add_supplier",
-								permission: "view biller"
+								permission: "view supplier"
 							}
 						]
-					},
-					{
-						name: 'Profile',
-						icon: 'mdi-account-circle',
-						permission: 'member',
-						to: '/member/profile',
-					},
-					{
-						name: 'Purchase',
-						icon: 'mdi-cart-arrow-right',
-						permission: 'member',
-						to: '/member/purchase',
 					},
 					{
 						name: 'Product',
@@ -795,6 +783,7 @@
 		created() {
 			if (this.user.role[0] === "administrator") {
 				this.$laravel.setPermissions([
+					'view payroll', 'add payroll', 'edit payroll', 'delete payroll',
 					'calendar',
 					"view users",
 					"add users",
@@ -916,17 +905,9 @@
 
 			if (this.user.role[0] === "accountant") {
 				this.$laravel.setPermissions([
-					'calendar',
-					"view account",
-					"add account",
-					"edit account",
-					"delete account",
-					"import account",
-					"view expense",
-					"add expense",
-					"edit expense",
-					"delete expense",
-					"import expense"
+					'view payroll', 'add payroll', 'edit payroll', 'delete payroll',
+					'view purchase', 'view sales', 'view product', 'view account', 'add account', 'edit account', 'delete account', 'import account',
+		            'return sales', 'view employee', 'view biller', 'return purchases', 'view transfer', 'view expense', 'add expense', 'edit expense', 'delete expense', 'import expense', 'calendar'
 				]);
 			}
 
