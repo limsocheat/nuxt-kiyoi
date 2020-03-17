@@ -38,10 +38,20 @@
 					dense
 				></v-text-field>
 			</div>
-			<div>
-				<v-btn class="red darken-1">PDF</v-btn>
-				<v-btn class="lime lighten-1">CSV</v-btn>
-				<v-btn class="blue lighten-1">Print</v-btn>
+			<div class="print">
+				<a class="print--link" :href="baseURL + `api/sale/export_pdf`">
+					<v-btn dark class="red darken-1">
+						<v-icon>mdi-file-pdf</v-icon>PDF
+					</v-btn>
+				</a>
+				<a class="print--link" :href="baseURL + `api/sale/export`">
+					<v-btn dark class="lime lighten-1">
+						<v-icon>mdi-file-excel</v-icon>CSV
+					</v-btn>
+				</a>
+				<v-btn dark class="blue lighten-1">
+					<v-icon>mdi-printer</v-icon>Print
+				</v-btn>
 			</div>
 		</div>
 		<v-card>
@@ -124,6 +134,7 @@
 
 		data() {
 			return {
+				baseURL: process.env.APP_URL,
 				completed: true,
 				items: [],
 				search: "",
@@ -278,5 +289,11 @@
 
 	.sale-tr {
 		cursor: pointer;
+	}
+
+	.print {
+		&--link {
+			text-decoration: none;
+		}
 	}
 </style>

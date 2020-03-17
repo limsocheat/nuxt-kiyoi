@@ -33,8 +33,8 @@
 					</div>
 					<v-spacer></v-spacer>
 					<v-dialog v-model="dialog" max-width="600px">
-						<template v-slot:activator="{ on }">
-							<v-btn v-on="on">New</v-btn>
+						<template v-permission="'view users'" v-slot:activator="{ on }">
+							<v-btn  v-on="on">New</v-btn>
 						</template>
 						<v-card>
 							<v-card-title>Add User</v-card-title>
@@ -122,7 +122,7 @@
 								<span>Edit</span>
 							</v-tooltip>
 							<v-tooltip top>
-								<template v-slot:activator="{ on }">
+								<template v-permission="'add users'" v-slot:activator="{ on }">
 									<v-btn icon @click="deleteItem(item)" color="red" outlined v-on="on">
 										<v-icon small>mdi-delete</v-icon>
 									</v-btn>
