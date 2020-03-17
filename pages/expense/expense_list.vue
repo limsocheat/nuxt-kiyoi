@@ -1,9 +1,18 @@
 <template>
-	<v-app class="mx-5 my-5">
+	<v-container>
 		<div class="pb-5 pr-3">
-			<v-dialog v-model="dialog" max-width="700px" v-permission="'add expense'" persistent>
+			<v-dialog
+				v-model="dialog"
+				max-width="700px"
+				v-permission="'add expense'"
+				persistent
+			>
 				<template v-slot:activator="{ on }">
-					<v-btn class="teal darken-1" dark v-on="on">
+					<v-btn
+						class="teal darken-1"
+						dark
+						v-on="on"
+					>
 						<v-icon left>mdi-plus-circle</v-icon>Add Expense
 					</v-btn>
 				</template>
@@ -12,62 +21,155 @@
 				<v-card>
 					<v-card-title class="headline font-weight-light">ADD EXPENSE</v-card-title>
 					<v-divider></v-divider>
-					<v-row class="px-5">
-						<v-col cols="12" sm="6">
-							<label for>Category</label>
-							<v-autocomplete
-								solo
-								outlined
-								dense
-								:items="category"
-								v-model="form.expense_category"
-								item-text="name"
-								item-value="name"
-								label="Please Select"
-								return-object
-							></v-autocomplete>
-						</v-col>
-						<v-col cols="12" sm="6">
-							<label for>Amount</label>
-							<v-text-field outlined solo dense label="Amount" type="number" v-model.number="form.amount"></v-text-field>
-						</v-col>
-						<v-col cols="12" sm="12">
-							<label for>Expense For</label>
-							<v-autocomplete
-								solo
-								outlined
-								dense
-								label="Please Select"
-								:items="users"
-								item-text="name"
-								item-value="name"
-								return-object
-								v-model="form.user"
+					<ValidationObserver ref="form">
+						<v-row class="px-5">
+							<v-col
+								cols="12"
+								sm="6"
 							>
-								<template v-slot:item="{ item }">{{ item.name }}</template>
-							</v-autocomplete>
-						</v-col>
-						<v-col cols="12" sm="12">
-							<label for>Note</label>
-							<v-text-field solo outlined dense label="Note" v-model="form.description"></v-text-field>
-						</v-col>
-					</v-row>
+								<label for>Category</label>
+								<validation-provider
+									name="Expense Category"
+									rules="required"
+									v-slot="{ errors }"
+								>
+									<v-autocomplete
+										solo
+										outlined
+										dense
+										:items="category"
+										v-model="form.expense_category"
+										item-text="name"
+										item-value="name"
+										label="Please Select"
+										return-object
+									></v-autocomplete>
+									<span class="red--text">{{ errors[0] }}</span>
+								</validation-provider>
+							</v-col>
+
+							<v-col
+								cols="12"
+								sm="6"
+							>
+								<validation-provider
+									name="Amount"
+									rules="required"
+									v-slot="{ errors }"
+								>
+									<label for>Amount</label>
+									<v-text-field
+										outlined
+										solo
+										dense
+										label="Amount"
+										type="number"
+										v-model.number="form.amount"
+									></v-text-field>
+									<span class="red--text">{{ errors[0] }}</span>
+								</validation-provider>
+							</v-col>
+
+							<v-col
+								cols="12"
+								sm="12"
+							>
+								<validation-provider
+									name="Expense For"
+									rules="required"
+									v-slot="{ errors }"
+								>
+									<label for>Expense For</label>
+									<v-autocomplete
+										solo
+										outlined
+										dense
+										label="Please Select"
+										:items="users"
+										item-text="first_name"
+										item-value="id"
+										return-object
+										v-model="form.user"
+									>
+										<template v-slot:item="{ item }">{{ item.first_name }}</template>
+									</v-autocomplete>
+									<span class="red--text">{{ errors[0] }}</span>
+								</validation-provider>
+							</v-col>
+
+							<v-col
+								cols="12"
+								sm="12"
+							>
+								<label for>Note</label>
+								<v-text-field
+									solo
+									outlined
+									dense
+									label="Note"
+									v-model="form.description"
+								></v-text-field>
+							</v-col>
+						</v-row>
+					</ValidationObserver>
 					<v-card-actions>
 						<v-spacer></v-spacer>
-						<v-btn color="blue darken-1" text @click="closeDialog">Close</v-btn>
-						<v-btn color="primary" @click="createItem">Save</v-btn>
+						<v-btn
+							color="red"
+							text
+							@click="closeDialog"
+						>
+							<v-icon>mdi-close</v-icon> Close
+						</v-btn>
+						<v-btn
+							color="primary"
+							@click="createItem"
+						>
+							<v-icon>mdi-content-save</v-icon>Save
+						</v-btn>
 					</v-card-actions>
 				</v-card>
 			</v-dialog>
 		</div>
 		<div class="d-flex justify-space-between">
 			<div>
-				<v-text-field label="Search" v-model="search" solo outlined dense></v-text-field>
+				<v-text-field
+					label="Search"
+					v-model="search"
+					solo
+					outlined
+					dense
+				></v-text-field>
 			</div>
-			<div>
-				<v-btn class="red darken-1">PDF</v-btn>
-				<v-btn class="lime lighten-1">CSV</v-btn>
-				<v-btn class="blue lighten-1">Print</v-btn>
+			<div class="print">
+				<a
+					class="print--link"
+					:href="baseURL + `api/expense/export_pdf`"
+				>
+					<v-btn
+						dark
+						class="red darken-1"
+					>
+						<v-icon>mdi-file-pdf</v-icon>PDF
+					</v-btn>
+				</a>
+				<a
+					class="print--link"
+					:href="baseURL + `api/expense/export`"
+				>
+					<v-btn
+						dark
+						class="teal darken-1"
+					>
+						<v-icon>mdi-file-excel</v-icon>CSV
+					</v-btn>
+				</a>
+				<v-btn
+					dark
+					class="blue lighten-1"
+				>
+					<v-icon>mdi-printer</v-icon> Print
+				</v-btn>
 			</div>
 		</div>
 		<v-card>
@@ -76,6 +178,7 @@
 				:items="items"
 				:items-per-page="itemsPerPage"
 				:server-items-length="total"
+				:options.sync="options"
 			>
 				<template v-slot:item="{ item }">
 					<tr>
@@ -83,13 +186,23 @@
 						<td>{{ item.reference_no }}</td>
 						<td>{{ item.expense_category.name }}</td>
 						<td>USD {{ item.amount | formatNumber }}</td>
-						<td>{{ item.user.name }}</td>
+						<td>{{ item.user.first_name }}</td>
 						<td>{{ item.description }}</td>
 						<td>
-							<v-btn icon @click="editItem(item)" color="primary" outlined>
+							<v-btn
+								icon
+								@click="editItem(item)"
+								color="primary"
+								outlined
+							>
 								<v-icon small>mdi-pencil</v-icon>
 							</v-btn>
-							<v-btn icon @click="deleteItem(item)" color="red" outlined>
+							<v-btn
+								icon
+								@click="deleteItem(item)"
+								color="red"
+								outlined
+							>
 								<v-icon small>mdi-delete</v-icon>
 							</v-btn>
 						</td>
@@ -97,7 +210,7 @@
 				</template>
 			</v-data-table>
 		</v-card>
-	</v-app>
+	</v-container>
 </template>
 
 <script>
@@ -116,11 +229,14 @@
 			this.fetchData();
 			this.fetchCategory();
 			this.fetchUser();
+
+			console.log(this.options);
 		},
 
 		data() {
 			return {
 				// date: new Date().toISOString().substr(0, 10),
+				baseURL: process.env.APP_URL,
 				category: [],
 				users: [],
 				menu1: false,
@@ -130,6 +246,7 @@
 				total: 0,
 				options: {},
 				itemsPerPage: 5,
+				page: 1,
 				editedIndex: -1,
 				created: true,
 				dialog: false,
@@ -171,6 +288,12 @@
 				handler() {
 					this.fetchData();
 				}
+			},
+
+			options: {
+				handler() {
+					this.fetchData();
+				}
 			}
 		},
 
@@ -207,11 +330,13 @@
 
 			fetchData() {
 				this.$axios
-					.$get(`api/expense?search=${this.search}`)
+					.$get(
+						`api/expense?search=${this.search}&itemsPerPage=${this.options.itemsPerPage}&page=${this.options.page}`
+					)
 					.then(res => {
 						this.items = res.data;
 						this.total = res.meta.total;
-						console.log(res.data);
+						console.log(this.options);
 					})
 					.catch(err => {
 						console.log(err.response);
@@ -257,6 +382,10 @@
 							this.fetchData();
 							this.closeDialog();
 							this.$toast.info("Succeessfully Updated");
+						})
+						.catch(err => {
+							console.log(err);
+							this.$refs.form.validate(err.response.data.errors);
 						});
 				} else {
 					this.$axios
@@ -269,6 +398,7 @@
 						})
 						.catch(err => {
 							console.log(err.response);
+							this.$refs.form.validate(err.response.data.errors);
 						});
 				}
 			},
@@ -300,9 +430,15 @@
 	};
 </script>
 
-<style>
+<style lang="scss">
 	.uploadCsv {
 		border: 1px solid #161616;
 		padding: 3px 0px 3px 10px;
+	}
+
+	.print {
+		&--link {
+			text-decoration: none;
+		}
 	}
 </style>
