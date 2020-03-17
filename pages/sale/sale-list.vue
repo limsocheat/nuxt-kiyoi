@@ -39,17 +39,32 @@
 				></v-text-field>
 			</div>
 			<div class="print">
-				<a class="print--link" :href="baseURL + `api/sale/export_pdf`">
-					<v-btn dark class="red darken-1">
+				<a
+					class="print--link"
+					:href="baseURL + `api/sale/export_pdf`"
+				>
+					<v-btn
+						dark
+						class="red darken-1"
+					>
 						<v-icon>mdi-file-pdf</v-icon>PDF
 					</v-btn>
 				</a>
-				<a class="print--link" :href="baseURL + `api/sale/export`">
-					<v-btn dark class="lime lighten-1">
+				<a
+					class="print--link"
+					:href="baseURL + `api/sale/export`"
+				>
+					<v-btn
+						dark
+						class="lime lighten-1"
+					>
 						<v-icon>mdi-file-excel</v-icon>CSV
 					</v-btn>
 				</a>
-				<v-btn dark class="blue lighten-1">
+				<v-btn
+					dark
+					class="blue lighten-1"
+				>
 					<v-icon>mdi-printer</v-icon>Print
 				</v-btn>
 			</div>
