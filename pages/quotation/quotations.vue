@@ -1,31 +1,65 @@
 <template>
-	<v-app class="mx-5 my-5">
+	<v-container>
 		<div class="d-flex">
-			<div class="pb-5 pr-3" v-permission="'view quotation'">
-				<nuxt-link class="nuxt--link" to="/quotation/add">
-					<v-btn class="green darken-2" dark>
+			<div
+				class="pb-5 pr-3"
+				v-permission="'view quotation'"
+			>
+				<nuxt-link
+					class="nuxt--link"
+					to="/quotation/add"
+				>
+					<v-btn
+						class="green darken-2"
+						dark
+					>
 						<v-icon left>mdi-plus-circle</v-icon>
 						Add Quotation
 					</v-btn>
 				</nuxt-link>
 			</div>
 		</div>
-		
+
 		<v-card>
 			<div class="d-flex justify-space-between pt-6 px-5">
 				<div>
-					<v-text-field 
-						label="Search" 
-						solo 
-						outlined 
+					<v-text-field
+						label="Search"
+						solo
+						outlined
 						dense
 						v-model="search"
 					></v-text-field>
 				</div>
-				<div>
-					<v-btn class="red darken-1">PDF</v-btn>
-					<v-btn class="lime lighten-1">CSV</v-btn>
-					<v-btn class="blue lighten-1">Print</v-btn>
+				<div class="print">
+					<a
+						class="print--link"
+						:href="baseURL + `/api/quotation/export_pdf`"
+					>
+						<v-btn
+							dark
+							class="red darken-1"
+						>
+							<v-icon>mdi-file-pdf</v-icon>PDF
+						</v-btn>
+					</a>
+					<a
+						class="print--link"
+						:href="baseURL + `/api/quotation/export`"
+					>
+						<v-btn
+							dark
+							class="teal darken-1"
+						>
+							<v-icon>mdi-file-excel</v-icon>CSV
+						</v-btn>
+					</a>
+					<v-btn
+						dark
+						class="blue lighten-1"
+					>
+						<v-icon>mdi-printer</v-icon>Print
+					</v-btn>
 				</div>
 			</div>
 			<v-divider></v-divider>
@@ -49,28 +83,58 @@
 							</span>
 						</td>
 						<td @click="viewQuotation(item.id)"> {{ item.grand_total | formatMoney }}</td>
-						
+
 						<td class="text-center">
-							<div class="row"> 
-								<v-tooltip top v-permission="'view sales'">
+							<div class="row">
+								<v-tooltip
+									top
+									v-permission="'view sales'"
+								>
 									<template v-slot:activator="{ on }">
-										<v-btn small icon @click="viewQuotation(item.id)" color="teal" outlined v-on="on">
+										<v-btn
+											small
+											icon
+											@click="viewQuotation(item.id)"
+											color="teal"
+											outlined
+											v-on="on"
+										>
 											<v-icon small>mdi-eye</v-icon>
 										</v-btn>
 									</template>
 									<span>View</span>
 								</v-tooltip>
-								<v-tooltip top v-permission="'edit sales'">
+								<v-tooltip
+									top
+									v-permission="'edit sales'"
+								>
 									<template v-slot:activator="{ on }">
-										<v-btn small icon @click="editItem(item.id)" color="primary" outlined v-on="on">
+										<v-btn
+											small
+											icon
+											@click="editItem(item.id)"
+											color="primary"
+											outlined
+											v-on="on"
+										>
 											<v-icon small>mdi-pencil</v-icon>
 										</v-btn>
 									</template>
 									<span>Edit</span>
 								</v-tooltip>
-								<v-tooltip top v-permission="'delete sales'">
+								<v-tooltip
+									top
+									v-permission="'delete sales'"
+								>
 									<template v-slot:activator="{ on }">
-										<v-btn small icon @click="deleteItem(item.id)" color="red" outlined v-on="on">
+										<v-btn
+											small
+											icon
+											@click="deleteItem(item.id)"
+											color="red"
+											outlined
+											v-on="on"
+										>
 											<v-icon small>mdi-delete</v-icon>
 										</v-btn>
 									</template>
@@ -82,16 +146,15 @@
 				</template>
 			</v-data-table>
 		</v-card>
-	</v-app>
+	</v-container>
 </template>
 
 
 <script>
-
-	import Vue from 'vue';
+	import Vue from "vue";
 
 	var numeral = require("numeral");
-	Vue.filter("formatMoney", function (value) {
+	Vue.filter("formatMoney", function(value) {
 		return numeral(value).format("0,0.00");
 	});
 
@@ -99,22 +162,23 @@
 		created() {
 			this.fetchData();
 		},
-		
+
 		watch: {
 			options: {
 				handler() {
 					this.fetchData();
 				}
 			},
-			search:{
-			handler(){
-				this.fetchSearch();
+			search: {
+				handler() {
+					this.fetchSearch();
+				}
 			}
-		},
 		},
 
 		data() {
 			return {
+				baseURL: process.env.APP_URL,
 				items: [],
 				search: "",
 				form: {},
@@ -127,64 +191,68 @@
 				headers: [
 					{
 						text: "Date",
-						sortable: false,
+						sortable: false
 					},
 					{
 						text: "Reference No",
-						sortable: false,
+						sortable: false
 					},
 					{
 						text: "Biller",
-						sortable: false,
+						sortable: false
 					},
 					{
 						text: "Customer",
-						sortable: false,
+						sortable: false
 					},
 					{
 						text: "Supplier",
-						sortable: false,
+						sortable: false
 					},
 					{
 						text: "Status",
-						sortable: false,
+						sortable: false
 					},
 					{
 						text: "Grand Total",
-						sortable: false,
+						sortable: false
 					},
 					{
 						text: "Action",
-						sortable: false,
+						sortable: false
 					}
-				],
+				]
 			};
 		},
 
 		methods: {
 			fetchData() {
-				this.$axios.$get(`/api/quotation/?temsPerPage=${this.options.itemsPerPage}&page=${this.options.page}`)
-				.then(res => {
-					this.items = res.quotation.data;
-					this.total = res.total;
-					console.log(res);
-				})
-				.catch(err => {
-					console.log(err);
-				})
+				this.$axios
+					.$get(
+						`/api/quotation/?temsPerPage=${this.options.itemsPerPage}&page=${this.options.page}`
+					)
+					.then(res => {
+						this.items = res.quotation.data;
+						this.total = res.total;
+						console.log(res);
+					})
+					.catch(err => {
+						console.log(err);
+					});
 			},
-			fetchSearch(){
-			this.$axios.$get(`/api/quotation?search=${this.search}`)
-			.then(res =>{
-				this.items = res.quotation.data;
-				console.log(res)
-			})
-			.catch(err =>{
-				console.log(err.response);
-			})
-		},
+			fetchSearch() {
+				this.$axios
+					.$get(`/api/quotation?search=${this.search}`)
+					.then(res => {
+						this.items = res.quotation.data;
+						console.log(res);
+					})
+					.catch(err => {
+						console.log(err.response);
+					});
+			},
 			viewQuotation(id) {
-      		this.$router.push(`/quotation/${id}`);
+				this.$router.push(`/quotation/${id}`);
 			},
 
 			editItem(id) {
@@ -192,16 +260,17 @@
 			},
 
 			deleteItem(id) {
-				if(confirm('Do you want to Delete it?')) {
-					this.$axios.$delete(`api/quotation/` + id)
-					.then(res => {
-						this.fetchData();
-						console.log(res);
-						this.$toast.success("Deleted Successfully");
-					})
-					.catch(err => {
-						console.log(err.response);
-					})
+				if (confirm("Do you want to Delete it?")) {
+					this.$axios
+						.$delete(`api/quotation/` + id)
+						.then(res => {
+							this.fetchData();
+							console.log(res);
+							this.$toast.success("Deleted Successfully");
+						})
+						.catch(err => {
+							console.log(err.response);
+						});
 				}
 			},
 
@@ -221,7 +290,7 @@
 				this.$axios.$put(URL, data, config).then(response => {
 					console.log("Csv upload response > ", response);
 				});
-			},
+			}
 		}
 	};
 </script>
@@ -245,5 +314,11 @@
 	}
 	.viewQuotation {
 		cursor: pointer;
+	}
+
+	.print {
+		&--link {
+			text-decoration: none;
+		}
 	}
 </style>
