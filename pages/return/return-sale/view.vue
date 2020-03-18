@@ -1,9 +1,9 @@
 <template>
 	<v-app class="mx-5 my-5">
 		<div class="d-flex">
-			<div class="pb-5 pr-3" v-permission="'return users'">
+			<div class="pb-5 pr-3">
 				<nuxt-link class="nuxt--link" to="/return/return-sale/create">
-					<v-btn class="green darken-2" dark>
+					<v-btn v-permission="'add users'"  class="green darken-2" dark>
 						<v-icon left>mdi-plus-circle</v-icon>
 						Add Return Sale
 					</v-btn>

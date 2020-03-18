@@ -26,7 +26,7 @@
 						<v-icon left>mdi-cart</v-icon>POS
 					</v-btn>
 				</nuxt-link>
-				
+
 				<v-btn
 					text
 					dark
@@ -282,7 +282,7 @@
 						name: "Calendar",
 						icon: "mdi-calendar-month",
 						to: "/calendar",
-						permission: "calendar",
+						permission: "calendar"
 					},
 					{
 						name: "Product",
@@ -310,7 +310,7 @@
 							{
 								name: "Product Category",
 								to: "/product/category",
-								icon: "mdi-align-horizontal-left",
+								icon: "mdi-align-horizontal-left"
 							}
 							// {
 							// 	name: "Print Barcode",
@@ -632,10 +632,10 @@
 						]
 					},
 					{
-						name: 'Product',
-						icon: 'mdi-sitemap',
-						permission: 'member',
-						to: '/member/product',
+						name: "Product",
+						icon: "mdi-sitemap",
+						permission: "member",
+						to: "/member/product"
 					},
 					{
 						name: "Report",
@@ -783,8 +783,11 @@
 		created() {
 			if (this.user.role[0] === "administrator") {
 				this.$laravel.setPermissions([
-					'view payroll', 'add payroll', 'edit payroll', 'delete payroll',
-					'calendar',
+					"view payroll",
+					"add payroll",
+					"edit payroll",
+					"delete payroll",
+					"calendar",
 					"view users",
 					"add users",
 					"edit users",
@@ -871,8 +874,14 @@
 				]);
 			}
 
-			if(this.user.role[0] === 'technician') {
-				this.$laravel.setPermissions(['view website', 'add website', 'edit website', 'delete website', 'calendar'])
+			if (this.user.role[0] === "technician") {
+				this.$laravel.setPermissions([
+					"view website",
+					"add website",
+					"edit website",
+					"delete website",
+					"calendar"
+				]);
 			}
 
 			if (
@@ -880,7 +889,7 @@
 				this.user.role[0] === "Supervisor"
 			) {
 				this.$laravel.setPermissions([
-					'calendar',
+					"calendar",
 					"view sales",
 					"add sales",
 					"edit sales",
@@ -905,21 +914,40 @@
 
 			if (this.user.role[0] === "accountant") {
 				this.$laravel.setPermissions([
-					'view payroll', 'add payroll', 'edit payroll', 'delete payroll',
-					'view purchase', 'view sales', 'view product', 'view account', 'add account', 'edit account', 'delete account', 'import account',
-		            'return sales', 'view employee', 'view biller', 'return purchases', 'view transfer', 'view expense', 'add expense', 'edit expense', 'delete expense', 'import expense', 'calendar'
+					"view payroll",
+					"add payroll",
+					"edit payroll",
+					"delete payroll",
+					"view purchase",
+					"view sales",
+					"view product",
+					"view account",
+					"add account",
+					"edit account",
+					"delete account",
+					"import account",
+					"return sales",
+					"view employee",
+					"view biller",
+					"return purchases",
+					"view transfer",
+					"view expense",
+					"add expense",
+					"edit expense",
+					"delete expense",
+					"import expense",
+					"calendar"
 				]);
 			}
 
 			if (this.user.role[0] === "saleManager") {
 				this.$laravel.setPermissions([
-					'calendar',
+					"calendar",
 					"view sales",
 					"import sales",
 					"view product",
 					"payment log",
 					"add withdraw method",
-					"view expense",
 					"return sales",
 					"return purchases",
 					"summary report",
@@ -940,8 +968,8 @@
 				]);
 			}
 
-			if(this.user.role[0] === 'member') {
-				this.$laravel.setPermissions(['member']);
+			if (this.user.role[0] === "member") {
+				this.$laravel.setPermissions(["member"]);
 			}
 		}
 	};

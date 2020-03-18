@@ -2,13 +2,27 @@
 	<v-app class="mx-5 my-5">
 		<div class="d-flex">
 			<div class="pb-5 d-flex">
-				<nuxt-link class="nuxt--link" to="/purchase/add_purchase">
-					<v-btn class="teal darken-1" dark v-permission="'add sales'">
+				<nuxt-link
+					class="nuxt--link"
+					to="/purchase/add_purchase"
+				>
+					<v-btn
+						class="teal darken-1"
+						dark
+						v-permission="'add sales'"
+					>
 						<v-icon left>mdi-plus-circle</v-icon>Add Purchase
 					</v-btn>
 				</nuxt-link>
-				<nuxt-link class="nuxt--link px-3" to="/purchase/import_purchase">
-					<v-btn class="purple darken-1" dark v-permission="'add sales'">
+				<nuxt-link
+					class="nuxt--link px-3"
+					to="/purchase/import_purchase"
+				>
+					<v-btn
+						class="purple darken-1"
+						dark
+						v-permission="'add sales'"
+					>
 						<v-icon left>mdi-file</v-icon>Import Purchase
 					</v-btn>
 				</nuxt-link>
@@ -16,21 +30,41 @@
 		</div>
 		<div class="d-flex justify-space-between">
 			<div>
-				<v-text-field label="Search" solo outlined dense></v-text-field>
+				<v-text-field
+					label="Search"
+					solo
+					outlined
+					dense
+				></v-text-field>
 			</div>
 			<div class="print">
-				<a class="print--link" :href="baseURL + '/api/purchase/export-pdf'">
-					<v-btn dark class="red darken-1">
+				<a
+					class="print--link"
+					:href="baseURL + '/api/purchase/export-pdf'"
+				>
+					<v-btn
+						dark
+						class="red darken-1"
+					>
 						<v-icon>mdi-file-pdf</v-icon>PDF
 					</v-btn>
 				</a>
 
-				<a class="print--link" :href="baseURL + '/api/purchase/export'">
-					<v-btn dark class="teal lighten-2">
+				<a
+					class="print--link"
+					:href="baseURL + '/api/purchase/export'"
+				>
+					<v-btn
+						dark
+						class="teal lighten-2"
+					>
 						<v-icon>mdi-file-excel-outline</v-icon>CSV
 					</v-btn>
 				</a>
-				<v-btn dark class="blue lighten-1">
+				<v-btn
+					dark
+					class="blue lighten-1"
+				>
 					<v-icon>mdi-printer</v-icon>Print
 				</v-btn>
 			</div>
@@ -47,37 +81,68 @@
 					<tr class="viewPurchase">
 						<td @click="viewPurchase(item.id)">{{ item.created_at }}</td>
 						<td @click="viewPurchase(item.id)">{{ item.reference_no }}</td>
-						<td v-if="item.supplier" @click="viewPurchase(item.id)">{{ item.supplier.name }}</td>
+						<td
+							v-if="item.supplier"
+							@click="viewPurchase(item.id)"
+						>{{ item.supplier.name }}</td>
 						<td v-else>N/A</td>
-						<td @click="viewPurchase(item.id)">USD {{ item.paid | formatNumber }}</td>
+						<!-- <td @click="viewPurchase(item.id)">USD {{ item }}</td> -->
 						<td>
-							<span
-								:class="item.purchase_status === 'Received' ? 'received' : 'ordered'"
-							>{{ item.purchase_status }}</span>
+							<span :class="item.purchase_status === 'Received' ? 'received' : 'ordered'">{{ item.purchase_status }}</span>
 						</td>
 						<td>
 							<span :class="item.payment_status === 'Paid' ? 'Paid' : 'due'">{{ item.payment_status }}</span>
 						</td>
 						<td>
-							<v-tooltip top v-permission="'edit sales'">
+							<v-tooltip
+								top
+								v-permission="'edit sales'"
+							>
 								<template v-slot:activator="{ on }">
-									<v-btn small icon @click="viewPurchase(item.id)" color="teal" outlined v-on="on">
+									<v-btn
+										small
+										icon
+										@click="viewPurchase(item.id)"
+										color="teal"
+										outlined
+										v-on="on"
+									>
 										<v-icon small>mdi-eye</v-icon>
 									</v-btn>
 								</template>
 								<span>View Purchase</span>
 							</v-tooltip>
-							<v-tooltip top v-permission="'edit sales'">
+							<v-tooltip
+								top
+								v-permission="'edit sales'"
+							>
 								<template v-slot:activator="{ on }">
-									<v-btn small icon @click="editItem(item.id)" color="primary" outlined v-on="on">
+									<v-btn
+										small
+										icon
+										@click="editItem(item.id)"
+										color="primary"
+										outlined
+										v-on="on"
+									>
 										<v-icon small>mdi-pencil</v-icon>
 									</v-btn>
 								</template>
 								<span>Edit</span>
 							</v-tooltip>
-							<v-tooltip top v-permission="'delete sales'">
+							<v-tooltip
+								top
+								v-permission="'delete sales'"
+							>
 								<template v-slot:activator="{ on }">
-									<v-btn small icon @click="deleteItem(item)" color="red" outlined v-on="on">
+									<v-btn
+										small
+										icon
+										@click="deleteItem(item)"
+										color="red"
+										outlined
+										v-on="on"
+									>
 										<v-icon small>mdi-delete</v-icon>
 									</v-btn>
 								</template>
@@ -142,11 +207,11 @@
 						sortable: false,
 						value: "supplier"
 					},
-					{
-						text: "Paid",
-						sortable: false,
-						value: "paid"
-					},
+					// {
+					// 	text: "Paid",
+					// 	sortable: false,
+					// 	value: "paid"
+					// },
 					{
 						text: "Purchase Status",
 						sortable: false,
@@ -195,9 +260,11 @@
 							this.items = res.data;
 							this.fetchData();
 							console.log(res);
+							this.$toast.success("Deleted Purchase Sucessfully");
 						})
 						.catch(err => {
 							console.log(err.response);
+							this.$toast.error("Please Try Again!!");
 						});
 				}
 			},
@@ -253,11 +320,10 @@
 	.viewPurchase {
 		cursor: pointer;
 	}
-	
+
 	.print {
 		&--link {
 			text-decoration: none;
 		}
 	}
-
 </style>
