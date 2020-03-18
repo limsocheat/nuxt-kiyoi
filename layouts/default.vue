@@ -497,18 +497,17 @@
 					{
 						name: "Location",
 						icon: "mdi-map-marker",
+						permission: "view transfer",
 						children: [
 							{
 								name: "Location List",
 								icon: "mdi-location-enter",
-								to: "/location/",
-								permission: "view transfer"
+								to: "/location/"
 							},
 							{
 								name: "Add Location",
 								icon: "mdi-plus-circle",
-								to: "/location/create",
-								permission: "view transfer"
+								to: "/location/create"
 							}
 						]
 					},
