@@ -1,20 +1,34 @@
 <template>
 	<v-app>
 		<v-row>
-			<v-col cols="12" md="7">
+			<v-col
+				cols="12"
+				md="7"
+			>
 				<v-card class="px-5 pb-5">
 					<!-- Dialog of Discount -->
-					<v-dialog v-model="dialog" width="500">
+					<v-dialog
+						v-model="dialog"
+						width="500"
+					>
 						<v-card>
 							<v-card-title primary-title>Discount</v-card-title>
 							<v-divider></v-divider>
 							<div class="discount">
 								<label>Discount Percent:</label>
-								<input type="number" class="discount-input" v-model="form.discount" placeholder="0" />
+								<input
+									type="number"
+									class="discount-input"
+									v-model="form.discount"
+									placeholder="0"
+								/>
 							</div>
 							<v-card-actions>
 								<v-spacer></v-spacer>
-								<v-btn color="primary" @click="dialog = false">Save</v-btn>
+								<v-btn
+									color="primary"
+									@click="dialog = false"
+								>Save</v-btn>
 								<v-spacer></v-spacer>
 							</v-card-actions>
 						</v-card>
@@ -59,7 +73,11 @@
 										</tr>
 									</thead>
 									<tbody>
-										<tr class="tablePOS--td" v-for="(item, index) in form.items" :key="index">
+										<tr
+											class="tablePOS--td"
+											v-for="(item, index) in form.items"
+											:key="index"
+										>
 											<v-row>
 												<v-col cols="2">
 													<td>{{ item.name }}</td>
@@ -68,13 +86,25 @@
 													<td>
 														<!-- <input class="tablePOS--input" type="number" v-model="form.items[index].quantity" /> -->
 														<span>
-															<v-btn @click="minusItem(item)" small color="red" outlined icon>
+															<v-btn
+																@click="minusItem(item)"
+																small
+																color="red"
+																outlined
+																icon
+															>
 																<v-icon small>mdi-minus</v-icon>
 															</v-btn>
 														</span>
 														<span class="px-1">{{ form.items[index].quantity }}</span>
 														<span>
-															<v-btn @click="plusItem(item)" small color="primary" outlined icon>
+															<v-btn
+																@click="plusItem(item)"
+																small
+																color="primary"
+																outlined
+																icon
+															>
 																<v-icon small>mdi-plus</v-icon>
 															</v-btn>
 														</span>
@@ -82,14 +112,23 @@
 												</v-col>
 												<v-col cols="3">
 													<td>
-														<input class="tablePOS--input" type="number" v-model="form.items[index].unit_price" />
+														<input
+															class="tablePOS--input"
+															type="number"
+															v-model="form.items[index].unit_price"
+														/>
 													</td>
 												</v-col>
 												<v-col cols="3">
 													<td>$ {{ subTotal(item) | formatMoney }}</td>
 												</v-col>
 												<v-col cols="2">
-													<v-btn outlined color="red" small @click="removeProduct(index)">
+													<v-btn
+														outlined
+														color="red"
+														small
+														@click="removeProduct(index)"
+													>
 														<v-icon small>mdi-delete</v-icon>
 													</v-btn>
 												</v-col>
@@ -106,30 +145,48 @@
 								<table class="pos-footer">
 									<tr>
 										<v-row>
-											<v-col md="3" cols="12">
+											<v-col
+												md="3"
+												cols="12"
+											>
 												<td class="d-flex flex-column">
 													<span class="pos-footer--item">Item:</span>
 													<span>{{ Qty }}</span>
 												</td>
 											</v-col>
-											<v-col md="3" cols="12">
+											<v-col
+												md="3"
+												cols="12"
+											>
 												<td class="d-flex flex-column">
 													<span class="pos-footer--item">Shipping Cost:</span>
 													<!-- <span>USD {{ formatMoney }}</span> -->
 												</td>
 											</v-col>
-											<v-col md="3" cols="12">
+											<v-col
+												md="3"
+												cols="12"
+											>
 												<td class="d-flex flex-column">
 													<span class="pos-footer--item">Discount:</span>
 													<span>
 														$ {{ discount }}
-														<v-btn class="mx-3" small outlined color="primary" @click="addDiscount">
+														<v-btn
+															class="mx-3"
+															small
+															outlined
+															color="primary"
+															@click="addDiscount"
+														>
 															<v-icon small>mdi-pencil</v-icon>
 														</v-btn>
 													</span>
 												</td>
 											</v-col>
-											<v-col md="3" cols="12">
+											<v-col
+												md="3"
+												cols="12"
+											>
 												<div class="d-flex flex-column">
 													<span class="pos-footer--item">Total:</span>
 													<span>USD {{totalPrice - discount | formatMoney }}</span>
@@ -150,9 +207,16 @@
 									<ValidationObserver ref="dialog">
 										<v-row>
 											<v-col cols="12">
-												<v-dialog v-model="dialog2" max-width="900">
+												<v-dialog
+													v-model="dialog2"
+													max-width="900"
+												>
 													<template v-slot:activator="{ on }">
-														<button @click="openDialog" class="posPayment-cash" v-on="on">
+														<button
+															@click="openDialog"
+															class="posPayment-cash"
+															v-on="on"
+														>
 															<v-icon dark>mdi-check</v-icon>Payment
 														</button>
 													</template>
@@ -164,7 +228,10 @@
 																<v-col cols="9">
 																	<v-row>
 																		<v-col cols="12">
-																			<label for="biller" class="font-weight-bold">Biller</label>
+																			<label
+																				for="biller"
+																				class="font-weight-bold"
+																			>Biller</label>
 																			<v-autocomplete
 																				item-text="name"
 																				item-value="name"
@@ -176,9 +243,16 @@
 																				label="Select Biller"
 																			></v-autocomplete>
 																		</v-col>
-																		<v-col cols="6" class="d-flex flex-column">
+																		<v-col
+																			cols="6"
+																			class="d-flex flex-column"
+																		>
 																			<label class="font-weight-bold">Amount</label>
-																			<validation-provider name="Amount" rules="required" v-slot="{ errors }">
+																			<validation-provider
+																				name="Amount"
+																				rules="required"
+																				v-slot="{ errors }"
+																			>
 																				<v-text-field
 																					solo
 																					outlined
@@ -192,7 +266,11 @@
 																		</v-col>
 																		<v-col cols="6">
 																			<label class="font-weight-bold">Payment Method</label>
-																			<validation-provider name="Payment Method" rules="required" v-slot="{ errors }">
+																			<validation-provider
+																				name="Payment Method"
+																				rules="required"
+																				v-slot="{ errors }"
+																			>
 																				<v-select
 																					:items="payment_method"
 																					solo
@@ -203,7 +281,10 @@
 																				<span class="red--text">{{ errors[0] }}</span>
 																			</validation-provider>
 																		</v-col>
-																		<v-col cols="12" class="d-flex flex-column">
+																		<v-col
+																			cols="12"
+																			class="d-flex flex-column"
+																		>
 																			<label class="font-weight-bold">Payment Note</label>
 																			<textarea
 																				cols="30"
@@ -233,8 +314,15 @@
 														</v-card-text>
 														<v-card-actions>
 															<v-spacer></v-spacer>
-															<v-btn color="green darken-1" text @click="dialog2 = false">Cancel</v-btn>
-															<v-btn color="primary" @click="addPayment">Add Payment</v-btn>
+															<v-btn
+																color="green darken-1"
+																text
+																@click="dialog2 = false"
+															>Cancel</v-btn>
+															<v-btn
+																color="primary"
+																@click="addPayment"
+															>Add Payment</v-btn>
 														</v-card-actions>
 													</v-card>
 												</v-dialog>
@@ -248,10 +336,16 @@
 				</v-card>
 			</v-col>
 
-			<v-col cols="12" md="5">
+			<v-col
+				cols="12"
+				md="5"
+			>
 				<v-card>
 					<v-row>
-						<v-col cols="12" class="px-5">
+						<v-col
+							cols="12"
+							class="px-5"
+						>
 							<v-autocomplete
 								:items="products"
 								dense
@@ -267,10 +361,22 @@
 						</v-col>
 					</v-row>
 					<v-row class="px-5">
-						<v-col v-for="(item, index) in products" :key="index" cols="3">
-							<v-card @click="addPos(item)" class="posCard">
+						<v-col
+							v-for="(item, index) in products"
+							:key="index"
+							cols="3"
+						>
+							<v-card
+								@click="addPos(item)"
+								class="posCard"
+							>
 								<div>
-									<img class="posCard--pos-img" :src="baseURL + 'image/' + item.image" />
+									<img
+										class="posCard--pos-img"
+										:src="item.image_url"
+										width="100"
+										height="50"
+									/>
 								</div>
 								<div class="posCard--title">
 									<span>{{ item.name }}</span>
@@ -284,8 +390,14 @@
 
 		<!-- Notification -->
 		<div>
-			<notifications class="notification" group="all" />
-			<notifications class="notification" group="addedSale" />
+			<notifications
+				class="notification"
+				group="all"
+			/>
+			<notifications
+				class="notification"
+				group="addedSale"
+			/>
 		</div>
 	</v-app>
 </template>
