@@ -14,20 +14,44 @@
 						<v-icon left>mdi-plus-circle</v-icon>Add Purchase
 					</v-btn>
 				</nuxt-link>
-				<nuxt-link
-					class="nuxt--link px-3"
-					to="/purchase/import_purchase"
-				>
-					<v-btn
-						class="purple darken-1"
-						dark
-						v-permission="'add sales'"
+
+				<div>
+					<v-dialog
+						v-model="dialog"
+						width="650"
 					>
-						<v-icon left>mdi-file</v-icon>Import Purchase
-					</v-btn>
-				</nuxt-link>
+						<template v-slot:activator="{ on }">
+							<v-btn
+								class="purple darken-1"
+								dark
+								v-permission="'add sales'"
+								v-on="on"
+							>
+								<v-icon left>mdi-file</v-icon>Import Purchase
+							</v-btn>
+						</template>
+
+						<v-card>
+							<v-card-title>Import Purchase</v-card-title>
+							<input
+								type="file"
+								@change="fileOnChange"
+							>
+						</v-card>
+						<v-divider></v-divider>
+						<v-btn
+							color="primary"
+							@click="uploadFile"
+						>
+							<v-icon>mdi-file-upload-outline</v-icon>Upload
+						</v-btn>
+					</v-dialog>
+				</div>
+
 			</div>
 		</div>
+
+		<!-- Export File -->
 		<div class="d-flex justify-space-between">
 			<div>
 				<v-text-field
@@ -182,6 +206,7 @@
 
 		data() {
 			return {
+				dialog: false,
 				baseURL: process.env.APP_URL,
 				items: [],
 				search: "",
@@ -267,6 +292,28 @@
 							this.$toast.error("Please Try Again!!");
 						});
 				}
+			},
+
+			fileOnChange(e) {
+				this.file = e.target.files[0];
+				console.log(this.file);
+			},
+
+			uploadFile() {
+				let formData = new FormData();
+
+				let file = formData.append("file", this.file);
+
+				console.log(this.file);
+
+				this.$axios
+					.$post(`api/purchase-upload`, formData)
+					.then(res => {
+						console.log(res);
+					})
+					.catch(err => {
+						console.log(err.response);
+					});
 			},
 
 			viewPurchase(id) {

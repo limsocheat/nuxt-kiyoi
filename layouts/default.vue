@@ -27,17 +27,32 @@
 					</v-btn>
 				</nuxt-link>
 
-				<v-btn
-					text
-					dark
-				>{{ user.user ? user.user.first_name : null }}</v-btn>
-				<v-btn
-					text
-					dark
-					@click="logout()"
+				<!-- User Dropdown -->
+				<v-menu
+					offset-y
+					transition="slide-x-transition"
 				>
-					<v-icon>mdi-logout</v-icon>
-				</v-btn>
+					<template v-slot:activator="{ on }">
+						<v-btn
+							text
+							dark
+							v-on="on"
+						>{{ user.user ? user.user.first_name : null }}</v-btn>
+					</template>
+
+					<v-list>
+						<v-list-item
+							v-for="(item, index) in items"
+							:key="index"
+							@click="handle(item.action)"
+						>
+							<v-list-item-title>
+								<v-icon>{{ item.icon }}</v-icon>
+								{{ item.title }}
+							</v-list-item-title>
+						</v-list-item>
+					</v-list>
+				</v-menu>
 			</v-toolbar-items>
 		</v-app-bar>
 
@@ -62,6 +77,8 @@
 			<v-list
 				dense
 				rounded
+				color="blue-grey darken-1"
+				dark
 			>
 				<div
 					v-for="(item, i) in menus"
@@ -128,6 +145,15 @@
 	export default {
 		data() {
 			return {
+				items: [
+					{ title: "Logout", action: "logout", icon: "mdi-export" },
+					{
+						title: "Profile",
+						action: "viewProfile",
+						icon: "mdi-account-tie"
+					}
+				],
+
 				toggle: true,
 				menus: [
 					{
@@ -759,6 +785,14 @@
 		methods: {
 			logout() {
 				this.$auth.logout();
+			},
+
+			viewProfile() {
+				this.$router.push(`users/profile`);
+			},
+
+			handle(f) {
+				this[f]();
 			}
 		},
 
@@ -991,5 +1025,13 @@
 		display: block;
 		text-decoration: none;
 		padding-top: 7px;
+	}
+
+	.v-list-group__items {
+		color: #92e6b2;
+	}
+
+	.primary--text {
+		color: #43d9ec;
 	}
 </style>

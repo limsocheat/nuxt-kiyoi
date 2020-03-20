@@ -1,17 +1,35 @@
 <template>
 	<v-app class="mx-5 my-5">
-		<div class="d-flex" id="div_id">
+		<div
+			class="d-flex"
+			id="div_id"
+		>
 			<div class="pb-5 pr-3">
-				<nuxt-link to="/product/add-product" class="nuxt--link grey--text text--lighten-4">
-					<v-btn class="teal darken-1" dark v-permission="'add sales'">
+				<nuxt-link
+					to="/product/add-product"
+					class="nuxt--link grey--text text--lighten-4"
+				>
+					<v-btn
+						class="teal darken-1"
+						dark
+						v-permission="'add sales'"
+					>
 						<v-icon left>mdi-plus-circle</v-icon>Add Product
 					</v-btn>
 				</nuxt-link>
 			</div>
 			<div class="pb-5">
-				<v-dialog v-model="dialog" max-width="700px" v-permission="'add sales'">
+				<v-dialog
+					v-model="dialog"
+					max-width="700px"
+					v-permission="'add sales'"
+				>
 					<template v-slot:activator="{ on }">
-						<v-btn class="purple darken-1" dark v-on="on">
+						<v-btn
+							class="purple darken-1"
+							dark
+							v-on="on"
+						>
 							<v-icon left>mdi-file</v-icon>Import Product
 						</v-btn>
 					</template>
@@ -21,26 +39,33 @@
 						<v-card-title class="headline font-weight-light">IMPORT PRODUCT</v-card-title>
 						<v-divider></v-divider>
 						<v-col cols="12">
-							<p
-								class="mt-5"
-							>The correct column order is (name*, parent_category) and you must follow this.</p>
+							<p class="mt-5">The correct column order is (name*, parent_category) and you must follow this.</p>
 						</v-col>
 						<v-row class="px-4">
-							<v-col cols="12" sm="6">
+							<v-col cols="12">
 								<label class="font-weight-bold">Upload CSV File</label>
-								<input type="file" class="form-control" @change="uploadCsv($event)" />
-							</v-col>
-							<v-col cols="12" sm="6" class="d-flex flex-column">
-								<label class="font-weight-bold">Sample File</label>
-								<v-btn class="teal darken-2 grey--text text--lighten-2">
-									<v-icon left>mdi-download</v-icon>Download
-								</v-btn>
+								<input
+									type="file"
+									class="form-control"
+									@change="fileOnChange($event)"
+								/>
 							</v-col>
 						</v-row>
 						<v-card-actions>
 							<v-spacer></v-spacer>
-							<v-btn color="blue darken-1" text @click="dialog=false">Close</v-btn>
-							<v-btn color="primary">Save</v-btn>
+							<v-btn
+								color="red"
+								text
+								@click="dialog=false"
+							>
+								<v-icon>mdi-close</v-icon>Close
+							</v-btn>
+							<v-btn
+								color="primary"
+								@click="uploadCsv"
+							>
+								<v-icon>mdi-file-upload-outline</v-icon>Upload File
+							</v-btn>
 						</v-card-actions>
 					</v-card>
 				</v-dialog>
@@ -48,21 +73,42 @@
 		</div>
 		<div class="d-flex justify-space-between">
 			<div>
-				<v-text-field label="Search" solo outlined dense></v-text-field>
+				<v-text-field
+					label="Search"
+					solo
+					outlined
+					dense
+				></v-text-field>
 			</div>
 			<div class="print">
-				<a class="print--link" :href="baseURL + `api/product/export_pdf`">
-					<v-btn class="red" dark>
+				<a
+					class="print--link"
+					:href="baseURL + `api/product/export_pdf`"
+				>
+					<v-btn
+						class="red"
+						dark
+					>
 						<v-icon>mdi-file-pdf</v-icon>PDF
 					</v-btn>
 				</a>
-				
-				<a class="print--link" :href="baseURL + `api/product/export`">
-					<v-btn dark class="green accent-4">
+
+				<a
+					class="print--link"
+					:href="baseURL + `api/product/export`"
+				>
+					<v-btn
+						dark
+						class="green accent-4"
+					>
 						<v-icon>mdi-file-excel-outline</v-icon>CSV
 					</v-btn>
 				</a>
-				<v-btn dark class="blue lighten-2" @click="printPage">
+				<v-btn
+					dark
+					class="blue lighten-2"
+					@click="printPage"
+				>
 					<v-icon>mdi-printer</v-icon>Print
 				</v-btn>
 			</div>
@@ -77,7 +123,10 @@
 			<template v-slot:item="{ item }">
 				<tr>
 					<td v-if="item.image">
-						<img :src="item.image_url" class="product-img" />
+						<img
+							:src="item.image_url"
+							class="product-img"
+						/>
 					</td>
 					<td v-else>
 						<span>No Image</span>
@@ -87,25 +136,55 @@
 					<td>{{ item.unit }}</td>
 					<td>USD {{ item.price |formatNumber }}</td>
 					<td>
-						<v-tooltip top v-permission="'edit sales'">
+						<v-tooltip
+							top
+							v-permission="'edit sales'"
+						>
 							<template v-slot:activator="{ on }">
-								<v-btn icon small @click="viewItem(item.id)" color="cyan" outlined v-on="on">
+								<v-btn
+									icon
+									small
+									@click="viewItem(item.id)"
+									color="cyan"
+									outlined
+									v-on="on"
+								>
 									<v-icon small>mdi-eye</v-icon>
 								</v-btn>
 							</template>
 							<span>View</span>
 						</v-tooltip>
-						<v-tooltip top v-permission="'edit sales'">
+						<v-tooltip
+							top
+							v-permission="'edit sales'"
+						>
 							<template v-slot:activator="{ on }">
-								<v-btn icon small @click="editItem(item.id)" color="primary" outlined v-on="on">
+								<v-btn
+									icon
+									small
+									@click="editItem(item.id)"
+									color="primary"
+									outlined
+									v-on="on"
+								>
 									<v-icon small>mdi-pencil</v-icon>
 								</v-btn>
 							</template>
 							<span>Edit</span>
 						</v-tooltip>
-						<v-tooltip top v-permission="'delete sales'">
+						<v-tooltip
+							top
+							v-permission="'delete sales'"
+						>
 							<template v-slot:activator="{ on }">
-								<v-btn icon small @click="deleteItem(item)" color="red" outlined v-on="on">
+								<v-btn
+									icon
+									small
+									@click="deleteItem(item)"
+									color="red"
+									outlined
+									v-on="on"
+								>
 									<v-icon small>mdi-delete</v-icon>
 								</v-btn>
 							</template>
@@ -144,6 +223,7 @@
 
 		data() {
 			return {
+				file: "",
 				baseURL: process.env.APP_URL,
 				barcode: [
 					"Code 128",
@@ -233,9 +313,27 @@
 					});
 			},
 
-			printPage() {
+			fileOnChange(e) {
+				this.file = e.target.files[0];
+				console.log(this.file);
+			},
 
-			}
+			uploadCsv() {
+				let formData = new FormData();
+				formData.append("file", this.file);
+				this.$axios
+					.$post(`api/product/`, formData, {
+						"Content-Type": "multipart/form-data"
+					})
+					.then(res => {
+						console.log(res);
+					})
+					.catch(err => {
+						console.log(err.response);
+					});
+			},
+
+			printPage() {}
 		}
 	};
 </script>
