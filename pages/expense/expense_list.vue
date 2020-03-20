@@ -79,20 +79,12 @@
 									rules="required"
 									v-slot="{ errors }"
 								>
-									<label for>Expense For</label>
-									<v-autocomplete
+									<v-text-field
+										label="Expense For"
 										solo
-										outlined
 										dense
-										label="Please Select"
-										:items="users"
-										item-text="first_name"
-										item-value="id"
-										return-object
-										v-model="form.user"
-									>
-										<template v-slot:item="{ item }">{{ item.first_name }}</template>
-									</v-autocomplete>
+										v-model="form.expense_for"
+									></v-text-field>
 									<span class="red--text">{{ errors[0] }}</span>
 								</validation-provider>
 							</v-col>
@@ -186,8 +178,9 @@
 						<td>{{ item.reference_no }}</td>
 						<td>{{ item.expense_category.name }}</td>
 						<td>USD {{ item.amount | formatNumber }}</td>
-						<td>{{ item.user.first_name }}</td>
+						<td>{{ item.expense_for }}</td>
 						<td>{{ item.description }}</td>
+						<td>{{ item.user.first_name }}</td>
 						<td>
 							<v-btn
 								icon
@@ -228,9 +221,6 @@
 		created() {
 			this.fetchData();
 			this.fetchCategory();
-			this.fetchUser();
-
-			console.log(this.options);
 		},
 
 		data() {
@@ -276,6 +266,10 @@
 						sortable: false
 					},
 					{
+						text: "Created By",
+						sortable: false
+					},
+					{
 						text: "Actions",
 						sortable: false
 					}
@@ -309,18 +303,6 @@
 					.$get(`api/expense-category`)
 					.then(res => {
 						this.category = res;
-						console.log(res);
-					})
-					.catch(err => {
-						console.log(err.response);
-					});
-			},
-
-			fetchUser() {
-				this.$axios
-					.$get(`/api/user`)
-					.then(res => {
-						this.users = res.users.data;
 						console.log(res);
 					})
 					.catch(err => {
@@ -375,7 +357,7 @@
 						.$patch(`/api/expense/` + this.form.id, {
 							amount: this.form.amount,
 							expense_category: this.form.expense_category,
-							user: this.form.user,
+							expense_for: this.form.expense_for,
 							description: this.form.description
 						})
 						.then(res => {
