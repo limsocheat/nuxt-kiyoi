@@ -113,19 +113,117 @@
 				</v-card>
 			</v-col>
 		</v-row>
+
+		<v-row>
+			<v-col
+				cols="12"
+				md="8"
+			>
+				<v-card>
+					<v-container>
+						<BarChart
+							v-if="loaded"
+							:data="barChartData"
+							:options="{ maintainAspectRatio: false }"
+						/>
+					</v-container>
+				</v-card>
+			</v-col>
+			<v-col
+				md="4"
+				cols="12"
+			>
+				<v-card>
+					<v-container>
+						<LineChart
+							v-if="loaded"
+							:data="LineChartData"
+							:options="{ maintainAspectRatio: false }"
+						/>
+					</v-container>
+				</v-card>
+			</v-col>
+		</v-row>
+		<!-- Sale Chart -->
+
 	</v-container>
 </template>
 
 <script>
+	import axios from "axios";
+	import BarChart from "~/components/barchart";
+	import LineChart from "~/components/linechart";
 	export default {
+		name: "HomePage",
 		middleware: "check_user_role",
+
+		created() {
+			this.getSaleProfit();
+			this.getExpenseReport();
+			this.countUser();
+		},
+
+		components: {
+			BarChart,
+			LineChart
+		},
+
 		data() {
 			return {
-				users: []
+				loaded: false,
+				users: [],
+				barChartData: {},
+				LineChartData: {}
 			};
 		},
 
 		methods: {
+			getExpenseReport() {
+				this.$axios
+					.$get(`api/expense`)
+					.then(res => {
+						this.loaded = true;
+						let result = res.data;
+
+						this.barChartData = {
+							labels: result.map(a => a.created_at),
+							datasets: [
+								{
+									label: "Expense Report",
+									backgroundColor: "#93dd93",
+									data: result.map(expense => expense.amount)
+								}
+							]
+						};
+					})
+					.catch(err => {
+						console.log(err.response);
+					});
+			},
+
+			getSaleProfit() {
+				this.$axios
+					.$get(`api/sale`)
+					.then(res => {
+						console.log(res);
+						let result = res.sales.data;
+
+						this.LineChartData = {
+							labels: result.map(a => a.created_sale),
+							datasets: [
+								{
+									label: "Sale Report",
+									backgroundColor: ["#9412cc", "#E46651"],
+									data: result.map(sale => sale.grand_total)
+								}
+							]
+						};
+					})
+					.catch(err => {
+						console.log(err.response);
+					});
+			},
+
 			countUser() {
 				this.$axios
 					.$get(`api/dashboard`)
@@ -137,10 +235,6 @@
 						console.log(err.response);
 					});
 			}
-		},
-
-		created() {
-			this.countUser();
 		}
 	};
 </script>
