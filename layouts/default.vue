@@ -788,7 +788,7 @@
 			},
 
 			viewProfile() {
-				this.$router.push(`users/profile`);
+				this.$router.push(`/users/profile`);
 			},
 
 			handle(f) {
