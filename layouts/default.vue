@@ -684,14 +684,15 @@
 								to: "/report/product_report",
 								permission: "summary report"
 							},
+							// {
+							// 	name: "Daily Sale",
+							// 	icon: "mdi-alpha-s-circle-outline",
+							// 	permission: "summary report"
+							// },
 							{
-								name: "Daily Sale",
-								icon: "mdi-alpha-s-circle-outline",
-								permission: "summary report"
-							},
-							{
-								name: "Monthly Sale",
+								name: "Sale Report",
 								icon: "mdi-alpha-s-circle",
+								to: "/report/sale_report",
 								permission: "summary report"
 							},
 							{
@@ -702,12 +703,6 @@
 							{
 								name: "Monthly Purchase",
 								icon: "mdi-alpha-p-circle",
-								permission: "summary report"
-							},
-							{
-								name: "Sale Report",
-								icon: "mdi-card-text",
-								to: "/report/sale_report",
 								permission: "summary report"
 							},
 							{

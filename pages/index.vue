@@ -135,7 +135,7 @@
 			>
 				<v-card>
 					<v-container>
-						<LineChart
+						<PieChart
 							v-if="loaded"
 							:data="LineChartData"
 							:options="{ maintainAspectRatio: false }"
@@ -152,7 +152,7 @@
 <script>
 	import axios from "axios";
 	import BarChart from "~/components/barchart";
-	import LineChart from "~/components/linechart";
+	import PieChart from "~/components/piechart";
 	export default {
 		name: "HomePage",
 		middleware: "check_user_role",
@@ -165,7 +165,7 @@
 
 		components: {
 			BarChart,
-			LineChart
+			PieChart
 		},
 
 		data() {
