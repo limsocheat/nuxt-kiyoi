@@ -59,7 +59,7 @@
 		<v-navigation-drawer
 			app
 			clipped-left
-			class="color"
+			color="blue-grey darken-1"
 			dense
 			v-model="toggle"
 		>
@@ -77,7 +77,6 @@
 			<v-list
 				dense
 				rounded
-				color="blue-grey darken-1"
 				dark
 			>
 				<div
@@ -301,7 +300,7 @@
 						name: "Users Management",
 						icon: "mdi-account-group",
 						to: "/users",
-						permission: "view sales"
+						permission: "view users"
 					},
 
 					{
