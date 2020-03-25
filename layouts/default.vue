@@ -690,9 +690,9 @@
 							// 	permission: "summary report"
 							// },
 							{
-								name: "Sale Report",
+								name: "Expense Report",
 								icon: "mdi-alpha-s-circle",
-								to: "/report/sale_report",
+								to: "/report/expense_report",
 								permission: "summary report"
 							},
 							{
