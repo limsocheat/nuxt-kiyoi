@@ -37,6 +37,7 @@
 						<!-- Product Calculate -->
 						<v-col cols="12">
 							<v-autocomplete
+								prepend-inner-icon="mdi-account-circle"
 								:items="customers"
 								dense
 								solo
@@ -233,6 +234,7 @@
 																				class="font-weight-bold"
 																			>Biller</label>
 																			<v-autocomplete
+																				prepend-inner-icon="mdi-account"
 																				item-text="name"
 																				item-value="name"
 																				solo
@@ -254,6 +256,7 @@
 																				v-slot="{ errors }"
 																			>
 																				<v-text-field
+																					prepend-inner-icon="mdi-currency-usd"
 																					solo
 																					outlined
 																					dense
@@ -272,6 +275,7 @@
 																				v-slot="{ errors }"
 																			>
 																				<v-select
+																					prepend-inner-icon="mdi-cash"
 																					:items="payment_method"
 																					solo
 																					outlined
@@ -293,9 +297,6 @@
 																				v-model="form.description"
 																			></textarea>
 																		</v-col>
-																		<v-col cols="12">
-																			<button class="btn-row">Add Payment Row</button>
-																		</v-col>
 																	</v-row>
 																</v-col>
 																<v-col cols="3">
@@ -312,17 +313,21 @@
 																</v-col>
 															</v-row>
 														</v-card-text>
-														<v-card-actions>
-															<v-spacer></v-spacer>
-															<v-btn
-																color="green darken-1"
-																text
-																@click="dialog2 = false"
-															>Cancel</v-btn>
+														<v-card-actions class="mx-4 pb-5">
 															<v-btn
 																color="primary"
 																@click="addPayment"
-															>Add Payment</v-btn>
+															>
+																<v-icon>mdi-content-save</v-icon>Add Payment
+															</v-btn>
+															<v-btn
+																color="red"
+																text
+																@click="dialog2 = false"
+															>
+																<v-icon>mdi-close</v-icon>
+																Cancel
+															</v-btn>
 														</v-card-actions>
 													</v-card>
 												</v-dialog>
@@ -347,6 +352,7 @@
 							class="px-5"
 						>
 							<v-autocomplete
+								prepend-inner-icon="mdi-magnify"
 								:items="products"
 								dense
 								solo
@@ -418,6 +424,7 @@
 			this.fetchCustomer();
 			this.fetchBiller();
 		},
+
 		data() {
 			return {
 				customers: [],

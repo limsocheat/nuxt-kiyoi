@@ -706,12 +706,6 @@
 								permission: "summary report"
 							},
 							{
-								name: "Payment Report",
-								icon: "mdi-card-text-outline",
-								to: "/report/payment_report",
-								permission: "summary report"
-							},
-							{
 								name: "Purchase Report",
 								icon: "mdi-credit-card-multiple",
 								to: "/report/purchase_report",
