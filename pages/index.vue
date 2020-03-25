@@ -123,7 +123,7 @@
 					<v-container>
 						<BarChart
 							v-if="loaded"
-							:data="barChartData"
+							:chartData="barChartData"
 							:options="{ maintainAspectRatio: false }"
 						/>
 					</v-container>
@@ -184,6 +184,8 @@
 					.then(res => {
 						this.loaded = true;
 						let result = res.data;
+
+						console.log(result.map(a => a.created_at));
 
 						this.barChartData = {
 							labels: result.map(a => a.created_at),

@@ -696,13 +696,9 @@
 								permission: "summary report"
 							},
 							{
-								name: "Daily Purchase",
-								icon: "mdi-alpha-p-circle-outline",
-								permission: "summary report"
-							},
-							{
-								name: "Monthly Purchase",
-								icon: "mdi-alpha-p-circle",
+								name: "Sale Report",
+								icon: "mdi-credit-card-multiple",
+								to: "/report/sale_report",
 								permission: "summary report"
 							},
 							{
