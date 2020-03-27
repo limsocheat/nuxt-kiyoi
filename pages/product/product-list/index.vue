@@ -1,5 +1,5 @@
 <template>
-	<v-app class="mx-5 my-5">
+	<v-container>
 		<div
 			class="d-flex"
 			id="div_id"
@@ -113,88 +113,92 @@
 				</v-btn>
 			</div>
 		</div>
-		<v-data-table
-			:headers="headers"
-			:items="items"
-			:items-per-page="itemsPerPage"
-			:options.sync="options"
-			:server-items-length="total"
-		>
-			<template v-slot:item="{ item }">
-				<tr>
-					<td v-if="item.image">
-						<img
-							:src="item.image_url"
-							class="product-img"
-						/>
-					</td>
-					<td v-else>
-						<span>No Image</span>
-					</td>
-					<td>{{ item.name }}</td>
-					<td>{{ item.code }}</td>
-					<td>{{ item.unit }}</td>
-					<td>USD {{ item.price |formatNumber }}</td>
-					<td>
-						<v-tooltip
-							top
-							v-permission="'edit sales'"
-						>
-							<template v-slot:activator="{ on }">
-								<v-btn
-									icon
-									small
-									@click="viewItem(item.id)"
-									color="cyan"
-									outlined
-									v-on="on"
-								>
-									<v-icon small>mdi-eye</v-icon>
-								</v-btn>
-							</template>
-							<span>View</span>
-						</v-tooltip>
-						<v-tooltip
-							top
-							v-permission="'edit sales'"
-						>
-							<template v-slot:activator="{ on }">
-								<v-btn
-									icon
-									small
-									@click="editItem(item.id)"
-									color="primary"
-									outlined
-									v-on="on"
-								>
-									<v-icon small>mdi-pencil</v-icon>
-								</v-btn>
-							</template>
-							<span>Edit</span>
-						</v-tooltip>
-						<v-tooltip
-							top
-							v-permission="'delete sales'"
-						>
-							<template v-slot:activator="{ on }">
-								<v-btn
-									icon
-									small
-									@click="deleteItem(item)"
-									color="red"
-									outlined
-									v-on="on"
-								>
-									<v-icon small>mdi-delete</v-icon>
-								</v-btn>
-							</template>
-							<span>Delete</span>
-						</v-tooltip>
-					</td>
-				</tr>
-			</template>
-		</v-data-table>
-	</v-app>
+
+		<div id="print-table">
+			<v-data-table
+				:headers="headers"
+				:items="items"
+				:items-per-page="itemsPerPage"
+				:options.sync="options"
+				:server-items-length="total"
+			>
+				<template v-slot:item="{ item }">
+					<tr>
+						<td v-if="item.image">
+							<img
+								:src="item.image_url"
+								class="product-img"
+							/>
+						</td>
+						<td v-else>
+							<span>No Image</span>
+						</td>
+						<td>{{ item.name }}</td>
+						<td>{{ item.code }}</td>
+						<td>{{ item.unit }}</td>
+						<td>USD {{ item.price |formatNumber }}</td>
+						<td id="action">
+							<v-tooltip
+								top
+								v-permission="'edit sales'"
+							>
+								<template v-slot:activator="{ on }">
+									<v-btn
+										icon
+										small
+										@click="viewItem(item.id)"
+										color="cyan"
+										outlined
+										v-on="on"
+									>
+										<v-icon small>mdi-eye</v-icon>
+									</v-btn>
+								</template>
+								<span>View</span>
+							</v-tooltip>
+							<v-tooltip
+								top
+								v-permission="'edit sales'"
+							>
+								<template v-slot:activator="{ on }">
+									<v-btn
+										icon
+										small
+										@click="editItem(item.id)"
+										color="primary"
+										outlined
+										v-on="on"
+									>
+										<v-icon small>mdi-pencil</v-icon>
+									</v-btn>
+								</template>
+								<span>Edit</span>
+							</v-tooltip>
+							<v-tooltip
+								top
+								v-permission="'delete sales'"
+							>
+								<template v-slot:activator="{ on }">
+									<v-btn
+										icon
+										small
+										@click="deleteItem(item)"
+										color="red"
+										outlined
+										v-on="on"
+									>
+										<v-icon small>mdi-delete</v-icon>
+									</v-btn>
+								</template>
+								<span>Delete</span>
+							</v-tooltip>
+						</td>
+					</tr>
+				</template>
+			</v-data-table>
+
+		</div>
+	</v-container>
 </template>
 
 
@@ -333,7 +337,9 @@
 					});
 			},
 
-			printPage() {}
+			printPage() {
+				window.print();
+			}
 		}
 	};
 </script>
@@ -376,6 +382,32 @@
 	.print {
 		&--link {
 			text-decoration: none;
+		}
+	}
+
+	@media print {
+		body * {
+			visibility: hidden;
+		}
+
+		#print-table * {
+			visibility: visible;
+			font-size: 20px !important;
+		}
+
+		#print-table {
+			position: absolute;
+			top: 0;
+			right: 0;
+		}
+
+		@page {
+			size: 6in 9in;
+			// margin-top: 0.75in;
+		}
+
+		#action * {
+			visibility: hidden;
 		}
 	}
 </style>
