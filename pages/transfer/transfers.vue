@@ -40,10 +40,35 @@
 					v-model="search"
 				>
 			</div>
-			<div>
-				<v-btn class="red darken-1">PDF</v-btn>
-				<v-btn class="lime lighten-1">CSV</v-btn>
-				<v-btn class="blue lighten-1">Print</v-btn>
+			<div class="print">
+				<a
+					class="print--link"
+					:href="baseURL + `api/transfer/export_pdf`"
+				>
+					<v-btn
+						class="red darken-1"
+						dark
+					>
+						<v-icon>mdi-file-pdf</v-icon>PDF
+					</v-btn>
+				</a>
+				<a
+					class="print--link"
+					:href="baseURL + `api/transfer/export`"
+				>
+					<v-btn
+						class="lime lighten-1"
+						dark
+					>
+						<v-icon>mdi-file-excel</v-icon>CSV
+					</v-btn>
+				</a>
+				<v-btn
+					class="blue lighten-1"
+					dark
+				>
+					<v-icon>mdi-printer</v-icon>Print
+				</v-btn>
 			</div>
 		</div>
 		<v-card>
@@ -59,27 +84,29 @@
 						<td>{{ item.from_location }}</td>
 						<td>{{ item.to_location }}</td>
 						<td>USD {{ item.shipping_charge | formatNumber }}</td>
-						<td>{{ item | formatNumber }}</td>
+						<td>USD {{ item.grand_total | formatNumber }}</td>
 						<td>
 							<span :class="item.status === 'Completed' ? 'completed' : (item.status === 'Pending' ? 'pending' : 'sent')">{{ item.status }}</span>
 						</td>
 						<td>
 							<v-tooltip bottom>
 								<template v-slot:activator="{ on }">
-									<!-- Edit Item -->
+									<!-- Delete Item -->
 									<v-btn
+										@click="viewTransfer(item.id)"
 										left
 										small
 										outlined
 										icon
-										color="primary"
+										color="blue"
 										v-on="on"
 									>
-										<v-icon small>mdi-pencil</v-icon>
+										<v-icon small>mdi-eye</v-icon>
 									</v-btn>
 								</template>
-								<span>Edit Transfer</span>
+								<span>View Transfer</span>
 							</v-tooltip>
+
 							<v-tooltip bottom>
 								<template v-slot:activator="{ on }">
 									<!-- Delete Item -->
@@ -122,6 +149,7 @@
 
 		data() {
 			return {
+				baseURL: process.env.APP_URL,
 				items: [],
 				search: "",
 				form: {},
@@ -201,6 +229,10 @@
 					.catch(err => {
 						console.log(err.response);
 					});
+			},
+
+			viewTransfer(id) {
+				this.$router.push(`/transfer/${id}`);
 			}
 		}
 	};
@@ -237,5 +269,11 @@
 		border: 1px solid #5d88cf;
 		outline: none;
 		border-radius: 5px;
+	}
+
+	.print {
+		&--link {
+			text-decoration: none;
+		}
 	}
 </style>
