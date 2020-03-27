@@ -1,9 +1,18 @@
 <template>
 	<v-app class="mx-5 my-5">
 		<div class="d-flex">
-			<div class="pb-5 pr-3" v-permission="'view admin'">
-				<nuxt-link class="nuxt--link" to="/return/return-purchase/create">
-					<v-btn class="green darken-2" dark>
+			<div
+				class="pb-5 pr-3"
+				v-permission="'add users'"
+			>
+				<nuxt-link
+					class="nuxt--link"
+					to="/return/return-purchase/create"
+				>
+					<v-btn
+						class="green darken-2"
+						dark
+					>
 						<v-icon left>mdi-plus-circle</v-icon>
 						Add Return Purchase
 					</v-btn>
@@ -15,16 +24,42 @@
 				<div>
 					<v-text-field
 						label="Search"
-						solo 
+						solo
 						outlined
 						dense
 						v-model="search"
 					></v-text-field>
 				</div>
-				<div>
-					<v-btn class="red darken-1">PDF</v-btn>
-					<v-btn class="lime lighten-1">CSV</v-btn>
-					<v-btn class="blue lighten-1">Print</v-btn>
+				<div class="print">
+					<a
+						class="print--link"
+						:href="baseURL + `api/return-purchase/export_pdf`"
+					>
+						<v-btn
+							dark
+							class="red darken-1"
+						>
+							<v-icon>mdi-file-pdf</v-icon>PDF
+						</v-btn>
+					</a>
+					<a
+						class="print--link"
+						:href="baseURL + `api/return-purchase/export`"
+					>
+						<v-btn
+							dark
+							class="lime lighten-1"
+						>
+							<v-icon>mdi-file-excel</v-icon>CSV
+						</v-btn>
+					</a>
+					<v-btn
+						dark
+						class="blue lighten-1"
+					>
+						<v-icon>mdi-printer</v-icon>
+						Print
+					</v-btn>
 				</div>
 			</div>
 			<v-divider></v-divider>
@@ -43,28 +78,58 @@
 						<td @click="viewReturn(item.id)">{{ item.supplier.name }}</td>
 						<td @click="viewReturn(item.id)">{{ item.account.name }}</td>
 						<td @click="viewReturn(item.id)">{{ item.sub_total | Money}}</td>
-						
+
 						<td class="text-center">
-							<div class="row"> 
-								<v-tooltip top v-permission="'view sales'">
+							<div class="row">
+								<v-tooltip
+									top
+									v-permission="'view sales'"
+								>
 									<template v-slot:activator="{ on }">
-										<v-btn small icon @click="viewReturn(item.id)" color="teal" outlined v-on="on">
+										<v-btn
+											small
+											icon
+											@click="viewReturn(item.id)"
+											color="teal"
+											outlined
+											v-on="on"
+										>
 											<v-icon small>mdi-eye</v-icon>
 										</v-btn>
 									</template>
 									<span>View</span>
 								</v-tooltip>
-								<v-tooltip top v-permission="'view users'">
-									<template v-slot:activator="{ on }" >
-										<v-btn  small icon @click="editItem(item.id)" color="primary" outlined v-on="on">
+								<v-tooltip
+									top
+									v-permission="'view users'"
+								>
+									<template v-slot:activator="{ on }">
+										<v-btn
+											small
+											icon
+											@click="editItem(item.id)"
+											color="primary"
+											outlined
+											v-on="on"
+										>
 											<v-icon small>mdi-pencil</v-icon>
 										</v-btn>
 									</template>
 									<span>Edit</span>
 								</v-tooltip>
-								<v-tooltip top v-permission="'view users'">
+								<v-tooltip
+									top
+									v-permission="'view users'"
+								>
 									<template v-slot:activator="{ on }">
-										<v-btn small icon @click="deleteItem(item.id)" color="red" outlined v-on="on">
+										<v-btn
+											small
+											icon
+											@click="deleteItem(item.id)"
+											color="red"
+											outlined
+											v-on="on"
+										>
 											<v-icon small>mdi-delete</v-icon>
 										</v-btn>
 									</template>
@@ -81,170 +146,168 @@
 
 
 <script>
-
-	import Vue from 'vue';
+	import Vue from "vue";
 
 	var numeral = require("numeral");
-	Vue.filter("Money", function (value) {
+	Vue.filter("Money", function(value) {
 		return numeral(value).format("0,0.00");
 	});
-	
-	
 
-export default {
+	export default {
+		created() {
+			this.fetchData();
+			this.fetchSearch();
+		},
 
-	created() {
-		this.fetchData();
-		this.fetchSearch();
-	},
-
-	watch: {
-		options: {
-			handler() {
-				this.fetchData();
+		watch: {
+			options: {
+				handler() {
+					this.fetchData();
+				}
+			},
+			search: {
+				handler() {
+					this.fetchSearch();
+				}
 			}
 		},
-		search:{
-			handler(){
-				this.fetchSearch();
+
+		data() {
+			return {
+				baseURL: process.env.APP_URL,
+				date: new Date().toISOString(),
+				items: [],
+				search: "",
+				form: {},
+				total: 0,
+				options: {},
+				itemsPerPage: 5,
+				headers: [
+					{
+						text: "Date",
+						sortable: false
+					},
+					{
+						text: "Reference",
+						sortable: false
+					},
+					{
+						text: "Warehouse",
+						sortable: false
+					},
+					{
+						text: "Supplier",
+						sortable: false
+					},
+					{
+						text: "Account",
+						sortable: false
+					},
+					{
+						text: "Grand Total​​​​​ (USD)",
+						sortable: false
+					},
+					{
+						text: "Action",
+						sortable: false
+					}
+				]
+			};
+		},
+
+		methods: {
+			fetchData() {
+				this.$axios
+					.$get(
+						`/api/return-purchase/?temsPerPage=${this.options.itemsPerPage}&page=${this.options.page}`
+					)
+					.then(res => {
+						this.items = res.returnpurchase.data;
+						this.total = res.total;
+						console.log(res);
+					})
+					.catch(err => {
+						console.log(err);
+					});
+			},
+			fetchSearch() {
+				this.$axios
+					.$get(`/api/return-purchase?search=${this.search}`)
+					.then(res => {
+						this.items = res.returnpurchase.data;
+						console.log(res);
+					})
+					.catch(err => {
+						console.log(err.response);
+					});
+			},
+
+			viewReturn(id) {
+				this.$router.push(`/return/return-purchase/${id}`);
+			},
+
+			editItem(id) {
+				this.$router.push(`/return/return-purchase/${id}/edit`);
+			},
+
+			deleteItem(id) {
+				if (confirm("Are you sure to Delete it?")) {
+					this.$axios
+						.$delete(`api/return-purchase/` + id)
+						.then(res => {
+							this.fetchData();
+							console.log(res);
+							this.$toast("Deleted Successfully");
+						})
+						.catch(err => {
+							console.log(err.response);
+						});
+				}
+			},
+
+			uploadCsv(image) {
+				const URL = "http://127.0.0.1:3000/product/category";
+
+				let data = new FormData();
+				data.append("name", "my-csv");
+				data.append("file", event.target.files[0]);
+
+				let config = {
+					header: {
+						"Content-Type": "csv"
+					}
+				};
+
+				this.$axios.$put(URL, data, config).then(response => {
+					console.log("Csv upload response > ", response);
+				});
 			}
-		},
-	},
-
-	data() {
-		return {
-			date: new Date().toISOString(),
-			items: [],
-			search: '',
-			form: {},
-			total: 0,
-			options: {},
-			itemsPerPage: 5,
-			headers: [{
-					text: 'Date',
-					sortable: false,
-			
-				}, {
-					text: 'Reference',
-					sortable: false,
-				
-				}, {
-					text: 'Warehouse',
-					sortable: false,
-					
-				}, {
-					text: 'Supplier',
-					sortable: false,
-					
-				}, {
-					text: 'Account',
-					sortable: false,
-					
-				},{
-					text: 'Grand Total​​​​​ (USD)',
-					sortable: false,
-					
-				},{
-					text: 'Action',
-					sortable: false,
-					
-				},
-			],
 		}
-	},
-
-	methods: {
-
-		fetchData() {
-			this.$axios.$get(`/api/return-purchase/?temsPerPage=${this.options.itemsPerPage}&page=${this.options.page}`)
-			.then(res => {
-				this.items = res.returnpurchase.data;
-				this.total = res.total;
-				console.log(res);
-			})
-			.catch(err => {
-				console.log(err);
-			})
-		},
-		fetchSearch(){
-			this.$axios.$get(`/api/return-purchase?search=${this.search}`)
-			.then(res =>{
-				this.items = res.returnpurchase.data;
-				console.log(res);
-			})
-			.catch(err =>{
-				console.log(err.response);
-			})
-		},
-
-		viewReturn(id) {
-      		this.$router.push(`/return/return-purchase/${id}`);
-      	},
-
-		editItem(id) {
-			this.$router.push(`/return/return-purchase/${id}/edit`);
-		},
-
-		deleteItem(id) {
-      		if(confirm('Are you sure to Delete it?')) {
-      			this.$axios.$delete(`api/return-purchase/` + id)
-      			.then(res => {
-      				this.fetchData();
-						  	console.log(res);
-						   	this.$toast("Deleted Successfully");
-      			})
-      			.catch(err => {
-					console.log(err.response);
-      			})
-      		}
-      	},
-		
-
-		uploadCsv(image) {
-			const URL = 'http://127.0.0.1:3000/product/category'
-
-			let data = new FormData();
-				data.append('name', 'my-csv');
-				data.append('file', event.target.files[0]); 
-
-		    let config = {
-				header : {
-					'Content-Type' : 'csv'
-				}
-		    }
-
-		    this.$axios.$put(
-				URL, 
-				data,
-				config
-		    ).then(
-				response => {
-					console.log('Csv upload response > ', response)
-				}
-		    )
-		}
-	}
-}
-
+	};
 </script>
 
 <style lang="scss">
+	.nuxt--link {
+		text-decoration: none;
+	}
 
-.nuxt--link {
-	text-decoration: none; 
-}
+	.form-control {
+		width: 100%;
+		padding-bottom: 5px;
+		padding-top: 5px;
+		padding-right: 10px;
+		padding-left: 10px;
+		outline: none;
+		border-radius: 5px;
+		border: 1px solid #616161;
+	}
+	.viewReturn {
+		cursor: pointer;
+	}
 
-.form-control {
-	width: 100%;
-	padding-bottom: 5px; 
-	padding-top: 5px; 
-	padding-right: 10px; 
-	padding-left: 10px; 
-	outline: none;
-	border-radius: 5px;
-	border: 1px solid #616161;
-}
-.viewReturn{
-	cursor: pointer;
-}
+	.print {
+		&--link {
+			text-decoration: none;
+		}
+	}
 </style>
