@@ -1,9 +1,18 @@
 <template>
 	<v-app class="mx-5 my-5">
 		<div class="d-flex">
-			<div class="pb-5 pr-3" v-permission="'add employee'">
-				<nuxt-link class="nuxt--link" to="/hrm/employee/create">
-					<v-btn class="teal darken-1" dark>
+			<div
+				class="pb-5 pr-3"
+				v-permission="'add employee'"
+			>
+				<nuxt-link
+					class="nuxt--link"
+					to="/hrm/employee/create"
+				>
+					<v-btn
+						class="teal darken-1"
+						dark
+					>
 						<v-icon left>mdi-plus-circle</v-icon>
 						Add Employee
 					</v-btn>
@@ -11,10 +20,11 @@
 			</div>
 		</div>
 		<div>
-			<v-dialog 
-				v-model="dialog" max-width="700px" persistent
-				v-permission="'add expense'"
+			<v-dialog
+				v-model="dialog"
+				max-width="700px"
 				persistent
+				v-permission="'add expense'"
 			>
 				<!-- Form Modal -->
 				<v-card>
@@ -23,7 +33,10 @@
 					</v-card-title>
 					<v-divider></v-divider>
 					<v-row class="px-5">
-						<v-col cols="12" sm="6">
+						<v-col
+							cols="12"
+							sm="6"
+						>
 							<label for="">Name</label>
 							<v-text-field
 								solo
@@ -34,7 +47,10 @@
 							>
 							</v-text-field>
 						</v-col>
-						<v-col cols="12" sm="6">
+						<v-col
+							cols="12"
+							sm="6"
+						>
 							<label for="">Phone Number</label>
 							<v-text-field
 								solo
@@ -45,7 +61,10 @@
 							>
 							</v-text-field>
 						</v-col>
-						<v-col cols="12" sm="6">
+						<v-col
+							cols="12"
+							sm="6"
+						>
 							<label for="">Department</label>
 							<v-select
 								solo
@@ -61,7 +80,10 @@
 								</template>
 							</v-select>
 						</v-col>
-						<v-col cols="12" sm="6">
+						<v-col
+							cols="12"
+							sm="6"
+						>
 							<label for="">Gender</label>
 							<v-select
 								solo
@@ -73,7 +95,10 @@
 							>
 							</v-select>
 						</v-col>
-						<v-col cols="12" sm="6">
+						<v-col
+							cols="12"
+							sm="6"
+						>
 							<label for="">City</label>
 							<v-text-field
 								solo
@@ -84,7 +109,10 @@
 							>
 							</v-text-field>
 						</v-col>
-						<v-col cols="12" sm="6">
+						<v-col
+							cols="12"
+							sm="6"
+						>
 							<label for="">Address</label>
 							<v-text-field
 								solo
@@ -95,7 +123,10 @@
 							>
 							</v-text-field>
 						</v-col>
-						<v-col cols="12" sm="12">
+						<v-col
+							cols="12"
+							sm="12"
+						>
 							<label for="">Country</label>
 							<v-text-field
 								solo
@@ -109,8 +140,15 @@
 					</v-row>
 					<v-card-actions>
 						<v-spacer></v-spacer>
-						<v-btn color="blue darken-1" text @click="closeDialog">Close</v-btn>
-						<v-btn color="primary" @click="updateItem">Save</v-btn>
+						<v-btn
+							color="blue darken-1"
+							text
+							@click="closeDialog"
+						>Close</v-btn>
+						<v-btn
+							color="primary"
+							@click="updateItem"
+						>Save</v-btn>
 					</v-card-actions>
 				</v-card>
 			</v-dialog>
@@ -119,19 +157,49 @@
 			<div>
 				<v-text-field
 					label="Search"
-					solo 
+					solo
 					outlined
 					dense
 				></v-text-field>
 			</div>
-			<div>
-				<v-btn class="red darken-1">PDF</v-btn>
-				<v-btn class="lime lighten-1">CSV</v-btn>
-				<v-btn class="blue lighten-1">Print</v-btn>
+			<div class="print">
+				<a
+					class="print--link"
+					:href="baseURL + `api/employee/export_pdf`"
+				>
+					<v-btn
+						dark
+						class="red darken-1"
+					>
+						<v-icon>mdi-file-pdf</v-icon>PDF
+					</v-btn>
+				</a>
+				<a
+					class="print--link"
+					:href="baseURL + `api/employee/export`"
+				>
+					<v-btn
+						dark
+						class="lime lighten-1"
+					>
+						<v-icon>mdi-file-excel</v-icon>CSV
+					</v-btn>
+				</a>
+				<v-btn
+					dark
+					class="blue lighten-1"
+				>
+					<v-icon>mdi-printer</v-icon>
+					Print
+				</v-btn>
 			</div>
 		</div>
 		<v-card>
-			<v-data-table :headers="headers" :items="items" :items-per-page="itemsPerPage">
+			<v-data-table
+				:headers="headers"
+				:items="items"
+				:items-per-page="itemsPerPage"
+			>
 				<template v-slot:item="{ item }">
 					<tr>
 						<td>{{ item.name }}</td>
@@ -142,7 +210,13 @@
 							<v-tooltip bottom>
 								<template v-slot:activator="{ on }">
 									<!-- Edit Item -->
-									<v-btn icon @click="editItem(item)" color="primary" v-on="on" outlined>
+									<v-btn
+										icon
+										@click="editItem(item)"
+										color="primary"
+										v-on="on"
+										outlined
+									>
 										<v-icon small>
 											mdi-pencil
 										</v-icon>
@@ -153,7 +227,14 @@
 							<v-tooltip bottom>
 								<template v-slot:activator="{ on }">
 									<!-- Delete Item -->
-									<v-btn @click="deleteItem(item)" icon outlined color="red" left v-on="on">
+									<v-btn
+										@click="deleteItem(item)"
+										icon
+										outlined
+										color="red"
+										left
+										v-on="on"
+									>
 										<v-icon small>
 											mdi-delete
 										</v-icon>
@@ -171,128 +252,138 @@
 
 
 <script>
-export default {
+	export default {
+		created() {
+			this.fetchData();
+			this.fetchDepartment();
+		},
 
-	created() {
-		this.fetchData()
-		this.fetchDepartment()
-	},
+		data() {
+			return {
+				baseURL: process.env.APP_URL,
+				departments: [],
+				items: [],
+				search: "",
+				form: {},
+				total: 0,
+				options: {},
+				itemsPerPage: 5,
+				editedIndex: -1,
+				created: true,
+				dialog: false,
+				genders: ["Female", "Male"],
+				headers: [
+					{
+						text: "Name",
+						sortable: false,
+						value: "name"
+					},
+					{
+						text: "Phone Number",
+						sortable: false,
+						value: "phone"
+					},
+					{
+						text: "Department",
+						sortable: false,
+						value: "department"
+					},
+					{
+						text: "Address",
+						sortable: false,
+						value: "address"
+					},
+					{
+						text: "Action",
+						sortable: false,
+						value: "action"
+					}
+				]
+			};
+		},
 
-	data() {
-		return {
-			departments: [],
-			items: [],
-			search: '',
-			form: {},
-			total: 0,
-			options: {},
-			itemsPerPage: 5,
-			editedIndex: -1,
-			created: true,
-			dialog: false,
-			genders: ['Female', 'Male'],
-			headers: [
-				{
-					text: 'Name',
-					sortable: false,
-					value: 'name',
-				},{
-					text: 'Phone Number',
-					sortable: false,
-					value: 'phone',
-				}, {
-					text: 'Department',
-					sortable: false,
-					value: 'department',
-				}, {
-					text: 'Address',
-					sortable: false,
-					value: 'address',
-				},{
-					text: 'Action',
-					sortable: false,
-					value: 'action',
-				},
-			],
+		methods: {
+			fetchDepartment() {
+				this.$axios
+					.$get(`api/hr-department`)
+					.then(res => {
+						this.departments = res;
+						console.log(res);
+					})
+					.catch(err => {
+						console.log(err.response);
+					});
+			},
+
+			fetchData() {
+				this.$axios
+					.$get(`api/employee`)
+					.then(res => {
+						this.items = res.employee.data;
+						console.log(res);
+					})
+					.catch(err => {
+						console.log(err.response);
+					});
+			},
+
+			editItem(item) {
+				this.editedIndex = this.items.indexOf(item);
+				this.form = Object.assign({}, item);
+				this.dialog = true;
+			},
+
+			closeDialog() {
+				this.dialog = false;
+				this.editedIndex = -1;
+				this.form = {};
+			},
+
+			deleteItem(item) {
+				if (confirm("Are u sure to delete it?")) {
+					this.$axios
+						.$delete(`/api/employee/` + item.id)
+						.then(res => {
+							this.fetchData();
+							this.$toast.info("Succeessfully Delete");
+						})
+						.catch(err => {
+							console.log(err.response);
+						});
+				}
+			},
+
+			updateItem() {
+				if (this.editedIndex > -1) {
+					this.$axios
+						.$patch(`/api/employee/` + this.form.id, {
+							name: this.form.name,
+							city: this.form.city,
+							department_name: this.form.department_name,
+							gender: this.form.gender,
+							phone: this.form.phone,
+							address: this.form.address,
+							country: this.form.country
+						})
+						.then(res => {
+							this.fetchData();
+							this.closeDialog();
+							this.$toast.info("Succeessfully Updated");
+						});
+				}
+			}
 		}
-	},
-
-	methods: {
-		fetchDepartment() {
-			this.$axios.$get(`api/hr-department`)
-			.then(res => {
-				this.departments = res;
-				console.log(res);
-			})
-			.catch(err => {
-				console.log(err.response);
-			})
-		},
-
-		fetchData() {
-			this.$axios.$get(`api/employee`)
-			.then(res => {
-				this.items = res.employee.data;
-				console.log(res);
-			})
-			.catch(err => {
-				console.log(err.response);
-			})
-		},
-
-		editItem (item) {
-	        this.editedIndex = this.items.indexOf(item);
-	        this.form = Object.assign({}, item);
-	        this.dialog = true
-      	},
-
-      	closeDialog() {
-      		this.dialog = false;
-      		this.editedIndex = -1;
-      		this.form = {};
-      	},
-
-      	deleteItem(item) {
-			if(confirm('Are u sure to delete it?')) {
-				this.$axios.$delete(`/api/employee/` + item.id)
-				.then(res => {
-					this.fetchData();
-					this.$toast.info('Succeessfully Delete');
-				})
-				.catch(err => {
-					console.log(err.response);
-				})
-			}
-		},
-
-		updateItem() {
-			if(this.editedIndex > -1) {
-				this.$axios.$patch(`/api/employee/` + this.form.id, {
-					'name': this.form.name,
-					'city': this.form.city,
-					'department_name': this.form.department_name,
-					'gender': this.form.gender,
-					'phone': this.form.phone,
-					'address': this.form.address,
-					'country': this.form.country,
-				})
-				.then(res => {
-					this.fetchData();
-					this.closeDialog();
-					this.$toast.info('Succeessfully Updated');
-				})
-			}
-		},
-	}
-}
-
+	};
 </script>
 
 <style lang="scss">
+	.nuxt--link {
+		text-decoration: none;
+	}
 
-.nuxt--link {
-	text-decoration: none; 
-}
-
-
+	.print {
+		&--link {
+			text-decoration: none;
+		}
+	}
 </style>
