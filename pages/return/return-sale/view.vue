@@ -2,8 +2,15 @@
 	<v-app class="mx-5 my-5">
 		<div class="d-flex">
 			<div class="pb-5 pr-3">
-				<nuxt-link class="nuxt--link" to="/return/return-sale/create">
-					<v-btn v-permission="'add users'"  class="green darken-2" dark>
+				<nuxt-link
+					class="nuxt--link"
+					to="/return/return-sale/create"
+				>
+					<v-btn
+						v-permission="'add users'"
+						class="green darken-2"
+						dark
+					>
 						<v-icon left>mdi-plus-circle</v-icon>
 						Add Return Sale
 					</v-btn>
@@ -15,16 +22,42 @@
 				<div>
 					<v-text-field
 						label="Search..."
-						solo 
+						solo
 						outlined
 						dense
 						v-model="search"
 					></v-text-field>
 				</div>
-				<div>
-					<v-btn class="red darken-1">PDF</v-btn>
-					<v-btn class="lime lighten-1">CSV</v-btn>
-					<v-btn @click="print" class="blue lighten-1">Print</v-btn>
+				<div class="print">
+					<a
+						class="print--link"
+						:href="baseURL + `api/return-sale/export_pdf`"
+					>
+						<v-btn
+							dark
+							class="red darken-1"
+						>
+							<v-icon>mdi-file-pdf</v-icon>PDF
+						</v-btn>
+					</a>
+					<a
+						class="print--link"
+						:href="baseURL + `api/return-sale/export`"
+					>
+						<v-btn
+							dark
+							class="lime lighten-1"
+						>
+							<v-icon>mdi-file-excel</v-icon>CSV
+						</v-btn>
+					</a>
+					<v-btn
+						dark
+						@click="print"
+						class="blue lighten-1"
+					>
+						<v-icon>mdi-printer</v-icon>Print
+					</v-btn>
 				</div>
 			</div>
 			<v-divider></v-divider>
@@ -34,7 +67,7 @@
 				:items-per-page="itemsPerPage"
 				:options.sync="options"
 				:server-items-length="total"
-				id="print"	
+				id="print"
 			>
 				<template v-slot:item="{ item }">
 					<tr class="viewReturnSale">
@@ -44,28 +77,58 @@
 						<td @click="viewReturnSale(item.id)">{{ item.member.name }}</td>
 						<td @click="viewReturnSale(item.id)">{{ item.account.name }}</td>
 						<td @click="viewReturnSale(item.id)">{{ item.sub_total | Menoy }}</td>
-						
+
 						<td class="text-center">
-							<div class="row"> 
-								<v-tooltip top v-permission="'view sales'">
+							<div class="row">
+								<v-tooltip
+									top
+									v-permission="'view sales'"
+								>
 									<template v-slot:activator="{ on }">
-										<v-btn small icon @click="viewReturnSale(item.id)" color="teal" outlined v-on="on">
+										<v-btn
+											small
+											icon
+											@click="viewReturnSale(item.id)"
+											color="teal"
+											outlined
+											v-on="on"
+										>
 											<v-icon small>mdi-eye</v-icon>
 										</v-btn>
 									</template>
 									<span>View</span>
 								</v-tooltip>
-								<v-tooltip top v-permission="'edit users'">
+								<v-tooltip
+									top
+									v-permission="'edit users'"
+								>
 									<template v-slot:activator="{ on }">
-										<v-btn small icon @click="editItem(item.id)" color="primary" outlined v-on="on">
+										<v-btn
+											small
+											icon
+											@click="editItem(item.id)"
+											color="primary"
+											outlined
+											v-on="on"
+										>
 											<v-icon small>mdi-pencil</v-icon>
 										</v-btn>
 									</template>
 									<span>Edit</span>
 								</v-tooltip>
-								<v-tooltip top v-permission="'view users'">
+								<v-tooltip
+									top
+									v-permission="'view users'"
+								>
 									<template v-slot:activator="{ on }">
-										<v-btn small icon @click="deleteItem(item.id)" color="red" outlined v-on="on">
+										<v-btn
+											small
+											icon
+											@click="deleteItem(item.id)"
+											color="red"
+											outlined
+											v-on="on"
+										>
 											<v-icon small>mdi-delete</v-icon>
 										</v-btn>
 									</template>
@@ -82,156 +145,162 @@
 
 
 <script>
-
-	import Vue from 'vue';
+	import Vue from "vue";
 
 	var numeral = require("numeral");
-	Vue.filter("Menoy", function (value) {
+	Vue.filter("Menoy", function(value) {
 		return numeral(value).format("0,0.00");
 	});
-	
 
-export default {
-
-	created() {
-		this.fetchReturn();
-		this.fetchSearch();
-	},
-
-	watch: {
-		options: {
-			handler() {
-				this.fetchReturn();
-			}
-		},
-		search:{
-			handler(){
-				this.fetchSearch();
-			}
-		},
-	},
-
-	data() {
-		return {
-			items: [],
-			form: {},
-			total: 0,
-			search: '',
-			options: {},
-			itemsPerPage: 5,
-			headers: [{
-					text: 'Date',
-					sortable: false,
-					
-				}, {
-					text: 'Reference',
-					sortable: false,
-					value: 'reference_no'
-					
-				}, {
-					text: 'Warehouse',
-					sortable: false,
-					
-				}, {
-					text: 'Customer',
-					sortable: false,
-					
-				}, {
-					text: 'Account',
-					sortable: false,
-					
-				},{
-					text: 'Grand Total (USD)',
-					sortable: false,
-					
-				},{
-					text: 'Action',
-					sortable: false,
-				},
-			],
-		}
-	},
-	// computed: {
-	// 	tableItems () {
-	// 	if (!this.search) {
-	// 		return this.items;
-	// 	}
-
-	// 	return this.items.filter(item => item.members.indexOf(this.search) > -1)
-	// 	}
-	// },
-
-	methods: {
-
-		fetchReturn() {
-			this.$axios.$get(`/api/return-sale?temsPerPage=${this.options.itemsPerPage}&page=${this.options.page}`)
-			.then(res => {
-				this.items = res.returnsale.data;
-				this.total = res.total;
-				console.log(res)
-			})
-			.catch(err => {
-				console.log(err);
-			})
+	export default {
+		created() {
+			this.fetchReturn();
+			this.fetchSearch();
 		},
 
-		fetchSearch(){
-			this.$axios.$get(`/api/return-sale?search=${this.search}`)
-			.then(res =>{
-				this.items = res.returnsale.data;
-				console.log(res)
-			})
-			.catch(err =>{
-				console.log(err.response);
-			})
-		},
-
-		viewReturnSale(id){
-			this.$router.push(`/return/return-sale/${id}`)
-		},
-
-		editItem(id) {
-			this.$router.push(`/return/return-sale/${id}/edit`);
-		},
-
-		deleteItem(id) {
-			if(confirm('Do you want to delete it?')) {
-				this.$axios.$delete(`api/return-sale/` + id)
-				.then(res => {
+		watch: {
+			options: {
+				handler() {
 					this.fetchReturn();
-					this.$toast.info('Succeessfully Delete');
-				})
-				.catch(err => {
-					console.log(err.response);
-				})
+				}
+			},
+			search: {
+				handler() {
+					this.fetchSearch();
+				}
 			}
-		  },
-		print() {
-			this.$htmlToPaper('print')
 		},
-	}
-}
 
+		data() {
+			return {
+				baseURL: process.env.APP_URL,
+				items: [],
+				form: {},
+				total: 0,
+				search: "",
+				options: {},
+				itemsPerPage: 5,
+				headers: [
+					{
+						text: "Date",
+						sortable: false
+					},
+					{
+						text: "Reference",
+						sortable: false,
+						value: "reference_no"
+					},
+					{
+						text: "Warehouse",
+						sortable: false
+					},
+					{
+						text: "Customer",
+						sortable: false
+					},
+					{
+						text: "Account",
+						sortable: false
+					},
+					{
+						text: "Grand Total (USD)",
+						sortable: false
+					},
+					{
+						text: "Action",
+						sortable: false
+					}
+				]
+			};
+		},
+		// computed: {
+		// 	tableItems () {
+		// 	if (!this.search) {
+		// 		return this.items;
+		// 	}
+
+		// 	return this.items.filter(item => item.members.indexOf(this.search) > -1)
+		// 	}
+		// },
+
+		methods: {
+			fetchReturn() {
+				this.$axios
+					.$get(
+						`/api/return-sale?temsPerPage=${this.options.itemsPerPage}&page=${this.options.page}`
+					)
+					.then(res => {
+						this.items = res.returnsale.data;
+						this.total = res.total;
+						console.log(res);
+					})
+					.catch(err => {
+						console.log(err);
+					});
+			},
+
+			fetchSearch() {
+				this.$axios
+					.$get(`/api/return-sale?search=${this.search}`)
+					.then(res => {
+						this.items = res.returnsale.data;
+						console.log(res);
+					})
+					.catch(err => {
+						console.log(err.response);
+					});
+			},
+
+			viewReturnSale(id) {
+				this.$router.push(`/return/return-sale/${id}`);
+			},
+
+			editItem(id) {
+				this.$router.push(`/return/return-sale/${id}/edit`);
+			},
+
+			deleteItem(id) {
+				if (confirm("Do you want to delete it?")) {
+					this.$axios
+						.$delete(`api/return-sale/` + id)
+						.then(res => {
+							this.fetchReturn();
+							this.$toast.info("Succeessfully Delete");
+						})
+						.catch(err => {
+							console.log(err.response);
+						});
+				}
+			},
+			print() {
+				this.$htmlToPaper("print");
+			}
+		}
+	};
 </script>
 
 <style lang="scss">
+	.nuxt--link {
+		text-decoration: none;
+	}
 
-.nuxt--link {
-	text-decoration: none; 
-}
+	.form-control {
+		width: 100%;
+		padding-bottom: 5px;
+		padding-top: 5px;
+		padding-right: 10px;
+		padding-left: 10px;
+		outline: none;
+		border-radius: 5px;
+		border: 1px solid #616161;
+	}
+	.viewReturnSale {
+		cursor: pointer;
+	}
 
-.form-control {
-	width: 100%;
-	padding-bottom: 5px; 
-	padding-top: 5px; 
-	padding-right: 10px; 
-	padding-left: 10px; 
-	outline: none;
-	border-radius: 5px;
-	border: 1px solid #616161;
-}
-.viewReturnSale{
-	cursor: pointer;
-}
-
+	.print {
+		&--link {
+			text-decoration: none;
+		}
+	}
 </style>
