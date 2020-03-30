@@ -1,133 +1,269 @@
 <template>
-	<v-app>
-		<v-card class="mx-5 my-5">
-			<div class="teal lighten-2" dark>
+	<v-container>
+		<v-card>
+			<div
+				class="blue lighten-1"
+				dark
+			>
 				<v-card-title class="white--text">
 					Edit Member
-				</v-card-title >
+				</v-card-title>
 			</div>
 			<v-divider></v-divider>
-			<v-row class="px-5">
-				<v-col sm="6" cols="12">
-					<label class="font-weight-bold" for="name">Name*</label>
-					<ValidationProvider rules="min:3" v-slot="{ errors }">
-						<input type="text" class="member--form" required v-model="form.name">
-				      	<span class="red--text">{{ errors[0] }}</span>
-				    </ValidationProvider>
-				</v-col>
-				<v-col sm="6" cols="12">
-					<label class="font-weight-bold" for="">Company Name*</label>
-					<ValidationProvider rules="required|alpha" v-slot="{ errors }">
-						<input type="text" class="member--form" required v-model="form.company_name">
-						<span class="red--text">{{ errors[0] }}</span>
-					</ValidationProvider>
-				</v-col>
-				<v-col sm="6" cols="12">
-					<label class="font-weight-bold" for="">Email</label>
-					<validation-provider rules="email" v-slot="{ errors }">
-						<input type="text" class="member--form" required v-model="form.email">
-						<span class="red--text">{{ errors[0] }}</span>
-					</validation-provider>
-				</v-col>
-				<v-col sm="6" cols="12">
-					<label class="font-weight-bold" for="">Phone Number</label>
-					<ValidationProvider rules="required" v-slot="{ errors }">
-						<input type="text" class="member--form" required v-model="form.phone">
-						<span class="red--text">{{ errors[0] }}</span>
-					</ValidationProvider>
-				</v-col>
-				<v-col sm="6" cols="12">
-					<label class="font-weight-bold" for="">Address</label>
-					<ValidationProvider rules="required|alpha" v-slot="{ errors }">
-						<input type="text" class="member--form" required v-model="form.address">
-						<span class="red--text">{{ errors[0] }}</span>
-					</ValidationProvider>
-				</v-col>
-				<v-col sm="6" cols="12">
-					<label class="font-weight-bold" for="">
-						Tax <span class="font-weight-light">(Optional)</span>
-					</label>
-					<input type="text" class="member--form" required v-model="form.tax">
-				</v-col>
-				<v-col sm="6" cols="12">
-					<label class="font-weight-bold" for="">
-						Post Code <span class="font-weight-light">(Optional)</span>
-					</label>
-					<ValidationProvider rules="required|alpha" v-slot="{ errors }">
-						<input type="text" class="member--form" required v-model="form.post_code">
-						<span class="red--text">{{ errors[0] }}</span>
-					</ValidationProvider>
-				</v-col>
-				<v-col sm="6" cols="12">
-					<label class="font-weight-bold" for="">
-						City<span class="font-weight-light">(Optional)</span>
-					</label>
-					<input type="text" class="member--form" required v-model="form.city">
-				</v-col>
-				<v-col sm="6" cols="12">
-					<label class="font-weight-bold" for="">
-						Country<span class="font-weight-light">(Optional)</span>
-					</label>
-					<input type="text" class="member--form" required v-model="form.country">
-				</v-col>
-			</v-row>
-			<div class="pb-5 pt-3 px-5">
-				<v-btn color="primary" v-permission="'add users'" @click="createBiller">
-					<v-icon left>mdi-check</v-icon>
-					Submit
+			<ValidationObserver
+				ref="form"
+				tag="v-row"
+			>
+				<v-row class="px-5">
+					<v-col
+						sm="6"
+						cols="12"
+					>
+						<label class="font-weight-bold">First Name</label>
+						<validation-provider
+							name="First Name"
+							rules="required"
+							v-slot="{errors}"
+						>
+							<v-text-field
+								outlined
+								solo
+								dense
+								label="Name"
+								v-model="form.first_name"
+							></v-text-field>
+							<span class="red--text">{{ errors[0] }}</span>
+						</validation-provider>
+					</v-col>
+					<v-col
+						sm="6"
+						cols="12"
+					>
+						<label class="font-weight-bold">Last Name</label>
+						<validation-provider
+							name="Last Name"
+							rules="required"
+							v-slot="{errors}"
+						>
+							<v-text-field
+								outlined
+								solo
+								dense
+								label="Last Name"
+								v-model="form.last_name"
+							></v-text-field>
+							<span class="red--text">{{ errors[0] }}</span>
+						</validation-provider>
+					</v-col>
+					<v-col
+						sm="6"
+						cols="12"
+					>
+						<label class="font-weight-bold">Email</label>
+						<validation-provider
+							name="Email"
+							rules="required|email"
+							v-slot="{errors}"
+						>
+							<v-text-field
+								outlined
+								solo
+								dense
+								label="email@email.com"
+								v-model="form.email"
+							></v-text-field>
+							<span class="red--text">{{ errors[0] }}</span>
+						</validation-provider>
+					</v-col>
+					<v-col
+						sm="6"
+						cols="12"
+					>
+						<label class="font-weight-bold">Phone Number</label>
+						<validation-provider
+							name="Phone Number"
+							rules="required"
+							v-slot="{errors}"
+						>
+							<v-text-field
+								outlined
+								solo
+								dense
+								label="Phone Number"
+								v-model="form.profile.phone"
+							></v-text-field>
+							<span class="red--text">{{ errors[0] }}</span>
+						</validation-provider>
+					</v-col>
+					<v-col
+						sm="6"
+						cols="12"
+					>
+						<label class="font-weight-bold">
+							Password
+						</label>
+						<validation-provider
+							name="Password"
+							rules="required|min:6"
+							v-slot="{errors}"
+						>
+							<v-text-field
+								outlined
+								solo
+								dense
+								label="Password"
+								v-model="form.password"
+								type="password"
+							></v-text-field>
+							<span class="red--text">{{ errors[0] }}</span>
+						</validation-provider>
+					</v-col>
+					<v-col
+						sm="6"
+						cols="12"
+					>
+						<label class="font-weight-bold">
+							Address
+						</label>
+						<validation-provider
+							name="Address"
+							rules="required"
+							v-slot="{ errors }"
+						>
+							<v-text-field
+								outlined
+								solo
+								dense
+								label="Address"
+								v-model="form.profile.address"
+							></v-text-field>
+							<span class="red--text">{{ errors[0] }}</span>
+						</validation-provider>
+					</v-col>
+					<v-col
+						sm="6"
+						cols="12"
+					>
+						<label class="font-weight-bold">
+							City
+						</label>
+						<v-text-field
+							outlined
+							solo
+							dense
+							label="City"
+							v-model="form.profile.city"
+						></v-text-field>
+					</v-col>
+					<v-col
+						sm="6"
+						cols="12"
+					>
+						<label class="font-weight-bold">
+							Country
+						</label>
+						<v-text-field
+							outlined
+							solo
+							dense
+							label="Country"
+							v-model="form.profile.country"
+						></v-text-field>
+					</v-col>
+				</v-row>
+			</ValidationObserver>
+
+			<!-- Image Upload -->
+			<div class="px-2">
+				<v-file-input
+					solo
+					outlined
+					dense
+					label="Upload Image"
+					@change="ImageOnChange"
+				></v-file-input>
+			</div>
+
+			<div class="pb-5 px-5">
+				<v-btn
+					@click="updateMember"
+					color="primary"
+				>
+					<v-icon>mdi-check</v-icon>
+					Update
 				</v-btn>
 			</div>
 		</v-card>
-	</v-app>
+	</v-container>
 </template>
 
 <script>
+	import Vue from "vue";
 	export default {
-		name: "EditBiller",	
+		name: "EditMember",
 		data() {
 			return {
-				form: {},
-			}
+				form: {
+					profile: {}
+				},
+				file: null
+			};
 		},
 
 		created() {
-			this.$axios.$get('api/member/' + this.$route.params.id)
-			.then(res => {
-				this.form = res.members;
-				console.log(res)
-			})
+			this.getMember();
 		},
 
 		methods: {
-			createBiller() {
-				this.$axios.$post(`api/member/` + this.form.id, {
-					'name': this.form.name,
-					'company_name': this.form.company_name,
-					'email': this.form.email,
-					'phone': this.form.phone,
-					'address': this.form.address,
-					'tax': this.form.tax,
-					'city': this.form.city,
-					'country': this.form.country,
-					_method: 'patch',
-				})
-				.then(res => {
-					this.items = res.data;
-					this.$router.push('/people/member');
-				})
-				.catch(err => {
-					console.log(err.response.data)
-				})
+			getMember() {
+				this.$axios
+					.$get(`api/member/` + this.$route.params.id)
+					.then(res => {
+						this.$set(this.$data, "form", res.members);
+					})
+					.catch(err => {
+						console.log(err.response);
+					});
 			},
-		},	
-	}
-</script>
 
-<style lang="scss">
-	.member--form {
-		border: 1px solid #22cde0;
-		padding: 5px 10px 5px 10px;
-		width: 100%;
-		outline: none;
-	}
-</style>
+			updateMember() {
+				let data = {
+					first_name: this.form.first_name,
+					last_name: this.form.last_name,
+					email: this.form.email,
+					phone: this.form.profile.phone,
+					city: this.form.profile.city,
+					country: this.form.profile.country,
+					address: this.form.profile.address,
+					password: this.form.profile.password,
+					_method: "PATCH"
+				};
+
+				let fd = new FormData();
+
+				Object.keys(data).map(a => {
+					fd.append(a, data[a]);
+				});
+
+				fd.append("image", this.file);
+
+				this.$axios
+					.$post(`api/member/` + this.form.id, fd, {
+						"Content-Type": "multipart/form-data"
+					})
+					.then(res => {
+						this.$router.push("/people/member");
+						this.$toast.success("Updated Member Successfully.");
+					})
+					.catch(err => {
+						console.log(err.response);
+					});
+			},
+
+			ImageOnChange(e) {
+				this.file = e;
+				console.log(e);
+			}
+		}
+	};
+</script>
