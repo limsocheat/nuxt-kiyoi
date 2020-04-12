@@ -8,7 +8,10 @@
 			<div class="px-5">
 				<p class="caption font-italic pt-5">The field labels marked with * are required input fields.</p>
 				<v-row>
-					<v-col md="4" cols="12">
+					<v-col
+						md="4"
+						cols="12"
+					>
 						<label class="font-weight-bold">Customer*</label>
 						<v-autocomplete
 							solo
@@ -22,7 +25,10 @@
 							v-model="form.member"
 						></v-autocomplete>
 					</v-col>
-					<v-col md="4" cols="12">
+					<v-col
+						md="4"
+						cols="12"
+					>
 						<label class="font-weight-bold">Warehouse*</label>
 						<v-autocomplete
 							solo
@@ -36,7 +42,10 @@
 							v-model="form.branch"
 						></v-autocomplete>
 					</v-col>
-					<v-col md="4" cols="12">
+					<v-col
+						md="4"
+						cols="12"
+					>
 						<label class="font-weight-bold">Payment Method*</label>
 						<v-select
 							solo
@@ -47,7 +56,10 @@
 							v-model="form.payment_method"
 						></v-select>
 					</v-col>
-					<v-col md="12" cols="12">
+					<v-col
+						md="12"
+						cols="12"
+					>
 						<label class="font-weight-bold">Select Product</label>
 						<v-autocomplete
 							solo
@@ -76,7 +88,11 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr class="saleTable--td" v-for="(item, index) in form.products" :key="index">
+							<tr
+								class="saleTable--td"
+								v-for="(item, index) in form.products"
+								:key="index"
+							>
 								<td>{{item.name}}</td>
 								<td>{{item.code}}</td>
 								<td>
@@ -104,7 +120,12 @@
 								</td>-->
 								<td>USD {{ discountedPrice(item) | formatMoney }}</td>
 								<td>
-									<v-btn small color="red" outlined @click="removeItem(index)">
+									<v-btn
+										small
+										color="red"
+										outlined
+										@click="removeItem(index)"
+									>
 										<v-icon>mdi-delete</v-icon>
 									</v-btn>
 								</td>
@@ -118,8 +139,14 @@
 					</table>
 				</div>
 				<v-row>
-					<v-col md="4" cols="12">
-						<label for class="font-weight-bold">Shipping Cost</label>
+					<v-col
+						md="4"
+						cols="12"
+					>
+						<label
+							for
+							class="font-weight-bold"
+						>Shipping Cost</label>
 						<v-text-field
 							solo
 							outlined
@@ -129,13 +156,37 @@
 							v-model="form.shipping_cost"
 						></v-text-field>
 					</v-col>
-					<v-col md="4" cols="12">
-						<label for class="font-weight-bold">Paid</label>
-						<v-text-field solo outlined dense type="number" placeholder="0.0" v-model="form.paid"></v-text-field>
+					<v-col
+						md="4"
+						cols="12"
+					>
+						<label
+							for
+							class="font-weight-bold"
+						>Paid</label>
+						<v-text-field
+							solo
+							outlined
+							dense
+							type="number"
+							placeholder="0.0"
+							v-model="form.paid"
+						></v-text-field>
 					</v-col>
-					<v-col md="4" cols="12">
-						<label for="discount" class="font-weight-bold">Discount Percent</label>
-						<v-text-field solo outlined dense v-model="form.discount"></v-text-field>
+					<v-col
+						md="4"
+						cols="12"
+					>
+						<label
+							for="discount"
+							class="font-weight-bold"
+						>Discount Percent</label>
+						<v-text-field
+							solo
+							outlined
+							dense
+							v-model="form.discount"
+						></v-text-field>
 					</v-col>
 				</v-row>
 
@@ -157,10 +208,19 @@
 
 				<div class="d-flex flex-column pt-5">
 					<label for="note">Note</label>
-					<textarea cols="30" rows="5" class="sale--textarea" v-model="form.description"></textarea>
+					<textarea
+						cols="30"
+						rows="5"
+						class="sale--textarea"
+						v-model="form.description"
+					></textarea>
 				</div>
 			</div>
-			<v-btn class="blue mx-5 lighten-2 my-5" v-permission="'add sales'" @click="updateSale">
+			<v-btn
+				class="blue mx-5 lighten-2 my-5"
+				v-permission="'add sales'"
+				@click="updateSale"
+			>
 				<v-icon>mdi-check</v-icon>Submit
 			</v-btn>
 		</v-card>
