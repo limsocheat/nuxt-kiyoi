@@ -19,8 +19,8 @@
 							dense
 							label="Select Customer"
 							:items="members"
-							item-value="name"
-							item-text="name"
+							item-value="first_name"
+							item-text="first_name"
 							return-object
 							v-model="form.member"
 						></v-autocomplete>
@@ -369,7 +369,6 @@
 						discount: this.form.discount
 					})
 					.then(res => {
-						// this.sales = res.data;
 						this.$set(this.$data, "sales", res.data);
 						console.log(res);
 						this.$router.push(`/sale/sale-list`);

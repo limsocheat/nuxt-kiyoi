@@ -42,8 +42,8 @@
 								dense
 								solo
 								outlined
-								item-text="name"
-								item-value="name"
+								item-text="first_name"
+								item-value="first_name"
 								label="Select Customer"
 								return-object
 								v-model="form.member"
@@ -431,7 +431,7 @@
 				dialog: false,
 				dialog2: false,
 				form: {
-					discount: 10,
+					discount: 0,
 					items: []
 				},
 				products: [],

@@ -82,7 +82,7 @@
 						<td>{{ item.created_at }}</td>
 						<td>{{ item.user.name }}</td>
 						<td>{{ item.reference_no }}</td>
-						<td>{{ item.member.name }}</td>
+						<td>{{ item.member.first_name }}</td>
 						<td>
 							<span :class="item.payment_status === 'Paid' ? 'paid' : 'due'">{{ item.payment_status }}</span>
 						</td>
