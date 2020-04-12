@@ -299,8 +299,21 @@
 					{
 						name: "Users Management",
 						icon: "mdi-account-group",
-						to: "/users",
-						permission: "view users"
+						permission: "view users",
+						children: [
+							{
+								name: "Sale Group",
+								to: "/users/sale_group",
+								icon: "mdi-account-multiple",
+								permission: "view product"
+							},
+							{
+								name: "User Role",
+								to: "/users",
+								icon: "mdi-account-circle",
+								permission: "view product"
+							}
+						]
 					},
 
 					{
