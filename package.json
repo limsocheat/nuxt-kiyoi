@@ -18,7 +18,7 @@
     "@nuxtjs/auth": "^4.8.4",
     "@nuxtjs/axios": "^5.8.0",
     "@nuxtjs/pwa": "^3.0.0-0",
-    "chart.js": "^2.9.3",
+    "chart.js": "^2.9.4",
     "laravel-permissions": "^1.5.3",
     "moment": "^2.24.0",
     "numeral": "^2.0.6",
